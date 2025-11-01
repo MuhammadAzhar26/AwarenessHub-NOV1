@@ -15,6 +15,7 @@ export default function Navigation() {
         { name: 'Dashboard', path: '/dashboard' },
         { name: 'Tools Training', path: '/tools' },
         { name: 'DFIR', path: '/dfir' },
+        { name: 'Simulation', path: '/simulation' },
         { name: 'Leaderboard', path: '/leaderboard' },
         { name: 'Profile', path: '/profile' },
       ]

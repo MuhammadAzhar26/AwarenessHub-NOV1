@@ -107,12 +107,11 @@ export default function LandingPage() {
           <h2 className="text-h2 font-bold text-neutral-900 text-center mb-12">
             How It Works
           </h2>
-          <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { step: 1, title: 'Sign Up', description: 'Create your free account' },
-              { step: 2, title: 'Choose Module', description: 'Pick a topic to learn' },
-              { step: 3, title: 'Complete Challenges', description: 'Solve CTF-style problems' },
-              { step: 4, title: 'Earn Badges', description: 'Track your achievements' },
+              { step: 2, title: 'Learn & Practice', description: 'Complete modules, challenges & simulations' },
+              { step: 3, title: 'Earn Badges', description: 'Track your achievements & progress' },
             ].map((item) => (
               <div key={item.step} className="text-center">
                 <div className="w-16 h-16 bg-primary-500 text-white rounded-full flex items-center justify-center text-h2 font-bold mx-auto mb-4">
@@ -122,6 +121,42 @@ export default function LandingPage() {
                 <p className="text-small text-neutral-700">{item.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Simulation Feature */}
+      <section className="py-16">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-h2 font-bold text-neutral-900 mb-6">
+              Interactive Cybersecurity Simulation
+            </h2>
+            <p className="text-large text-neutral-700 mb-8">
+              Experience hands-on cybersecurity scenarios through our interactive simulation. 
+              Practice real-world threat detection, security implementation, and incident response 
+              in a safe, controlled environment.
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {[
+                { title: 'Real-time Scenarios', description: 'Face authentic cybersecurity challenges' },
+                { title: 'Safe Environment', description: 'Practice without real-world consequences' },
+                { title: 'Immediate Feedback', description: 'Learn from your decisions instantly' },
+              ].map((feature) => (
+                <div key={feature.title} className="p-6 bg-white border border-neutral-200 rounded-lg shadow-sm">
+                  <h3 className="text-body font-semibold text-neutral-900 mb-2">{feature.title}</h3>
+                  <p className="text-small text-neutral-700">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-center">
+              <Link
+                to="/signup"
+                className="inline-block px-6 py-3 bg-primary-500 text-white text-body font-semibold rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5"
+              >
+                Try the Simulation
+              </Link>
+            </div>
           </div>
         </div>
       </section>

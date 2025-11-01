@@ -13,6 +13,7 @@ import ToolsTrainingPage from '@/pages/ToolsTrainingPage'
 import DFIRTrainingPage from '@/pages/DFIRTrainingPage'
 import ToolDetailPage from '@/pages/ToolDetailPage'
 import DFIRDetailPage from '@/pages/DFIRDetailPage'
+import SimulationPage from '@/pages/SimulationPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -107,6 +108,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <DFIRDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/simulation"
+        element={
+          <ProtectedRoute>
+            <SimulationPage />
           </ProtectedRoute>
         }
       />
