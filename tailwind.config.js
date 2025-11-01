@@ -1,0 +1,146 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+	darkMode: 'class',
+	content: [
+		'./pages/**/*.{ts,tsx}',
+		'./components/**/*.{ts,tsx}',
+		'./app/**/*.{ts,tsx}',
+		'./src/**/*.{ts,tsx}',
+	],
+	theme: {
+		container: {
+			center: true,
+			padding: {
+				DEFAULT: '1.5rem',
+				sm: '1.5rem',
+				md: '3rem',
+				lg: '3rem',
+				xl: '3rem',
+			},
+			screens: {
+				sm: '640px',
+				md: '768px',
+				lg: '1024px',
+				xl: '1200px',
+				'2xl': '1400px',
+			},
+		},
+		extend: {
+			colors: {
+				primary: {
+					50: '#E6F0FF',
+					100: '#CCE0FF',
+					500: '#0066FF',
+					600: '#0052CC',
+					900: '#003D99',
+					DEFAULT: '#0066FF',
+				},
+				neutral: {
+					50: '#FAFAFA',
+					100: '#F5F5F5',
+					200: '#E5E5E5',
+					300: '#D4D4D4',
+					400: '#A3A3A3',
+					500: '#737373',
+					600: '#525252',
+					700: '#404040',
+					800: '#262626',
+					900: '#171717',
+					950: '#0A0A0A',
+				},
+				success: {
+					50: '#ECFDF5',
+					500: '#10B981',
+					600: '#059669',
+					900: '#064E3B',
+				},
+				warning: {
+					50: '#FFFBEB',
+					500: '#F59E0B',
+					700: '#B45309',
+					900: '#78350F',
+				},
+				error: {
+					50: '#FEF2F2',
+					500: '#EF4444',
+					600: '#DC2626',
+					900: '#7F1D1D',
+				},
+				background: {
+					page: '#FAFAFA',
+					surface: '#FFFFFF',
+					elevated: '#FFFFFF',
+					dark: {
+						page: '#0A0A0A',
+						surface: '#171717',
+						elevated: '#262626',
+					},
+				},
+			},
+			fontFamily: {
+				sans: ["'Inter'", '-apple-system', 'BlinkMacSystemFont', "'Segoe UI'", 'sans-serif'],
+				mono: ["'JetBrains Mono'", "'Fira Code'", 'Consolas', 'monospace'],
+			},
+			fontSize: {
+				hero: ['72px', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
+				h1: ['48px', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '700' }],
+				h2: ['36px', { lineHeight: '1.3', letterSpacing: '0', fontWeight: '600' }],
+				h3: ['24px', { lineHeight: '1.4', letterSpacing: '0', fontWeight: '600' }],
+				'body-lg': ['20px', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+				body: ['16px', { lineHeight: '1.5', letterSpacing: '0', fontWeight: '400' }],
+				small: ['14px', { lineHeight: '1.5', letterSpacing: '0', fontWeight: '400' }],
+				caption: ['12px', { lineHeight: '1.4', letterSpacing: '0.01em', fontWeight: '400' }],
+			},
+			spacing: {
+				1: '8px',
+				2: '16px',
+				3: '24px',
+				4: '32px',
+				6: '48px',
+				8: '64px',
+				12: '96px',
+				16: '128px',
+			},
+			borderRadius: {
+				sm: '8px',
+				md: '12px',
+				lg: '16px',
+				xl: '24px',
+				full: '9999px',
+			},
+			boxShadow: {
+				sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
+				card: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+				'card-hover': '0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05)',
+				modal: '0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04)',
+				'dark-sm': '0 1px 2px rgba(0, 0, 0, 0.3)',
+				'dark-card': '0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3)',
+				'dark-card-hover': '0 10px 15px rgba(0, 0, 0, 0.6), 0 4px 6px rgba(0, 0, 0, 0.4)',
+			},
+			transitionDuration: {
+				fast: '200ms',
+				base: '250ms',
+				slow: '300ms',
+			},
+			transitionTimingFunction: {
+				'ease-default': 'ease-out',
+				'ease-smooth': 'ease-in-out',
+			},
+			keyframes: {
+				'accordion-down': {
+					from: { height: 0 },
+					to: { height: 'var(--radix-accordion-content-height)' },
+				},
+				'accordion-up': {
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: 0 },
+				},
+			},
+			animation: {
+				'accordion-down': 'accordion-down 0.2s ease-out',
+				'accordion-up': 'accordion-up 0.2s ease-out',
+			},
+		},
+	},
+	plugins: [require('tailwindcss-animate')],
+}

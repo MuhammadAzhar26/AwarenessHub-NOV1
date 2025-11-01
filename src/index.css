@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Theme-aware body styling */
+  body {
+    @apply transition-colors duration-200;
+  }
+
+  .dark body {
+    @apply bg-neutral-950 text-neutral-100;
+  }
+
+  .light body {
+    @apply bg-neutral-50 text-neutral-900;
+  }
+
+  /* Theme-aware scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    @apply bg-neutral-900;
+  }
+
+  .light ::-webkit-scrollbar-track {
+    @apply bg-neutral-200;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-700 rounded-full;
+  }
+
+  .light ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-400 rounded-full;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-600;
+  }
+
+  .light ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-500;
+  }
+
+  /* Theme-aware focus styles */
+  .dark *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-neutral-950;
+  }
+
+  .light *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide external popups and notifications */
+  .minimax-popup,
+  .created-by-minimax,
+  .minimax-notification,
+  [class*="minimax"],
+  [id*="minimax"],
+  [data-minimax],
+  div[style*="position: fixed"][style*="bottom"],
+  div[style*="position: absolute"][style*="bottom"],
+  .fixed.bottom-0,
+  .fixed.inset-x-0.bottom-0,
+  .absolute.bottom-0,
+  .absolute.inset-x-0.bottom-0 {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+  }
+
+  /* Hide any popup elements that might be injected */
+  body > div[style*="position"],
+  body > div[style*="z-index"]:not([class]),
+  .z-\[9999\] {
+    display: none !important;
+  }
+
+  /* Ensure hint buttons are always visible */
+  .hint-button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+
+  /* Fix for any elements that might be hidden by popup rules */
+  [style*="position: fixed"],
+  [style*="position: absolute"] {
+    /* Don't hide hint buttons even if they have position styles */
+  }
+
+  .hint-button,
+  .hint-button *,
+  button[onclick*="useHint"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}

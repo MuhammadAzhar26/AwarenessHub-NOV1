@@ -1,0 +1,19 @@
+# Render Configuration for AwarenessHub
+# This file configures automatic deployment to Render
+
+services:
+  - type: web
+    name: awarenesshub
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: pnpm install --prefer-offline && rm -rf node_modules/.vite-temp && tsc -b && vite build
+    staticPublishPath: ./dist
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "18.18.0"
+      - key: PNPM_VERSION
+        value: "9.7.1"
+    domains:
+      - awarenesshub-app

@@ -1,0 +1,24 @@
+{
+  "name": "awarenesshub",
+  "version": "1.0.0",
+  "description": "Cybersecurity Learning Platform deployed on Render",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run serve",
+    "serve": "npx serve -s dist -l 3000",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "cybersecurity",
+    "education",
+    "learning",
+    "render"
+  ],
+  "author": "MiniMax Agent",
+  "license": "MIT"
+}
