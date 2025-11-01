@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
+import { ProgressProvider } from '@/simulations'
 import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/LoginPage'
 import SignupPage from '@/pages/SignupPage'
@@ -115,7 +116,9 @@ function AppRoutes() {
         path="/simulation"
         element={
           <ProtectedRoute>
-            <SimulationPage />
+            <ProgressProvider>
+              <SimulationPage />
+            </ProgressProvider>
           </ProtectedRoute>
         }
       />
