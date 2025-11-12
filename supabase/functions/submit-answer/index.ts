@@ -141,61 +141,58 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Update user progress
-    const progressResponse = await fetch(
-      `${supabaseUrl}/rest/v1/user_progress?user_id=eq.${userId}&stage_id=eq.${stageId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          status: isCorrect ? 'completed' : 'in_progress',
-          completed_at: isCorrect ? new Date().toISOString() : null,
-          points_earned: isCorrect ? earnedPoints : 0,
-          hints_used: hintsUsed || [],
-          time_spent: timeSpent || 0
-        })
-      }
-    )
+    // Upsert user progress (create if doesn't exist, update if it does)
+    const { error: progressError } = await supabaseClient
+      .from('user_progress')
+      .upsert({
+        user_id: userId,
+        stage_id: stageId,
+        status: isCorrect ? 'completed' : 'in_progress',
+        completed_at: isCorrect ? new Date().toISOString() : null,
+        points_earned: isCorrect ? earnedPoints : 0,
+        hints_used: hintsUsed || [],
+        time_spent: timeSpent || 0
+      }, {
+        onConflict: 'user_id,stage_id'
+      })
 
-    if (!progressResponse.ok) {
-      const progressError = await progressResponse.json().catch(() => null)
+    if (progressError) {
       console.error('Failed to update user progress:', progressError)
       return new Response(
-        JSON.stringify({ error: 'Failed to update progress' }),
+        JSON.stringify({ error: 'Failed to update progress', details: progressError.message }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
     // Update user total score if correct
     if (isCorrect && earnedPoints > 0) {
-      const { data: profile, error: profileError } = await supabaseClient.from('user_profiles')
-        .select('total_points')
+      // First, get or create user profile
+      const { data: profile, error: profileFetchError } = await supabaseClient
+        .from('user_profiles')
+        .select('id, total_points')
         .eq('user_id', userId)
-        .single()
+        .maybeSingle()
 
-      if (!profileError && profile) {
-        const profileResponse = await fetch(
-          `${supabaseUrl}/rest/v1/user_profiles?user_id=eq.${userId}`,
-          {
-            method: 'PATCH',
-            headers: {
-              'apikey': supabaseKey,
-              'Authorization': `Bearer ${supabaseKey}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              total_points: (profile.total_points || 0) + earnedPoints
-            })
-          }
-        )
+      if (profileFetchError) {
+        console.error('Error fetching user profile:', profileFetchError)
+      } else {
+        const currentPoints = profile?.total_points || 0
+        const newTotalPoints = currentPoints + earnedPoints
 
-        if (!profileResponse.ok) {
-          const profileUpdateError = await profileResponse.json().catch(() => null)
+        // Upsert user profile with updated points
+        const { error: profileUpdateError } = await supabaseClient
+          .from('user_profiles')
+          .upsert({
+            user_id: userId,
+            total_points: newTotalPoints
+          }, {
+            onConflict: 'user_id'
+          })
+
+        if (profileUpdateError) {
           console.error('Failed to update user profile points:', profileUpdateError)
+        } else {
+          console.log(`Updated user ${userId} points: ${currentPoints} -> ${newTotalPoints} (+${earnedPoints})`)
         }
       }
     }
