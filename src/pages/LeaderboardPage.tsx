@@ -24,23 +24,41 @@ export default function LeaderboardPage() {
 
       try {
         // Load all user profiles sorted by points
-        const { data: profilesData } = await supabase
+        // Try both 'id' and 'user_id' to handle different table structures
+        const { data: profilesData, error } = await supabase
           .from('user_profiles')
-          .select('id, username, total_points, level')
+          .select('id, user_id, username, total_points, level')
           .order('total_points', { ascending: false })
           .limit(100)
 
-        const rankedData = profilesData?.map((profile, index) => ({
-          user_id: profile.id,
-          username: profile.username,
-          total_points: profile.total_points,
-          level: profile.level,
-          rank: index + 1
-        })) || []
+        if (error) {
+          console.error('Error loading leaderboard:', error)
+          throw error
+        }
+
+        const rankedData = profilesData?.map((profile, index) => {
+          // Use id as the primary identifier (matches auth.users.id)
+          const userId = profile.id || profile.user_id
+          return {
+            user_id: userId,
+            username: profile.username || `User_${userId.slice(0, 8)}`,
+            total_points: profile.total_points || 0,
+            level: profile.level || 1,
+            rank: index + 1
+          }
+        }).filter(entry => entry.total_points !== null && entry.total_points !== undefined) || []
+
+        // Sort by total_points descending to ensure correct ranking
+        rankedData.sort((a, b) => b.total_points - a.total_points)
+        
+        // Re-assign ranks after sorting
+        rankedData.forEach((entry, index) => {
+          entry.rank = index + 1
+        })
 
         setLeaderboard(rankedData)
 
-        // Find current user's rank
+        // Find current user's rank using id
         const userRank = rankedData.find(entry => entry.user_id === user.id)?.rank
         setCurrentUserRank(userRank || null)
       } catch (error) {

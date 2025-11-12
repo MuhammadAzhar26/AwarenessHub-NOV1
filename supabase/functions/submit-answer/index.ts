@@ -191,7 +191,7 @@ Deno.serve(async (req) => {
       const { data: profile, error: profileFetchError } = await supabaseClient
         .from('user_profiles')
         .select('id, total_points')
-        .eq('user_id', userId)
+        .eq('id', userId)
         .maybeSingle()
 
       if (profileFetchError) {
@@ -208,13 +208,15 @@ Deno.serve(async (req) => {
         const newTotalPoints = currentPoints + stage.points
 
         // Update or insert user profile with updated points
+        // Use 'id' to match the primary key structure used by other queries
         const { error: profileUpdateError } = await supabaseClient
           .from('user_profiles')
           .upsert({
+            id: userId,
             user_id: userId,
             total_points: newTotalPoints
           }, {
-            onConflict: 'user_id'
+            onConflict: 'id'
           })
 
         if (profileUpdateError) {
