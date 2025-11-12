@@ -1,8 +1,9 @@
-import React from 'react';
-import { EnhancedSimulation } from './EnhancedSimulation';
-import { EnhancedScenario } from './types';
+import React from 'react'
+import { default as EnhancedSimulation, type EnhancedScenario } from './EnhancedSimulation'
+import { DragItem, DropZone } from './types'
+import { MatchPair } from './types'
 
-export const PasswordSecuritySimEnhanced: React.FC = () => {
+const PasswordSecuritySimEnhanced = () => {
   const scenarios: EnhancedScenario[] = [
     // Scenario 1: Strong Password Builder - Drag character types to build password
     {
@@ -38,6 +39,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 2: Password Strength Sorter - Drag passwords to strength categories
     {
       id: 'password-strength-sorter',
@@ -55,12 +57,12 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
             { id: '4', content: 'Admin', category: 'weak' },
             { id: '5', content: 'September2024!', category: 'medium' },
             { id: '6', content: 'P@ssw0rd', category: 'weak' },
-            { id: '7', content: 'S@kura#Garden\\*M0nday!2023', category: 'excellent' },
+            { id: '7', content: 'S@kura#Garden*M0nday!2023', category: 'excellent' },
             { id: '8', content: 'qwerty', category: 'weak' },
-            { id: '9', content: 'R@inb0w\\*Ch30se%Th!rd!Door', category: 'excellent' },
+            { id: '9', content: 'R@inb0w*Ch30se%Th!rd!Door', category: 'excellent' },
             { id: '10', content: '123456', category: 'weak' },
-            { id: '11', content: 'Coffee&Morning#Routine\\*2024', category: 'medium' },
-            { id: '12', content: 'Mountain&P@ssw0rd\\*2024!', category: 'medium' }
+            { id: '11', content: 'Coffee&Morning#Routine*2024', category: 'medium' },
+            { id: '12', content: 'Mountain&P@ssw0rd*2024!', category: 'medium' }
           ],
           dropZones: [
             { id: 'weak', title: 'Weak Passwords - High Risk', accepts: ['weak'], color: 'from-red-500 to-pink-500' },
@@ -70,6 +72,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 3: Multi-Factor Auth Setup - Drag auth factors to setup areas
     {
       id: 'multi-factor-auth-setup',
@@ -102,6 +105,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 4: Password Manager Benefits - Sort manager vs no-manager outcomes
     {
       id: 'password-manager-benefits',
@@ -133,6 +137,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 5: Breach Response Timeline - Sort password breach procedures
     {
       id: 'breach-response-timeline',
@@ -155,6 +160,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 6: Dictionary Attack Defense - Match weak passwords with vulnerabilities
     {
       id: 'dictionary-attack-defense',
@@ -188,7 +194,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
             },
             {
               id: '5',
-              left: { id: 'E', content: 'Tr0p!cal#2024\\*M0nday' },
+              left: { id: 'E', content: 'Tr0p!cal#2024*M0nday' },
               right: { id: '5', content: 'Strong Against Dictionary - Complex, non-dictionary' }
             },
             {
@@ -200,6 +206,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 7: Authentication Fatigue - Sort factors contributing to MFA fatigue
     {
       id: 'authentication-fatigue',
@@ -231,6 +238,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 8: Session Management - Drag session security measures
     {
       id: 'session-management',
@@ -263,6 +271,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 9: Password Evolution - Sort password improvement steps
     {
       id: 'password-evolution',
@@ -285,6 +294,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 10: Recovery Security - Drag recovery methods by security level
     {
       id: 'recovery-security',
@@ -317,6 +327,7 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 11: Credential Stuffing Defense - Match attack patterns with defenses
     {
       id: 'credential-stuffing-defense',
@@ -362,7 +373,8 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
-    // Scenario 12: Password Reuse Dangers - Sort reuse scenarios by breach impact risk
+
+    // Scenario 12: Password Reuse Dangers - Sort reuse scenarios by risk
     {
       id: 'password-reuse-dangers',
       title: 'Password Reuse Risk Assessment',
@@ -394,7 +406,8 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
-    // Scenario 13: Security Question Vulnerability - Match questions with vulnerability levels
+
+    // Scenario 13: Security Question Vulnerability - Match Q&As with safety levels
     {
       id: 'security-question-vulnerability',
       title: 'Security Question Risk Assessment',
@@ -439,7 +452,8 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
-    // Scenario 14: Biometric Integration - Sort biometric factors by security level
+
+    // Scenario 14: Biometric Integration - Sort biometric auth factors
     {
       id: 'biometric-integration',
       title: 'Biometric Authentication Factors',
@@ -473,7 +487,8 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     },
-    // Scenario 15: Zero Trust Authentication - Match verification methods with implementation levels
+
+    // Scenario 15: Zero Trust Authentication - Match trust verification methods
     {
       id: 'zero-trust-authentication',
       title: 'Zero Trust Authentication Model',
@@ -528,25 +543,27 @@ export const PasswordSecuritySimEnhanced: React.FC = () => {
         }
       }
     }
-  ];
+  ]
 
   const handleSimulationComplete = (scoreData: any) => {
-    console.log('Password Security Simulation Complete:', scoreData);
-  };
+    console.log('Password Security Simulation Complete:', scoreData)
+  }
 
   const handleScenarioComplete = (scenarioId: string, score: number) => {
-    console.log(`Scenario ${scenarioId} completed with score:`, score);
-  };
+    console.log(`Scenario ${scenarioId} completed with score:`, score)
+  }
 
   return (
     <EnhancedSimulation
       title="Password Security & Authentication"
-      description="Master password creation, management, and multi-factor authentication security"
-      botName="SecurityBot"
-      botColor="bg-green-500"
+      description="Master password security and authentication through 15 advanced interactive scenarios"
+      botName="Security Specialist Alex"
+      botColor="from-blue-500 to-cyan-600"
       scenarios={scenarios}
       onComplete={handleSimulationComplete}
       onScenarioComplete={handleScenarioComplete}
     />
-  );
-};
+  )
+}
+
+export default PasswordSecuritySimEnhanced

@@ -65,16 +65,23 @@ export interface EnhancedScenario {
   difficulty: 'beginner' | 'intermediate' | 'advanced';
 }
 
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon?: React.ComponentType<{ className?: string }>
+  requirement: number
+  unlocked?: boolean
+  progress?: number
+  color: string
+}
+
 export interface ScoreData {
-  score: number;
-  timeElapsed: number;
-  correctAnswers: number;
-  totalAnswers: number;
-  percentage: number;
-  scenarios: {
-    id: string;
-    score: number;
-    points: number;
-    timeElapsed: number;
-  }[];
+  simulationId: string
+  score: number
+  maxScore: number
+  correctAnswers: number
+  totalQuestions: number
+  timeSpent?: number
+  achievements: Achievement[]
 }

@@ -1,3 +1,5 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.4'
+
 Deno.serve(async (req) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -30,55 +32,27 @@ Deno.serve(async (req) => {
     }
 
     // Get Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    
-    const supabaseClient = {
-      from: (table: string) => ({
-        select: async (columns: string) => {
-          const url = `${supabaseUrl}/rest/v1/${table}?select=${columns}&id=eq.${stageId}`
-          const response = await fetch(url, {
-            headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
-          })
-          const data = await response.json()
-          return { data: data[0] || null, error: null }
-        },
-        insert: async (record: any) => {
-          const url = `${supabaseUrl}/rest/v1/${table}`
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 
-              'apikey': supabaseKey, 
-              'Authorization': `Bearer ${supabaseKey}`,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=representation'
-            },
-            body: JSON.stringify(record)
-          })
-          const data = await response.json()
-          return { data, error: null }
-        },
-        update: async (updates: any) => ({
-          eq: async (column: string, value: any) => {
-            const url = `${supabaseUrl}/rest/v1/${table}?${column}=eq.${value}`
-            const response = await fetch(url, {
-              method: 'PATCH',
-              headers: { 
-                'apikey': supabaseKey, 
-                'Authorization': `Bearer ${supabaseKey}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(updates)
-            })
-            return { error: null }
-          }
-        })
-      })
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+
+    if (!supabaseUrl || !supabaseKey) {
+      return new Response(
+        JSON.stringify({ error: 'Missing Supabase configuration' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
     }
+
+    const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        persistSession: false
+      }
+    })
 
     // Get stage details
     const { data: stage, error: stageError } = await supabaseClient.from('stages')
-      .select('challenge_type,challenge_data,points,module_id')
+      .select('id,challenge_type,challenge_data,points,module_id')
+      .eq('id', stageId)
+      .single()
 
     if (stageError || !stage) {
       return new Response(
@@ -168,26 +142,61 @@ Deno.serve(async (req) => {
     }
 
     // Update user progress
-    await supabaseClient.from('user_progress')
-      .update({
-        status: isCorrect ? 'completed' : 'in_progress',
-        completed_at: isCorrect ? new Date().toISOString() : null,
-        points_earned: isCorrect ? earnedPoints : 0,
-        hints_used: hintsUsed || [],
-        time_spent: timeSpent || 0
-      })
-      .eq('user_id', userId)
-      .eq('stage_id', stageId)
+    const progressResponse = await fetch(
+      `${supabaseUrl}/rest/v1/user_progress?user_id=eq.${userId}&stage_id=eq.${stageId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status: isCorrect ? 'completed' : 'in_progress',
+          completed_at: isCorrect ? new Date().toISOString() : null,
+          points_earned: isCorrect ? earnedPoints : 0,
+          hints_used: hintsUsed || [],
+          time_spent: timeSpent || 0
+        })
+      }
+    )
+
+    if (!progressResponse.ok) {
+      const progressError = await progressResponse.json().catch(() => null)
+      console.error('Failed to update user progress:', progressError)
+      return new Response(
+        JSON.stringify({ error: 'Failed to update progress' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     // Update user total score if correct
     if (isCorrect && earnedPoints > 0) {
-      const { data: profile } = await supabaseClient.from('user_profiles')
+      const { data: profile, error: profileError } = await supabaseClient.from('user_profiles')
         .select('total_points')
-      
-      if (profile) {
-        await supabaseClient.from('user_profiles')
-          .update({ total_points: (profile.total_points || 0) + earnedPoints })
-          .eq('user_id', userId)
+        .eq('user_id', userId)
+        .single()
+
+      if (!profileError && profile) {
+        const profileResponse = await fetch(
+          `${supabaseUrl}/rest/v1/user_profiles?user_id=eq.${userId}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              total_points: (profile.total_points || 0) + earnedPoints
+            })
+          }
+        )
+
+        if (!profileResponse.ok) {
+          const profileUpdateError = await profileResponse.json().catch(() => null)
+          console.error('Failed to update user profile points:', profileUpdateError)
+        }
       }
     }
 
@@ -195,6 +204,7 @@ Deno.serve(async (req) => {
       JSON.stringify({
         correct: isCorrect,
         points: earnedPoints,
+        points_earned: earnedPoints,
         message: isCorrect ? 'Correct! Well done!' : 'Incorrect. Try again!'
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

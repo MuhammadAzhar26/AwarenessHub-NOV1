@@ -1,31 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Clock, Trophy, Target } from 'lucide-react';
-import { EnhancedScenario, ScoreData } from './types';
-import { DragDropActivity } from './DragDropActivity';
-import { MatchingActivity } from './MatchingActivity';
-import { TimelineSorter } from './TimelineSorter';
-import { useProgress } from './ProgressProvider';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, ArrowRight, Award, Target, Clock, Zap } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { default as ChatInterface, type ChatMessage } from './ChatInterface'
+import { DragDropActivity } from './DragDropActivity'
+import { MatchingActivity } from './MatchingActivity'
+import { TimelineSorter } from './TimelineSorter'
+import { default as ProgressIndicator } from './ProgressIndicator'
+import { default as AchievementSystem, type ScoreData } from './AchievementSystem'
+import { useProgress } from './ProgressProvider'
+import { type DragItem, type DropZone } from './types'
+import { type MatchPair } from './types'
+
+export interface EnhancedScenario {
+  id: string
+  title: string
+  description: string
+  type: 'chat' | 'drag-drop' | 'matching' | 'timeline' | 'multiple-choice'
+  content: {
+    chatMessages?: string[]
+    dragDropData?: {
+      items: DragItem[]
+      dropZones: DropZone[]
+    }
+    matchingData?: {
+      pairs: MatchPair[]
+    }
+    timelineData?: {
+      events: Array<{ id: string; content: string; order: number }>
+      correctOrder: number[]
+    }
+    question?: string
+    options?: Array<{
+      id: string
+      text: string
+      isCorrect: boolean
+      explanation: string
+    }>
+  }
+  points: number
+  timeLimit?: number
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
+}
 
 interface EnhancedSimulationProps {
-  title: string;
-  description: string;
-  botName: string;
-  botColor: string;
-  scenarios: EnhancedScenario[];
-  onComplete: (scoreData: ScoreData) => void;
-  onScenarioComplete: (scenarioId: string, score: number) => void;
-  className?: string;
+  title: string
+  description: string
+  botName: string
+  botColor: string
+  scenarios: EnhancedScenario[]
+  onComplete: (scoreData: ScoreData) => void
+  onScenarioComplete: (scenarioId: string, score: number) => void
+  className?: string
 }
 
-interface ChatMessage {
-  id: string;
-  content: string;
-  isBot: boolean;
-  timestamp: Date;
-}
-
-export const EnhancedSimulation: React.FC<EnhancedSimulationProps> = ({
+const EnhancedSimulation: React.FC<EnhancedSimulationProps> = ({
   title,
   description,
   botName,
@@ -33,374 +62,401 @@ export const EnhancedSimulation: React.FC<EnhancedSimulationProps> = ({
   scenarios,
   onComplete,
   onScenarioComplete,
-  className = '',
+  className = ''
 }) => {
-  const [currentScenario, setCurrentScenario] = useState(0);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [score, setScore] = useState(0);
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [combo, setCombo] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [startTime] = useState(Date.now());
-  const [scenarioScores, setScenarioScores] = useState<{ id: string; score: number; points: number; timeElapsed: number }[]>([]);
-  const { updateSimulationProgress } = useProgress();
+  const { updateSimulationProgress } = useProgress()
+  const [currentScenario, setCurrentScenario] = useState(0)
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [isTyping, setIsTyping] = useState(false)
+  const [score, setScore] = useState(0)
+  const [timeElapsed, setTimeElapsed] = useState(0)
+  const [isCompleted, setIsCompleted] = useState(false)
+  const [combo, setCombo] = useState(0)
+  const [correctAnswers, setCorrectAnswers] = useState(0)
+  const [startTime] = useState(Date.now())
+  const [showAchievements, setShowAchievements] = useState(false)
 
+  const currentScenarioData = scenarios[currentScenario]
+  const totalScenarios = scenarios.length
+
+  // Timer effect
   useEffect(() => {
-    // Initialize chat with bot introduction
-    const timer = setTimeout(() => {
-      addBotMessage(`Welcome to ${title}! I'm ${botName}, your cybersecurity training assistant. Let's start with the first scenario.`);
-    }, 1000);
+    if (isCompleted) return
+    
+    const timer = setInterval(() => {
+      setTimeElapsed(Math.floor((Date.now() - startTime) / 1000))
+    }, 1000)
 
-    return () => clearTimeout(timer);
-  }, [title, botName]);
+    return () => clearInterval(timer)
+  }, [isCompleted, startTime])
 
+  // Initialize bot introduction
   useEffect(() => {
-    // Timer
-    const interval = setInterval(() => {
-      setTimeElapsed(Math.floor((Date.now() - startTime) / 1000));
-    }, 1000);
+    const introduction = `Hello! I'm ${botName}. Today we'll explore advanced cybersecurity scenarios through interactive challenges.
 
-    return () => clearInterval(interval);
-  }, [startTime]);
+What we'll accomplish:
+• Complete 15 comprehensive scenarios
+• Practice with drag-and-drop interactions
+• Match related security concepts
+• Apply knowledge to real-world situations
+• Earn achievements and certifications
 
-  const addBotMessage = (content: string) => {
-    setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
-      setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        content,
-        isBot: true,
+Are you ready to begin this enhanced training experience?`
+    
+    setMessages([
+      {
+        id: 'intro',
+        type: 'bot',
+        content: introduction,
         timestamp: new Date()
-      }]);
-    }, 1000 + Math.random() * 1000);
-  };
+      }
+    ])
+  }, [botName])
 
-  const addUserMessage = (content: string) => {
-    setMessages(prev => [...prev, {
-      id: Date.now().toString(),
-      content,
-      isBot: false,
+  const simulateTyping = (content: string, delay: number = 1000) => {
+    setIsTyping(true)
+    setTimeout(() => {
+      setIsTyping(false)
+      const newMessage: ChatMessage = {
+        id: `bot-${Date.now()}`,
+        type: 'bot',
+        content,
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, newMessage])
+    }, delay)
+  }
+
+  const handleSendMessage = (message: string) => {
+    const userMessage: ChatMessage = {
+      id: `user-${Date.now()}`,
+      type: 'user',
+      content: message,
       timestamp: new Date()
-    }]);
-  };
+    }
+    setMessages(prev => [...prev, userMessage])
 
-  const simulateTyping = () => {
-    setIsTyping(true);
-    setTimeout(() => setIsTyping(false), 1500);
-  };
+    setTimeout(() => {
+      const responses = [
+        "Excellent! Let's dive into our interactive scenarios.",
+        "Perfect! You're ready for the next challenge.",
+        "Great work! Let's continue with hands-on practice.",
+        "Well done! These skills will serve you well."
+      ]
+      const response = responses[Math.floor(Math.random() * responses.length)]
+      simulateTyping(response)
+      
+      // Trigger first scenario if this is the initial interaction
+      setTimeout(() => {
+        simulateTyping("Let's begin with our first interactive scenario.")
+        setTimeout(() => {
+          if (currentScenarioData.content.question) {
+            simulateTyping(currentScenarioData.content.question)
+          } else {
+            simulateTyping(currentScenarioData.description)
+          }
+        }, 1000)
+      }, 1500)
+    }, 1000)
+  }
 
   const handleActivityComplete = (correct: number, total: number) => {
-    const scenario = scenarios[currentScenario];
-    const percentage = (correct / total) * 100;
-    const scenarioPoints = Math.round(scenario.points * percentage);
-    const newCombo = percentage >= 80 ? combo + 1 : 0;
-
-    setScore(prev => prev + scenarioPoints);
-    setCombo(newCombo);
-    setCorrectAnswers(prev => prev + correct);
-
-    // Track scenario completion
-    const scenarioData = {
-      id: scenario.id,
-      score: scenarioPoints,
-      points: scenario.points,
-      timeElapsed: timeElapsed
-    };
-    setScenarioScores(prev => [...prev, scenarioData]);
-
-    onScenarioComplete(scenario.id, scenarioPoints);
-
-    // Bot response based on performance
-    if (percentage >= 90) {
-      simulateTyping();
-      setTimeout(() => {
-        addBotMessage(`Excellent work! You got ${correct}/${total} correct (${Math.round(percentage)}%). That's outstanding performance!`);
-      }, 1000);
-    } else if (percentage >= 70) {
-      simulateTyping();
-      setTimeout(() => {
-        addBotMessage(`Great job! You got ${correct}/${total} correct (${Math.round(percentage)}%). You're doing well!`);
-      }, 1000);
-    } else {
-      simulateTyping();
-      setTimeout(() => {
-        addBotMessage(`Good effort! You got ${correct}/${total} correct (${Math.round(percentage)}%). Keep practicing to improve!`);
-      }, 1000);
-    }
-
-    // Move to next scenario after delay
-    setTimeout(() => {
-      if (currentScenario < scenarios.length - 1) {
-        setCurrentScenario(prev => prev + 1);
-        const nextScenario = scenarios[currentScenario + 1];
-        simulateTyping();
-        setTimeout(() => {
-          addBotMessage(`Ready for the next challenge? ${nextScenario.title} awaits. ${nextScenario.description}`);
-        }, 1000);
-      } else {
-        completeSimulation();
-      }
-    }, 3000);
-  };
-
-  const completeSimulation = () => {
-    setIsCompleted(true);
+    const scenarioPoints = Math.round((correct / total) * currentScenarioData.points)
+    const newScore = score + scenarioPoints
     
-    const finalScoreData: ScoreData = {
-      score,
-      timeElapsed,
-      correctAnswers,
-      totalAnswers: scenarios.reduce((sum, s) => sum + (s.content.dragDropData?.items.length || s.content.matchingData?.pairs.length || s.content.timelineData?.events.length || 0), 0),
-      percentage: Math.round((score / scenarios.reduce((sum, s) => sum + s.points, 0)) * 100),
-      scenarios: scenarioScores
-    };
-
-    // Update progress
-    updateSimulationProgress(title.toLowerCase().includes('social') ? 'socialEngineering' : 
-                           title.toLowerCase().includes('password') ? 'passwordSecurity' : 
-                           'malwareProtection', {
-      completed: true,
-      score: finalScoreData.score,
-      scenariosCompleted: scenarios.map(s => s.id),
-      lastPlayed: new Date().toISOString()
-    });
-
-    setTimeout(() => {
-      onComplete(finalScoreData);
-    }, 2000);
-  };
-
-  const handleStepClick = (index: number) => {
-    if (index <= currentScenario) {
-      setCurrentScenario(index);
+    if (correct === total) {
+      setCombo(prev => prev + 1)
+      setCorrectAnswers(prev => prev + 1)
+    } else {
+      setCombo(0)
     }
-  };
+    
+    setScore(newScore)
+    onScenarioComplete(currentScenarioData.id, scenarioPoints)
+    
+    // Simulate bot response
+    setTimeout(() => {
+      const feedback = correct === total 
+        ? "Outstanding! You've mastered this scenario perfectly."
+        : correct >= total * 0.7 
+        ? "Good work! You're developing strong security awareness."
+        : "Keep practicing! These skills improve with experience."
+      
+      simulateTyping(feedback)
+      
+      setTimeout(() => {
+        if (currentScenario < totalScenarios - 1) {
+          simulateTyping(`Let's move to scenario ${currentScenario + 2} of ${totalScenarios}.`)
+          setTimeout(() => {
+            setCurrentScenario(prev => prev + 1)
+            // Trigger the new scenario to start
+            if (scenarios[currentScenario + 1]?.content?.question) {
+              simulateTyping(scenarios[currentScenario + 1].content.question)
+            }
+          }, 1000)
+        } else {
+          // Simulation completed
+          setIsCompleted(true)
+          setShowAchievements(true)
+          
+          const finalScoreData: ScoreData = {
+            simulationId: title.toLowerCase().replace(/\s+/g, '-'),
+            score: newScore,
+            maxScore: scenarios.reduce((sum, s) => sum + s.points, 0),
+            correctAnswers,
+            totalQuestions: totalScenarios,
+            timeSpent: timeElapsed,
+            achievements: []
+          }
+          
+          updateSimulationProgress('socialEngineering' as any, {
+            completed: true,
+            score: (newScore / scenarios.reduce((sum, s) => sum + s.points, 0)) * 100,
+            scenariosCompleted: scenarios.map(s => s.id),
+            lastPlayed: new Date().toISOString()
+          })
+          
+          setTimeout(() => {
+            simulateTyping("Congratulations! You've completed all scenarios in this enhanced cybersecurity training.")
+            setTimeout(() => {
+              simulateTyping(`Final Score: ${Math.round((newScore / scenarios.reduce((sum, s) => sum + s.points, 0)) * 100)}%`)
+              setTimeout(() => {
+                onComplete(finalScoreData)
+              }, 1000)
+            }, 1000)
+          }, 1000)
+        }
+      }, 2000)
+    }, 1000)
+  }
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
 
-  const currentScenarioData = scenarios[currentScenario];
-  const progress = ((currentScenario + 1) / scenarios.length) * 100;
+  const handleStepClick = (stepIndex: number) => {
+    // Only allow navigation to completed scenarios
+    if (stepIndex < currentScenario) {
+      setCurrentScenario(stepIndex)
+      setShowAchievements(false)
+      
+      // Trigger scenario loading
+      setTimeout(() => {
+        const scenario = scenarios[stepIndex]
+        if (scenario.content.question) {
+          simulateTyping(`Let's review: ${scenario.content.question}`)
+        } else {
+          simulateTyping(`Let's review: ${scenario.description}`)
+        }
+      }, 1000)
+    }
+  }
 
   const renderScenarioContent = () => {
-    if (!currentScenarioData) return null;
-
-    const { content } = currentScenarioData;
+    if (!currentScenarioData) return null
 
     switch (currentScenarioData.type) {
       case 'drag-drop':
+        if (!currentScenarioData.content.dragDropData) return null
         return (
           <DragDropActivity
             title={currentScenarioData.title}
             description={currentScenarioData.description}
-            items={content.dragDropData?.items || []}
-            dropZones={content.dragDropData?.dropZones || []}
+            items={currentScenarioData.content.dragDropData.items}
+            dropZones={currentScenarioData.content.dragDropData.dropZones}
             onComplete={handleActivityComplete}
           />
-        );
+        )
+
       case 'matching':
+        if (!currentScenarioData.content.matchingData) return null
         return (
           <MatchingActivity
             title={currentScenarioData.title}
             description={currentScenarioData.description}
-            pairs={content.matchingData?.pairs || []}
+            pairs={currentScenarioData.content.matchingData.pairs}
             onComplete={handleActivityComplete}
           />
-        );
+        )
+
       case 'timeline':
+        if (!currentScenarioData.content.timelineData) return null
         return (
           <TimelineSorter
             title={currentScenarioData.title}
             description={currentScenarioData.description}
-            events={content.timelineData?.events || []}
-            correctOrder={content.timelineData?.correctOrder || []}
+            events={currentScenarioData.content.timelineData.events}
+            correctOrder={currentScenarioData.content.timelineData.correctOrder}
             onComplete={handleActivityComplete}
           />
-        );
+        )
+
+      case 'multiple-choice':
       default:
         return (
-          <div className="text-center text-gray-400">
-            Scenario type "{currentScenarioData.type}" not implemented yet.
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">{currentScenarioData.title}</h3>
+            <p className="text-slate-300 mb-4">{currentScenarioData.description}</p>
+            
+            {currentScenarioData.content.question && (
+              <div className="mb-6">
+                <h4 className="text-md font-medium text-white mb-3">{currentScenarioData.content.question}</h4>
+                {currentScenarioData.content.options && (
+                  <div className="space-y-3">
+                    {currentScenarioData.content.options.map((option) => (
+                      <button
+                        key={option.id}
+                        onClick={() => handleActivityComplete(option.isCorrect ? 1 : 0, 1)}
+                        className="w-full text-left p-4 rounded-lg border border-slate-600 hover:border-blue-500 hover:bg-slate-700/50 transition-all"
+                      >
+                        <span className="text-white">{option.id}) {option.text}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        );
+        )
     }
-  };
+  }
+
+  if (showAchievements) {
+    const scoreData: ScoreData = {
+      simulationId: title.toLowerCase().replace(/\s+/g, '-'),
+      score,
+      maxScore: scenarios.reduce((sum, s) => sum + s.points, 0),
+      correctAnswers,
+      totalQuestions: totalScenarios,
+      timeSpent: timeElapsed,
+      achievements: []
+    }
+
+    return (
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <Link 
+              to="/" 
+              className="inline-flex items-center text-slate-300 hover:text-white mb-4 transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Link>
+            <h1 className="text-4xl font-bold text-white mb-2">{title} - Complete!</h1>
+            <p className="text-slate-300">Congratulations on completing all scenarios</p>
+          </div>
+        </div>
+
+        <AchievementSystem
+          scoreData={scoreData}
+          onAchievementUnlock={(achievement) => {
+            console.log('Achievement unlocked:', achievement.title)
+          }}
+        />
+
+        <div className="flex justify-center space-x-4 mt-8">
+          <Link 
+            to="/password-security"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center"
+          >
+            Next Training
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </Link>
+          <Link 
+            to="/"
+            className="bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className={`min-h-screen bg-gray-950 ${className}`}>
+    <div className={`max-w-7xl mx-auto ${className}`}>
       {/* Header */}
-      <div className="bg-gray-900 border-b border-gray-700 px-6 py-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">{title}</h1>
-              <p className="text-gray-300 mt-1">{description}</p>
-            </div>
-            <div className="flex items-center space-x-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-400">{score}</div>
-                <div className="text-sm text-gray-400">Score</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-400">{combo}</div>
-                <div className="text-sm text-gray-400">Combo</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-400">{formatTime(timeElapsed)}</div>
-                <div className="text-sm text-gray-400">Time</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="bg-gray-900 px-6 py-2">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-400">
-              Scenario {currentScenario + 1} of {scenarios.length}
-            </span>
-            <span className="text-sm text-gray-400">{Math.round(progress)}% Complete</span>
-          </div>
-          <div className="w-full bg-gray-700 rounded-full h-2">
-            <motion.div
-              className="bg-blue-500 h-2 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Scenario Navigation */}
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-3">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex space-x-2 overflow-x-auto">
-            {scenarios.map((scenario, index) => (
-              <button
-                key={scenario.id}
-                onClick={() => handleStepClick(index)}
-                disabled={index > currentScenario}
-                className={`
-                  flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors
-                  ${index === currentScenario
-                    ? 'bg-blue-600 text-white'
-                    : index < currentScenario
-                    ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-gray-600 text-gray-300 cursor-not-allowed'
-                  }
-                `}
-              >
-                {scenario.title}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentScenario}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <Link 
+            to="/" 
+            className="inline-flex items-center text-slate-300 hover:text-white mb-4 transition-colors"
           >
-            {renderScenarioContent()}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Chat Interface */}
-      <div className="fixed bottom-0 right-6 w-80 bg-gray-900 border border-gray-700 rounded-t-lg shadow-lg">
-        <div className="p-4 border-b border-gray-700">
-          <h3 className="font-semibold text-white flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full ${botColor}`} />
-            <span>{botName}</span>
-          </h3>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Home
+          </Link>
+          <h1 className="text-4xl font-bold text-white mb-2">{title}</h1>
+          <p className="text-slate-300">{description}</p>
         </div>
-        <div className="h-64 overflow-y-auto p-4 space-y-3">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-            >
-              <div
-                className={`max-w-[80%] p-3 rounded-lg ${
-                  message.isBot
-                    ? 'bg-gray-800 text-gray-100'
-                    : 'bg-blue-600 text-white'
-                }`}
-              >
-                <p className="text-sm">{message.content}</p>
-                <p className="text-xs opacity-70 mt-1">
-                  {message.timestamp.toLocaleTimeString()}
-                </p>
-              </div>
+        
+        <div className="text-right space-y-2">
+          <div className="flex items-center space-x-4 text-sm">
+            <div className="flex items-center text-blue-400">
+              <Target className="h-4 w-4 mr-1" />
+              <span>{score} pts</span>
             </div>
-          ))}
-          {isTyping && (
-            <div className="flex justify-start">
-              <div className="bg-gray-800 text-gray-100 p-3 rounded-lg">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                </div>
-              </div>
+            <div className="flex items-center text-green-400">
+              <Zap className="h-4 w-4 mr-1" />
+              <span>{combo}x combo</span>
             </div>
-          )}
+            <div className="flex items-center text-slate-400">
+              <Clock className="h-4 w-4 mr-1" />
+              <span>{formatTime(timeElapsed)}</span>
+            </div>
+          </div>
+          <div className="text-xs text-slate-500">
+            Scenario {currentScenario + 1} of {totalScenarios}
+          </div>
         </div>
       </div>
 
-      {/* Completion Modal */}
-      <AnimatePresence>
-        {isCompleted && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          >
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Progress Indicator */}
+        <div className="lg:col-span-1">
+          <ProgressIndicator
+            currentStep={currentScenario + 1}
+            totalSteps={totalScenarios}
+            steps={scenarios.map((scenario, index) => ({
+              title: scenario.title,
+              description: scenario.description,
+              completed: index < currentScenario
+            }))}
+            onStepClick={handleStepClick}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Chat Interface */}
+          <ChatInterface
+            botName={botName}
+            botAvatar={botName.split(' ')[0]}
+            botColor={botColor}
+            messages={messages}
+            onSendMessage={handleSendMessage}
+            isTyping={isTyping}
+            showInput={true}
+          />
+
+          {/* Scenario Content */}
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 p-8 rounded-lg max-w-lg w-full mx-4 border border-gray-700"
+              key={currentScenario}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="text-center">
-                <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-white mb-4">Simulation Complete!</h2>
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-800 p-4 rounded-lg">
-                    <Target className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-blue-400">{score}</div>
-                    <div className="text-sm text-gray-400">Final Score</div>
-                  </div>
-                  <div className="bg-gray-800 p-4 rounded-lg">
-                    <Clock className="w-8 h-8 text-green-400 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-green-400">{formatTime(timeElapsed)}</div>
-                    <div className="text-sm text-gray-400">Time Taken</div>
-                  </div>
-                </div>
-                <p className="text-gray-300 mb-6">
-                  You've successfully completed all {scenarios.length} scenarios!
-                </p>
-              </div>
+              {renderScenarioContent()}
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
+
+export default EnhancedSimulation

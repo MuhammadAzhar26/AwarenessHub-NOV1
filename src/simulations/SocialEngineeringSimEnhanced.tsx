@@ -1,8 +1,9 @@
-import React from 'react';
-import { EnhancedSimulation } from './EnhancedSimulation';
-import { EnhancedScenario } from './types';
+import React from 'react'
+import { default as EnhancedSimulation, type EnhancedScenario } from './EnhancedSimulation'
+import { DragItem, DropZone } from './types'
+import { MatchPair } from './types'
 
-export const SocialEngineeringSimEnhanced: React.FC = () => {
+const SocialEngineeringSimEnhanced = () => {
   const scenarios: EnhancedScenario[] = [
     // Scenario 1: IT Support Phone Scam - Drag suspicious phrases to red flag categories
     {
@@ -36,6 +37,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 2: Banking Verification Call - Match legitimate vs fake verification methods
     {
       id: 'banking-verification-call',
@@ -81,6 +83,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 3: Government Agency Impersonation - Sort authority verification steps
     {
       id: 'government-impersonation',
@@ -102,6 +105,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 4: Tech Support Remote Access - Drag system access permissions
     {
       id: 'tech-support-remote-access',
@@ -133,6 +137,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 5: Email Pretexting Analysis - Sort email elements by legitimacy
     {
       id: 'email-pretexting-analysis',
@@ -165,6 +170,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 6: Social Media Impersonation - Match profile verification methods
     {
       id: 'social-media-impersonation',
@@ -210,6 +216,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 7: Emergency Contact Scams - Sort emergency response procedures
     {
       id: 'emergency-contact-scams',
@@ -231,6 +238,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 8: Vendor Impersonation - Drag vendor communication indicators
     {
       id: 'vendor-impersonation',
@@ -263,6 +271,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 9: HR Department Social Engineering - Sort employee information security
     {
       id: 'hr-social-engineering',
@@ -295,6 +304,7 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
         }
       }
     },
+
     // Scenario 10: Callback Verification Game - Drag verification protocol steps
     {
       id: 'callback-verification-game',
@@ -326,26 +336,230 @@ export const SocialEngineeringSimEnhanced: React.FC = () => {
           ]
         }
       }
+    },
+
+    // Scenario 11: Multi-Channel Attacks - Match attack vectors with defenses
+    {
+      id: 'multi-channel-attacks',
+      title: 'Multi-Channel Social Engineering Attacks',
+      description: 'Match multi-channel attack vectors with appropriate defenses',
+      type: 'matching',
+      points: 16,
+      difficulty: 'advanced',
+      content: {
+        matchingData: {
+          pairs: [
+            {
+              id: '1',
+              left: { id: 'A', content: 'Email + Phone follow-up within hours' },
+              right: { id: '1', content: 'Attack Vector - Coordinate verification of both channels' }
+            },
+            {
+              id: '2',
+              left: { id: 'B', content: 'Social media + text message coordination' },
+              right: { id: '2', content: 'Attack Vector - All channels must be verified independently' }
+            },
+            {
+              id: '3',
+              left: { id: 'C', content: 'Time pressure across multiple platforms' },
+              right: { id: '3', content: 'Attack Vector - Time pressure is red flag' }
+            },
+            {
+              id: '4',
+              left: { id: 'D', content: 'Different personas across channels' },
+              right: { id: '4', content: 'Attack Vector - Person identity must be consistent' }
+            },
+            {
+              id: '5',
+              left: { id: 'E', content: 'Omnichannel official communications' },
+              right: { id: '5', content: 'Legitimate - Official channels are consistent and verifiable' }
+            },
+            {
+              id: '6',
+              left: { id: 'F', content: 'Phone + In-person follow-up' },
+              right: { id: '6', content: 'Attack Vector - Multiple contact methods increase risk' }
+            }
+          ]
+        }
+      }
+    },
+
+    // Scenario 12: Insider Threat Impersonation - Sort internal security indicators
+    {
+      id: 'insider-threat-impersonation',
+      title: 'Insider Threat Impersonation Detection',
+      description: 'Sort internal security indicators by threat level',
+      type: 'drag-drop',
+      points: 17,
+      difficulty: 'advanced',
+      content: {
+        dragDropData: {
+          items: [
+            { id: '1', content: 'Unauthorized system access attempts', category: 'high-threat' },
+            { id: '2', content: 'Employee badge sharing', category: 'medium-threat' },
+            { id: '3', content: 'Large data downloads by unusual user', category: 'high-threat' },
+            { id: '4', content: 'Off-hours administrative activities', category: 'medium-threat' },
+            { id: '5', content: 'Request for elevated permissions', category: 'medium-threat' },
+            { id: '6', content: 'Working outside normal business hours', category: 'low-threat' },
+            { id: '7', content: 'Third-party access requests', category: 'medium-threat' },
+            { id: '8', content: 'Multiple failed login attempts', category: 'high-threat' },
+            { id: '9', content: 'Remote access from unusual locations', category: 'medium-threat' },
+            { id: '10', content: 'USB device connections', category: 'medium-threat' },
+            { id: '11', content: 'Printing sensitive documents', category: 'medium-threat' },
+            { id: '12', content: 'Network scanning activities', category: 'high-threat' }
+          ],
+          dropZones: [
+            { id: 'low-threat', title: 'Low Threat - Monitor', accepts: ['low-threat'], color: 'from-green-500 to-emerald-500' },
+            { id: 'medium-threat', title: 'Medium Threat - Investigate', accepts: ['medium-threat'], color: 'from-yellow-500 to-orange-500' },
+            { id: 'high-threat', title: 'High Threat - Immediate Action', accepts: ['high-threat'], color: 'from-red-500 to-pink-500' }
+          ]
+        }
+      }
+    },
+
+    // Scenario 13: Customer Service Scams - Drag customer verification methods
+    {
+      id: 'customer-service-scams',
+      title: 'Customer Service Impersonation',
+      description: 'Drag customer verification methods by security level',
+      type: 'drag-drop',
+      points: 13,
+      difficulty: 'intermediate',
+      content: {
+        dragDropData: {
+          items: [
+            { id: '1', content: 'Account number and PIN', category: 'unsafe' },
+            { id: '2', content: 'Security questions and answers', category: 'unsafe' },
+            { id: '3', content: 'Two-factor authentication code', category: 'unsafe' },
+            { id: '4', content: 'Customer service ID verification', category: 'safe' },
+            { id: '5', content: 'Account balance confirmation', category: 'medium-safe' },
+            { id: '6', content: 'Recent transaction verification', category: 'medium-safe' },
+            { id: '7', content: 'Mailing address confirmation', category: 'medium-safe' },
+            { id: '8', content: 'Email verification link', category: 'safe' },
+            { id: '9', content: 'Social media verification code', category: 'unsafe' },
+            { id: '10', content: 'Personal identification questions', category: 'unsafe' },
+            { id: '11', content: 'Phone number verification call', category: 'safe' },
+            { id: '12', content: 'Biometric authentication', category: 'safe' }
+          ],
+          dropZones: [
+            { id: 'safe', title: 'Safe Verification Methods', accepts: ['safe'], color: 'from-green-500 to-emerald-500' },
+            { id: 'medium-safe', title: 'Medium Safe - Use Caution', accepts: ['medium-safe'], color: 'from-yellow-500 to-orange-500' },
+            { id: 'unsafe', title: 'Unsafe - Never Share', accepts: ['unsafe'], color: 'from-red-500 to-pink-500' }
+          ]
+        }
+      }
+    },
+
+    // Scenario 14: Financial Institution Pretexting - Sort banking security protocols
+    {
+      id: 'financial-pretexting',
+      title: 'Financial Institution Pretexting',
+      description: 'Sort banking security protocols by protection level',
+      type: 'drag-drop',
+      points: 15,
+      difficulty: 'advanced',
+      content: {
+        dragDropData: {
+          items: [
+            { id: '1', content: 'Bank never asks for password', category: 'protocol-1' },
+            { id: '2', content: 'Bank never requests PIN', category: 'protocol-1' },
+            { id: '3', content: 'Bank never asks for SSN', category: 'protocol-1' },
+            { id: '4', content: 'Verify through official channels only', category: 'protocol-2' },
+            { id: '5', content: 'Use established communication methods', category: 'protocol-2' },
+            { id: '6', content: 'Contact bank directly, don\'t return calls', category: 'protocol-2' },
+            { id: '7', content: 'Check account through secure banking app', category: 'protocol-3' },
+            { id: '8', content: 'Monitor accounts for suspicious activity', category: 'protocol-3' },
+            { id: '9', content: 'Report suspicious calls to bank immediately', category: 'protocol-3' },
+            { id: '10', content: 'Educate family about banking scams', category: 'protocol-4' },
+            { id: '11', content: 'Share security knowledge with colleagues', category: 'protocol-4' },
+            { id: '12', content: 'Implement account alerts for security', category: 'protocol-4' }
+          ],
+          dropZones: [
+            { id: 'protocol-1', title: 'Protocol 1: Never Share', accepts: ['protocol-1'], color: 'from-red-500 to-pink-500' },
+            { id: 'protocol-2', title: 'Protocol 2: Verify Independently', accepts: ['protocol-2'], color: 'from-yellow-500 to-orange-500' },
+            { id: 'protocol-3', title: 'Protocol 3: Monitor & Report', accepts: ['protocol-3'], color: 'from-blue-500 to-cyan-500' },
+            { id: 'protocol-4', title: 'Protocol 4: Educate & Prevent', accepts: ['protocol-4'], color: 'from-green-500 to-emerald-500' }
+          ]
+        }
+      }
+    },
+
+    // Scenario 15: Authority Escalation Tactics - Match escalation with proper responses
+    {
+      id: 'authority-escalation-tactics',
+      title: 'Authority Escalation Response',
+      description: 'Match authority escalation tactics with proper security responses',
+      type: 'matching',
+      points: 19,
+      difficulty: 'advanced',
+      content: {
+        matchingData: {
+          pairs: [
+            {
+              id: '1',
+              left: { id: 'A', content: 'Immediate escalation to supervisor authority' },
+              right: { id: '1', content: 'Pressure Tactic - Verify through official channels' }
+            },
+            {
+              id: '2',
+              left: { id: 'B', content: 'Threat of immediate consequences' },
+              right: { id: '2', content: 'Pressure Tactic - Never respond to threats' }
+            },
+            {
+              id: '3',
+              left: { id: 'C', content: 'Claims of emergency authorization' },
+              right: { id: '3', content: 'Pressure Tactic - Emergency powers are verifiable' }
+            },
+            {
+              id: '4',
+              left: { id: 'D', content: 'Supervisor demands immediate compliance' },
+              right: { id: '4', content: 'Pressure Tactic - Verify supervisor identity' }
+            },
+            {
+              id: '5',
+              left: { id: 'E', content: 'Official escalation through proper channels' },
+              right: { id: '5', content: 'Legitimate - Follow established protocols' }
+            },
+            {
+              id: '6',
+              left: { id: 'F', content: 'Time-limited approval authority' },
+              right: { id: '6', content: 'Pressure Tactic - All approvals are time-limited' }
+            },
+            {
+              id: '7',
+              left: { id: 'G', content: 'Multi-level verification process' },
+              right: { id: '7', content: 'Legitimate - Proper multi-level verification' }
+            },
+            {
+              id: '8',
+              left: { id: 'H', content: 'Executive override authorization' },
+              right: { id: '8', content: 'Pressure Tactic - Executive override is documented' }
+            }
+          ]
+        }
+      }
     }
-  ];
+  ]
 
   const handleSimulationComplete = (scoreData: any) => {
-    console.log('Social Engineering Simulation Complete:', scoreData);
-  };
+    console.log('Social Engineering Simulation Complete:', scoreData)
+  }
 
   const handleScenarioComplete = (scenarioId: string, score: number) => {
-    console.log(`Scenario ${scenarioId} completed with score:`, score);
-  };
+    console.log(`Scenario ${scenarioId} completed with score:`, score)
+  }
 
   return (
     <EnhancedSimulation
       title="Social Engineering & Vishing Awareness"
-      description="Learn to identify and defend against social engineering attacks and voice phishing attempts"
-      botName="SecurityBot"
-      botColor="bg-blue-500"
+      description="Master social engineering detection through 15 advanced interactive scenarios"
+      botName="Security Expert Sarah"
+      botColor="from-red-500 to-pink-600"
       scenarios={scenarios}
       onComplete={handleSimulationComplete}
       onScenarioComplete={handleScenarioComplete}
     />
-  );
-};
+  )
+}
+
+export default SocialEngineeringSimEnhanced
