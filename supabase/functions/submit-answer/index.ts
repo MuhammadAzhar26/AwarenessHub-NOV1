@@ -185,44 +185,50 @@ Deno.serve(async (req) => {
       )
     }
 
-    // Update user total score if correct
+    // Update user total score and level if correct
     if (isCorrect && earnedPoints > 0) {
-      // First, get or create user profile
-      // Use 'id' to match other components (DashboardPage, ProfilePage use .eq('id', user.id))
-      const { data: profile, error: profileFetchError } = await supabaseClient
-        .from('user_profiles')
-        .select('id, total_points')
-        .eq('id', userId)
-        .maybeSingle()
+      // Recalculate total_points from all completed stages to ensure accuracy
+      const { data: allProgress, error: progressFetchError } = await supabaseClient
+        .from('user_progress')
+        .select('points_earned')
+        .eq('user_id', userId)
+        .eq('status', 'completed')
 
-      if (profileFetchError) {
-        console.error('Error fetching user profile:', profileFetchError)
+      if (progressFetchError) {
+        console.error('Error fetching user progress:', progressFetchError)
       } else {
-        const currentPoints = profile?.total_points || 0
-        // Calculate hint penalty that was already deducted when hints were used
-        const hintPenalty = (hintsUsed || []).reduce((sum: number, h: number) => sum + (h * 5), 0)
-        
-        // Since hint penalties were deducted immediately when hints were used,
-        // we add basePoints (full challenge points) to currentPoints
-        // The penalty was already deducted, so: currentPoints + basePoints = correct total
-        // Example: 95 (after hint) + 100 (base) = 195 (100 initial + 100 challenge - 5 penalty)
-        const newTotalPoints = currentPoints + stage.points
+        // Sum all points_earned from completed stages
+        const calculatedTotalPoints = allProgress?.reduce((sum: number, p: any) => {
+          return sum + (p.points_earned || 0)
+        }, 0) || 0
 
-        // Update or insert user profile with updated points
-        // Use 'id' as the conflict key to match table structure
+        // Calculate level based on total points (every 100 points = 1 level, minimum level 1)
+        const calculatedLevel = Math.max(1, Math.floor(calculatedTotalPoints / 100) + 1)
+
+        // Get existing profile to preserve other fields
+        const { data: existingProfile } = await supabaseClient
+          .from('user_profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle()
+
+        // Update or insert user profile with calculated points and level
         const { error: profileUpdateError } = await supabaseClient
           .from('user_profiles')
           .upsert({
             id: userId,
-            total_points: newTotalPoints
+            total_points: calculatedTotalPoints,
+            level: calculatedLevel,
+            username: existingProfile?.username || null,
+            member_since: existingProfile?.member_since || new Date().toISOString()
           }, {
             onConflict: 'id'
           })
 
         if (profileUpdateError) {
-          console.error('Failed to update user profile points:', profileUpdateError)
+          console.error('Failed to update user profile:', profileUpdateError)
         } else {
-          console.log(`Updated user ${userId} points: ${currentPoints} -> ${newTotalPoints} (+${earnedPoints} earned, penalty ${hintPenalty} already deducted)`)
+          console.log(`Updated user ${userId}: ${calculatedTotalPoints} points, level ${calculatedLevel}`)
         }
       }
     }
