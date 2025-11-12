@@ -141,20 +141,41 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Upsert user progress (create if doesn't exist, update if it does)
-    const { error: progressError } = await supabaseClient
+    // Check if progress record exists
+    const { data: existingProgress } = await supabaseClient
       .from('user_progress')
-      .upsert({
-        user_id: userId,
-        stage_id: stageId,
-        status: isCorrect ? 'completed' : 'in_progress',
-        completed_at: isCorrect ? new Date().toISOString() : null,
-        points_earned: isCorrect ? earnedPoints : 0,
-        hints_used: hintsUsed || [],
-        time_spent: timeSpent || 0
-      }, {
-        onConflict: 'user_id,stage_id'
-      })
+      .select('id')
+      .eq('user_id', userId)
+      .eq('stage_id', stageId)
+      .maybeSingle()
+
+    // Update or insert user progress
+    const progressData = {
+      user_id: userId,
+      stage_id: stageId,
+      status: isCorrect ? 'completed' : 'in_progress',
+      completed_at: isCorrect ? new Date().toISOString() : null,
+      points_earned: isCorrect ? earnedPoints : 0,
+      hints_used: hintsUsed || [],
+      time_spent: timeSpent || 0
+    }
+
+    let progressError = null
+    if (existingProgress) {
+      // Update existing record
+      const { error } = await supabaseClient
+        .from('user_progress')
+        .update(progressData)
+        .eq('user_id', userId)
+        .eq('stage_id', stageId)
+      progressError = error
+    } else {
+      // Insert new record
+      const { error } = await supabaseClient
+        .from('user_progress')
+        .insert(progressData)
+      progressError = error
+    }
 
     if (progressError) {
       console.error('Failed to update user progress:', progressError)
@@ -179,7 +200,7 @@ Deno.serve(async (req) => {
         const currentPoints = profile?.total_points || 0
         const newTotalPoints = currentPoints + earnedPoints
 
-        // Upsert user profile with updated points
+        // Update or insert user profile with updated points
         const { error: profileUpdateError } = await supabaseClient
           .from('user_profiles')
           .upsert({
