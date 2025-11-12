@@ -34,15 +34,12 @@ jobs:
           fi
           echo "✅ Secrets are configured"
 
-      - name: Login to Supabase
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "$SUPABASE_ACCESS_TOKEN" | supabase login --token-stdin
-
       - name: Deploy Edge Function
         env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
         run: |
-          supabase functions deploy submit-answer --project-ref $SUPABASE_PROJECT_ID
+          supabase functions deploy submit-answer \
+            --project-ref $SUPABASE_PROJECT_ID \
+            --token $SUPABASE_ACCESS_TOKEN
 
