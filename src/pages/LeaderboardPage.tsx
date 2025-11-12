@@ -24,10 +24,10 @@ export default function LeaderboardPage() {
 
       try {
         // Load all user profiles sorted by points
-        // Try both 'id' and 'user_id' to handle different table structures
+        // Use 'id' to match other components (DashboardPage, ProfilePage use .eq('id', user.id))
         const { data: profilesData, error } = await supabase
           .from('user_profiles')
-          .select('id, user_id, username, total_points, level')
+          .select('id, username, total_points, level')
           .order('total_points', { ascending: false })
           .limit(100)
 
@@ -37,18 +37,16 @@ export default function LeaderboardPage() {
         }
 
         const rankedData = profilesData?.map((profile, index) => {
-          // Use id as the primary identifier (matches auth.users.id)
-          const userId = profile.id || profile.user_id
           return {
-            user_id: userId,
-            username: profile.username || `User_${userId.slice(0, 8)}`,
+            user_id: profile.id, // id is the primary key that matches auth.users.id
+            username: profile.username || `User_${profile.id.slice(0, 8)}`,
             total_points: profile.total_points || 0,
             level: profile.level || 1,
             rank: index + 1
           }
-        }).filter(entry => entry.total_points !== null && entry.total_points !== undefined) || []
+        }).filter(entry => entry.total_points !== null && entry.total_points !== undefined && entry.total_points > 0) || []
 
-        // Sort by total_points descending to ensure correct ranking
+        // Sort by total_points descending to ensure correct ranking (in case order by didn't work)
         rankedData.sort((a, b) => b.total_points - a.total_points)
         
         // Re-assign ranks after sorting
@@ -58,7 +56,7 @@ export default function LeaderboardPage() {
 
         setLeaderboard(rankedData)
 
-        // Find current user's rank using id
+        // Find current user's rank using id (which matches auth.users.id)
         const userRank = rankedData.find(entry => entry.user_id === user.id)?.rank
         setCurrentUserRank(userRank || null)
       } catch (error) {

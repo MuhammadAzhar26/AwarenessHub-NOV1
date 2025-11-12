@@ -188,6 +188,7 @@ Deno.serve(async (req) => {
     // Update user total score if correct
     if (isCorrect && earnedPoints > 0) {
       // First, get or create user profile
+      // Use 'id' to match other components (DashboardPage, ProfilePage use .eq('id', user.id))
       const { data: profile, error: profileFetchError } = await supabaseClient
         .from('user_profiles')
         .select('id, total_points')
@@ -208,12 +209,11 @@ Deno.serve(async (req) => {
         const newTotalPoints = currentPoints + stage.points
 
         // Update or insert user profile with updated points
-        // Use 'id' to match the primary key structure used by other queries
+        // Use 'id' as the conflict key to match table structure
         const { error: profileUpdateError } = await supabaseClient
           .from('user_profiles')
           .upsert({
             id: userId,
-            user_id: userId,
             total_points: newTotalPoints
           }, {
             onConflict: 'id'

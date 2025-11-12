@@ -164,7 +164,7 @@ export default function ChallengePage() {
       const { data: profile } = await supabase
         .from('user_profiles')
         .select('total_points')
-        .eq('user_id', user.id)
+        .eq('id', user.id)
         .maybeSingle()
 
       if (profile) {
@@ -174,10 +174,10 @@ export default function ChallengePage() {
         await supabase
           .from('user_profiles')
           .upsert({
-            user_id: user.id,
+            id: user.id,
             total_points: newPoints
           }, {
-            onConflict: 'user_id'
+            onConflict: 'id'
           })
 
         // Show feedback about point deduction
