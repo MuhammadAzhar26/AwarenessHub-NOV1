@@ -109,8 +109,10 @@ export default function ChallengePage() {
   }, [stageId, user])
 
   async function useHint(hintNumber: number) {
+    if (!user || !stageId) return
+
+    // If already used, just toggle display
     if (usedHints.includes(hintNumber)) {
-      // Already used, just toggle display
       if (expandedHints.includes(hintNumber)) {
         setExpandedHints(expandedHints.filter(h => h !== hintNumber))
       } else {
@@ -119,9 +121,86 @@ export default function ChallengePage() {
       return
     }
 
-    // Use hint for first time
-    setUsedHints([...usedHints, hintNumber])
-    setExpandedHints([...expandedHints, hintNumber])
+    // Find the hint to get penalty points
+    const hint = hints.find(h => h.hint_number === hintNumber)
+    if (!hint) return
+
+    try {
+      // Update used hints immediately in state
+      const newUsedHints = [...usedHints, hintNumber]
+      setUsedHints(newUsedHints)
+      setExpandedHints([...expandedHints, hintNumber])
+
+      // Save hint usage to database
+      const { data: existingProgress } = await supabase
+        .from('user_progress')
+        .select('id, hints_used')
+        .eq('user_id', user.id)
+        .eq('stage_id', stageId)
+        .maybeSingle()
+
+      if (existingProgress) {
+        // Update existing progress record
+        await supabase
+          .from('user_progress')
+          .update({
+            hints_used: newUsedHints
+          })
+          .eq('user_id', user.id)
+          .eq('stage_id', stageId)
+      } else {
+        // Create new progress record
+        await supabase
+          .from('user_progress')
+          .insert({
+            user_id: user.id,
+            stage_id: stageId,
+            hints_used: newUsedHints,
+            status: 'in_progress'
+          })
+      }
+
+      // Deduct points from user profile immediately
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('total_points')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (profile) {
+        const currentPoints = profile.total_points || 0
+        const newPoints = Math.max(0, currentPoints - hint.penalty_points)
+        
+        await supabase
+          .from('user_profiles')
+          .upsert({
+            user_id: user.id,
+            total_points: newPoints
+          }, {
+            onConflict: 'user_id'
+          })
+
+        // Show feedback about point deduction
+        setFeedback({
+          type: 'error',
+          message: `Hint ${hintNumber} used! ${hint.penalty_points} points deducted.`
+        })
+
+        // Clear feedback after 3 seconds
+        setTimeout(() => {
+          setFeedback(null)
+        }, 3000)
+      }
+    } catch (error) {
+      console.error('Error using hint:', error)
+      // Revert state on error
+      setUsedHints(usedHints)
+      setExpandedHints(expandedHints.filter(h => h !== hintNumber))
+      setFeedback({
+        type: 'error',
+        message: 'Failed to use hint. Please try again.'
+      })
+    }
   }
 
   async function handleSubmit(answerValue?: string) {

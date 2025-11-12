@@ -198,7 +198,14 @@ Deno.serve(async (req) => {
         console.error('Error fetching user profile:', profileFetchError)
       } else {
         const currentPoints = profile?.total_points || 0
-        const newTotalPoints = currentPoints + earnedPoints
+        // Calculate hint penalty that was already deducted when hints were used
+        const hintPenalty = (hintsUsed || []).reduce((sum: number, h: number) => sum + (h * 5), 0)
+        
+        // Since hint penalties were deducted immediately when hints were used,
+        // we add basePoints (full challenge points) to currentPoints
+        // The penalty was already deducted, so: currentPoints + basePoints = correct total
+        // Example: 95 (after hint) + 100 (base) = 195 (100 initial + 100 challenge - 5 penalty)
+        const newTotalPoints = currentPoints + stage.points
 
         // Update or insert user profile with updated points
         const { error: profileUpdateError } = await supabaseClient
@@ -213,7 +220,7 @@ Deno.serve(async (req) => {
         if (profileUpdateError) {
           console.error('Failed to update user profile points:', profileUpdateError)
         } else {
-          console.log(`Updated user ${userId} points: ${currentPoints} -> ${newTotalPoints} (+${earnedPoints})`)
+          console.log(`Updated user ${userId} points: ${currentPoints} -> ${newTotalPoints} (+${earnedPoints} earned, penalty ${hintPenalty} already deducted)`)
         }
       }
     }
