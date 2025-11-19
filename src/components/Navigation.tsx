@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTheme } from '@/contexts/ThemeContext'
-import { Shield, User, Trophy, LogOut, Menu, X, Sun, Moon } from 'lucide-react'
+import { Shield, User, Trophy, LogOut, Menu, X, Sun, Moon, CheckSquare } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Navigation() {
@@ -16,10 +16,13 @@ export default function Navigation() {
         { name: 'Tools Training', path: '/tools' },
         { name: 'DFIR', path: '/dfir' },
         { name: 'Simulation', path: '/simulation' },
+        { name: 'Security Checklist', path: '/security-checklist' },
         { name: 'Leaderboard', path: '/leaderboard' },
         { name: 'Profile', path: '/profile' },
       ]
-    : []
+    : [
+        { name: 'Security Checklist', path: '/security-checklist' },
+      ]
 
   const isActive = (path: string) => location.pathname === path
 
@@ -42,92 +45,94 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          {user && (
-            <div className="hidden md:flex items-center gap-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-body transition-colors duration-200 ${
-                    isActive(item.path)
-                      ? 'text-primary-500 font-semibold'
-                      : theme === 'dark'
-                      ? 'text-neutral-400 hover:text-primary-400'
-                      : 'text-neutral-600 hover:text-primary-500'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
-                  theme === 'dark'
-                    ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                }`}
-                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              >
-                {theme === 'dark' ? (
-                  <Sun className="w-5 h-5" />
-                ) : (
-                  <Moon className="w-5 h-5" />
-                )}
-              </button>
-              
-              <button
-                onClick={() => signOut()}
-                className={`flex items-center gap-2 px-5 py-3 text-body transition-colors ${
-                  theme === 'dark'
-                    ? 'text-neutral-400 hover:text-error-500'
-                    : 'text-neutral-600 hover:text-error-500'
-                }`}
-              >
-                <LogOut className="w-5 h-5" />
-                Sign Out
-              </button>
-            </div>
-          )}
-
-          {!user && (
-            <div className="hidden md:flex items-center gap-4">
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
-                  theme === 'dark'
-                    ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
-                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
-                }`}
-                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              >
-                {theme === 'dark' ? (
-                  <Sun className="w-5 h-5" />
-                ) : (
-                  <Moon className="w-5 h-5" />
-                )}
-              </button>
-              
+          <div className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => (
               <Link
-                to="/login"
-                className={`px-5 py-3 text-body transition-colors ${
-                  theme === 'dark'
+                key={item.path}
+                to={item.path}
+                className={`text-body transition-colors duration-200 ${
+                  isActive(item.path)
+                    ? 'text-primary-500 font-semibold'
+                    : theme === 'dark'
                     ? 'text-neutral-400 hover:text-primary-400'
                     : 'text-neutral-600 hover:text-primary-500'
                 }`}
               >
-                Login
+                {item.name}
               </Link>
-              <Link
-                to="/signup"
-                className="px-5 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5"
+            ))}
+            
+            {user && (
+              <>
+                {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+                  theme === 'dark'
+                    ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
+                title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
               >
-                Sign Up
-              </Link>
-            </div>
-          )}
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </button>
+              
+                <button
+                  onClick={() => signOut()}
+                  className={`flex items-center gap-2 px-5 py-3 text-body transition-colors ${
+                    theme === 'dark'
+                      ? 'text-neutral-400 hover:text-error-500'
+                      : 'text-neutral-600 hover:text-error-500'
+                  }`}
+                >
+                  <LogOut className="w-5 h-5" />
+                  Sign Out
+                </button>
+              </>
+            )}
+            
+            {!user && (
+              <>
+                {/* Theme Toggle */}
+                <button
+                  onClick={toggleTheme}
+                  className={`p-2 rounded-lg transition-all duration-200 hover:scale-105 ${
+                    theme === 'dark'
+                      ? 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700'
+                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                  }`}
+                  title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="w-5 h-5" />
+                  ) : (
+                    <Moon className="w-5 h-5" />
+                  )}
+                </button>
+                
+                <Link
+                  to="/login"
+                  className={`px-5 py-3 text-body transition-colors ${
+                    theme === 'dark'
+                      ? 'text-neutral-400 hover:text-primary-400'
+                      : 'text-neutral-600 hover:text-primary-500'
+                  }`}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-5 py-3 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -149,24 +154,25 @@ export default function Navigation() {
               ? 'border-neutral-800 bg-neutral-900' 
               : 'border-neutral-200 bg-white'
           }`}>
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-4 py-3 text-body transition-colors ${
+                  isActive(item.path)
+                    ? 'text-primary-500 font-semibold bg-primary-900/20'
+                    : theme === 'dark'
+                    ? 'text-neutral-400'
+                    : 'text-neutral-600'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
             {user && (
               <>
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-4 py-3 text-body transition-colors ${
-                      isActive(item.path)
-                        ? 'text-primary-500 font-semibold bg-primary-900/20'
-                        : theme === 'dark'
-                        ? 'text-neutral-400'
-                        : 'text-neutral-600'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
                 
                 {/* Mobile Theme Toggle */}
                 <button
@@ -199,6 +205,7 @@ export default function Navigation() {
                 </button>
               </>
             )}
+            
             {!user && (
               <>
                 {/* Mobile Theme Toggle */}

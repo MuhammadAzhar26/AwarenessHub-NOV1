@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Navigation from '@/components/Navigation'
 import Leaderboard from '@/components/Leaderboard'
-import { Shield, Award, Target, Users, Lock, Key, Mail, Network, Bug, Smartphone, Cloud, Search, UserCheck, Code, CreditCard } from 'lucide-react'
+import { Shield, Award, Target, Users, Lock, Key, Mail, Network, Bug, Smartphone, Cloud, Search, UserCheck, Code, CreditCard, CheckSquare } from 'lucide-react'
 
 const modules = [
   { icon: Lock, title: 'Secret Message Detective', description: 'Master cryptography techniques' },
@@ -33,12 +33,21 @@ export default function LandingPage() {
           <p className="text-body-lg text-neutral-700 mb-8 max-w-3xl mx-auto">
             Learn cybersecurity fundamentals through 12 comprehensive modules and 72 hands-on CTF-style challenges. Build real-world skills while earning badges and competing on leaderboards.
           </p>
-          <Link
-            to="/signup"
-            className="inline-block px-8 py-4 bg-primary-500 text-white text-body font-semibold rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
-          >
-            Start Learning Free
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              to="/signup"
+              className="inline-block px-8 py-4 bg-primary-500 text-white text-body font-semibold rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
+            >
+              Start Learning Free
+            </Link>
+            <Link
+              to="/security-checklist"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-primary-500 text-primary-500 text-body font-semibold rounded-md hover:bg-primary-50 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
+            >
+              <CheckSquare className="w-5 h-5" />
+              Security Checklist
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -97,6 +106,97 @@ export default function LandingPage() {
                 </div>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Security Checklist Feature */}
+      <section className="py-16 bg-gradient-to-br from-primary-50 to-primary-100">
+        <div className="container mx-auto">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                  <CheckSquare className="w-4 h-4" />
+                  Free Resource - No Login Required
+                </div>
+                <h2 className="text-h2 font-bold text-neutral-900 mb-4">
+                  Personal Security Checklist
+                </h2>
+                <p className="text-body-lg text-neutral-700 mb-6">
+                  Access our comprehensive security checklist with 200+ actionable items to protect your digital life. 
+                  Track your progress locally in your browser - no account needed.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckSquare className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-neutral-700">12 categories covering authentication, browsing, email, and more</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckSquare className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-neutral-700">Priority levels: Essential, Optional, and Advanced</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckSquare className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-neutral-700">Progress tracking with export/import functionality</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckSquare className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-neutral-700">Detailed explanations and best practices for each item</span>
+                  </li>
+                </ul>
+                <Link
+                  to="/security-checklist"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                >
+                  View Security Checklist
+                  <CheckSquare className="w-5 h-5" />
+                </Link>
+              </div>
+              <div className="flex-1">
+                <div className="bg-white rounded-xl shadow-2xl p-8 border border-primary-200">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                      <div className="flex items-center gap-3">
+                        <CheckSquare className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-neutral-900">Use Strong Passwords</span>
+                      </div>
+                      <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">Essential</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-neutral-300 rounded-full" />
+                        <span className="text-neutral-700">Enable 2FA</span>
+                      </div>
+                      <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">Essential</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-neutral-300 rounded-full" />
+                        <span className="text-neutral-700">Use Password Manager</span>
+                      </div>
+                      <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">Essential</span>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-neutral-300 rounded-full" />
+                        <span className="text-neutral-700">Review Active Sessions</span>
+                      </div>
+                      <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full font-medium">Optional</span>
+                    </div>
+                    <div className="mt-6 pt-4 border-t border-neutral-200">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="font-medium text-neutral-700">Your Progress</span>
+                        <span className="font-bold text-primary-600">25%</span>
+                      </div>
+                      <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary-500 to-primary-600 w-1/4" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import Navigation from '@/components/Navigation'
 import { supabase } from '@/lib/supabase'
-import { Trophy, Award, Target, Clock } from 'lucide-react'
+import { Trophy, Award, Clock } from 'lucide-react'
 
 interface UserProfile {
   username: string
@@ -79,15 +79,11 @@ export default function ProfilePage() {
         const completed = progressData?.length || 0
         const totalHints = progressData?.reduce((sum: number, p: any) => 
           sum + (p.hints_used?.length || 0), 0) || 0
-        const avgPoints = completed > 0 
-          ? Math.round(progressData!.reduce((sum: number, p: any) => 
-              sum + (p.points_earned || 0), 0) / completed)
-          : 0
 
         setStats({
           completedStages: completed,
           hintsUsed: totalHints,
-          avgScore: avgPoints
+          avgScore: 0
         })
       } catch (error) {
         console.error('Error loading profile:', error)
@@ -140,21 +136,13 @@ export default function ProfilePage() {
         </div>
 
         {/* Stats Dashboard */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
             <div className="flex items-center gap-3 mb-3">
               <Trophy className="w-8 h-8 text-primary-500" />
               <h3 className="text-body font-semibold text-neutral-100">Stages Completed</h3>
             </div>
             <p className="text-h1 font-bold text-neutral-100">{stats.completedStages}</p>
-          </div>
-
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
-            <div className="flex items-center gap-3 mb-3">
-              <Target className="w-8 h-8 text-warning-700" />
-              <h3 className="text-body font-semibold text-neutral-100">Average Score</h3>
-            </div>
-            <p className="text-h1 font-bold text-neutral-100">{stats.avgScore} pts</p>
           </div>
 
           <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">

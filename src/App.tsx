@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
-import { ProgressProvider } from '@/simulations'
 import LandingPage from '@/pages/LandingPage'
 import LoginPage from '@/pages/LoginPage'
 import SignupPage from '@/pages/SignupPage'
@@ -15,6 +14,7 @@ import DFIRTrainingPage from '@/pages/DFIRTrainingPage'
 import ToolDetailPage from '@/pages/ToolDetailPage'
 import DFIRDetailPage from '@/pages/DFIRDetailPage'
 import SimulationPage from '@/pages/SimulationPage'
+import SecurityChecklistPage from '@/pages/SecurityChecklistPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -40,6 +40,7 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/security-checklist" element={<SecurityChecklistPage />} />
       <Route
         path="/dashboard"
         element={
@@ -116,9 +117,7 @@ function AppRoutes() {
         path="/simulation"
         element={
           <ProtectedRoute>
-            <ProgressProvider>
-              <SimulationPage />
-            </ProgressProvider>
+            <SimulationPage />
           </ProtectedRoute>
         }
       />
