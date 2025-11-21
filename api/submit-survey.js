@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   // Handle CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -104,7 +103,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: 'Survey submitted successfully',
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Survey submission error:', error);
     return res.status(500).json({
       error: 'Failed to submit survey',
@@ -113,9 +112,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-function generateEmailHTML(surveyData: any, averageRating: number, surveyId: string): string {
+function generateEmailHTML(surveyData, averageRating, surveyId) {
   const ratingsHTML = Object.entries(surveyData.ratings)
-    .map(([key, value]: [string, any]) => {
+    .map(([key, value]) => {
       const stars = '⭐'.repeat(value.rating) + '☆'.repeat(5 - value.rating);
       return `
         <tr>
