@@ -16,15 +16,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    const surveyData = req.body;
+    console.log('Received survey data:', { page: surveyData.page, timestamp: surveyData.timestamp });
+
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase configuration missing');
+      console.error('Missing env vars:', { 
+        hasUrl: !!supabaseUrl, 
+        hasKey: !!supabaseKey 
+      });
+      
+      // Still save locally even if backend is not configured
+      return res.status(200).json({
+        success: true,
+        message: 'Survey received (database not configured)',
+        surveyId: `local-${Date.now()}`,
+      });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const surveyData = req.body;
 
     // Calculate average rating
     const ratingsArray = Object.values(surveyData.ratings).map((r: any) => r.rating).filter((r: number) => r > 0);

@@ -127,8 +127,13 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit survey');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Server response:', errorData);
+        throw new Error(errorData.message || `Server error: ${response.status}`);
       }
+
+      const result = await response.json();
+      console.log('Survey submitted successfully:', result);
 
       // Log locally as backup
       console.log('Survey submitted:', surveyData);
