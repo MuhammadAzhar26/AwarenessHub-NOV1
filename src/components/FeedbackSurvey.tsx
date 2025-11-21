@@ -173,7 +173,11 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
         <div className="bg-white rounded-lg p-8 max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
-          <p className="text-gray-600">Your feedback has been submitted successfully.</p>
+          <p className="text-gray-600 mb-4">Your feedback has been submitted successfully.</p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-gray-600">Questions or concerns?</p>
+            <p className="text-lg font-semibold text-blue-600">survey@awarenesshub.app</p>
+          </div>
         </div>
       </div>
     );
