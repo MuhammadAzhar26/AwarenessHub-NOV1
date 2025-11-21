@@ -15,6 +15,7 @@ import ToolDetailPage from '@/pages/ToolDetailPage'
 import DFIRDetailPage from '@/pages/DFIRDetailPage'
 import SimulationPage from '@/pages/SimulationPage'
 import SecurityChecklistPage from '@/pages/SecurityChecklistPage'
+import FeedbackButton from '@/components/FeedbackButton'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -131,6 +132,7 @@ export default function App() {
       <AuthProvider>
         <Router>
           <AppRoutes />
+          <FeedbackButton />
         </Router>
       </AuthProvider>
     </ThemeProvider>
