@@ -32,9 +32,9 @@ export default async function handler(req, res) {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Calculate average rating
-    const ratingsArray = Object.values(surveyData.ratings).map((r: any) => r.rating).filter((r: number) => r > 0);
+    const ratingsArray = Object.values(surveyData.ratings).map((r) => r.rating).filter((r) => r > 0);
     const averageRating = ratingsArray.length > 0
-      ? ratingsArray.reduce((sum: number, r: number) => sum + r, 0) / ratingsArray.length
+      ? ratingsArray.reduce((sum, r) => sum + r, 0) / ratingsArray.length
       : 0;
 
     // Store in database
