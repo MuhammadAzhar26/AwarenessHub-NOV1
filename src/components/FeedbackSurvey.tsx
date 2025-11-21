@@ -152,17 +152,7 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
       localStorage.setItem(`survey_${data.id}`, JSON.stringify(surveyData));
 
       setSubmitted(true);
-      setTimeout(() => {
-        onClose();
-        // Reset form
-        setTimeout(() => {
-          setRatings(ratings.map(cat => ({ ...cat, rating: 0 })));
-          setFeedback('');
-          setEmail('');
-          setScreenshot(null);
-          setSubmitted(false);
-        }, 500);
-      }, 2000);
+      // Don't auto-close - user must click to close
     } catch (err) {
       console.error('Survey submission error:', err);
       setError('Failed to submit survey. Please try again.');
@@ -183,10 +173,24 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold mb-2">Thank You!</h2>
           <p className="text-gray-600 mb-4">Your feedback has been submitted successfully.</p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600">Questions or concerns?</p>
             <p className="text-lg font-semibold text-blue-600">survey@awarenesshub.app</p>
           </div>
+          <button
+            onClick={() => {
+              onClose();
+              // Reset form
+              setRatings(ratings.map(cat => ({ ...cat, rating: 0 })));
+              setFeedback('');
+              setEmail('');
+              setScreenshot(null);
+              setSubmitted(false);
+            }}
+            className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition"
+          >
+            Close
+          </button>
         </div>
       </div>
     );
