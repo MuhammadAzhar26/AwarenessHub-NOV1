@@ -117,30 +117,22 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
         screenResolution: `${window.screen.width}x${window.screen.height}`,
       };
 
-      // Send to Supabase edge function (survey submission endpoint)
-      const response = await fetch('/api/submit-survey', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(surveyData),
+      // Save survey data to localStorage
+      const surveyId = `survey_${Date.now()}`;
+      localStorage.setItem(surveyId, JSON.stringify(surveyData));
+      
+      // Also keep a list of all survey IDs
+      const surveyIds = JSON.parse(localStorage.getItem('survey_ids') || '[]');
+      surveyIds.push(surveyId);
+      localStorage.setItem('survey_ids', JSON.stringify(surveyIds));
+      
+      console.log('Survey saved locally:', surveyId);
+      console.log('Survey data:', { 
+        page: surveyData.page, 
+        ratings: surveyData.ratings,
+        hasScreenshot: !!screenshot,
+        timestamp: surveyData.timestamp 
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Server response:', errorData);
-        throw new Error(errorData.message || `Server error: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('Survey submitted successfully:', result);
-
-      // Log locally as backup
-      console.log('Survey submitted:', surveyData);
-      localStorage.setItem(
-        `survey_${Date.now()}`,
-        JSON.stringify({ ...surveyData, screenshot: screenshot ? 'captured' : 'none' })
-      );
 
       setSubmitted(true);
       setTimeout(() => {
