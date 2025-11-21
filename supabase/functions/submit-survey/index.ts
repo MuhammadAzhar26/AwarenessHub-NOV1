@@ -109,7 +109,7 @@ async function sendEmailNotification(
     },
     body: JSON.stringify({
       from: 'AwarenessHub <onboarding@resend.dev>', // Change after domain verification
-      to: ['survey@awarenesshub.app'], // Your receiving email
+      to: ['support@awarenesshub.app'], // Your receiving email
       subject: `New Feedback: ${surveyData.page} - ${averageRating.toFixed(1)}⭐`,
       html: emailContent,
       attachments: surveyData.screenshot ? [{

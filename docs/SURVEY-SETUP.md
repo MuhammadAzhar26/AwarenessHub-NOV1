@@ -23,7 +23,7 @@
 ### 3. **Backend Processing**
 - Supabase Edge Function (`submit-survey`)
 - Stores all responses in database
-- Sends email to `survey@awarenesshub.app`
+- Sends email to `support@awarenesshub.app`
 - Attaches screenshot if captured
 - Logs metadata (timestamp, user agent, screen resolution)
 
@@ -138,7 +138,7 @@ Edit `generateEmailHTML()` function in `submit-survey/index.ts`
 2. Fill out the form
 3. Capture a screenshot
 4. Submit
-5. Check email at `survey@awarenesshub.app`
+5. Check email at `support@awarenesshub.app`
 6. Query database to verify storage
 
 ## Notes

@@ -175,7 +175,7 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
           <p className="text-gray-600 mb-4">Your feedback has been submitted successfully.</p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-gray-600">Questions or concerns?</p>
-            <p className="text-lg font-semibold text-blue-600">survey@awarenesshub.app</p>
+            <p className="text-lg font-semibold text-blue-600">support@awarenesshub.app</p>
           </div>
           <button
             onClick={() => {
