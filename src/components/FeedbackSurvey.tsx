@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import { X, Star, Camera, Send, CheckCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface FeedbackSurveyProps {
   isOpen: boolean;
@@ -117,22 +118,38 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
         screenResolution: `${window.screen.width}x${window.screen.height}`,
       };
 
-      // Save survey data to localStorage
-      const surveyId = `survey_${Date.now()}`;
-      localStorage.setItem(surveyId, JSON.stringify(surveyData));
+      // Calculate average rating
+      const averageRating = ratings.reduce((sum, cat) => sum + cat.rating, 0) / ratings.length;
+
+      // Save to Supabase
+      const { data, error } = await supabase
+        .from('survey_responses')
+        .insert({
+          page: surveyData.page,
+          ratings: surveyData.ratings,
+          average_rating: averageRating,
+          feedback: surveyData.feedback,
+          user_email: surveyData.email,
+          screenshot_data: surveyData.screenshot,
+          user_agent: surveyData.userAgent,
+          screen_resolution: surveyData.screenResolution,
+          submitted_at: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        // Save to localStorage as backup
+        const surveyId = `survey_${Date.now()}`;
+        localStorage.setItem(surveyId, JSON.stringify(surveyData));
+        throw new Error('Failed to save to database. Saved locally as backup.');
+      }
+
+      console.log('Survey saved to Supabase:', data.id);
       
-      // Also keep a list of all survey IDs
-      const surveyIds = JSON.parse(localStorage.getItem('survey_ids') || '[]');
-      surveyIds.push(surveyId);
-      localStorage.setItem('survey_ids', JSON.stringify(surveyIds));
-      
-      console.log('Survey saved locally:', surveyId);
-      console.log('Survey data:', { 
-        page: surveyData.page, 
-        ratings: surveyData.ratings,
-        hasScreenshot: !!screenshot,
-        timestamp: surveyData.timestamp 
-      });
+      // Also save to localStorage as backup
+      localStorage.setItem(`survey_${data.id}`, JSON.stringify(surveyData));
 
       setSubmitted(true);
       setTimeout(() => {
