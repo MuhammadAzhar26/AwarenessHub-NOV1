@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
 
-type Theme = 'light' | 'dark'
+type Theme = 'light'
 
 interface ThemeContextType {
   theme: Theme
@@ -10,27 +10,17 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Check localStorage first
-    const saved = localStorage.getItem('awarenesshub-theme')
-    if (saved === 'light' || saved === 'dark') {
-      return saved
-    }
-    // Default to dark mode
-    return 'dark'
-  })
+  const theme: Theme = 'light'
 
   useEffect(() => {
-    // Save to localStorage
-    localStorage.setItem('awarenesshub-theme', theme)
-    
-    // Apply theme to document
-    document.documentElement.classList.remove('light', 'dark')
-    document.documentElement.classList.add(theme)
-  }, [theme])
+    // Always apply light theme
+    document.documentElement.classList.remove('dark')
+    document.documentElement.classList.add('light')
+    document.body.style.backgroundColor = '#ffffff'
+  }, [])
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+    // Theme toggle disabled - always light mode
   }
 
   return (
