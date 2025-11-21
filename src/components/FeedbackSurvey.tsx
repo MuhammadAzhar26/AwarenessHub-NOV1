@@ -163,7 +163,7 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
     return (
       <div
         id="feedback-survey-modal"
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9998] p-4"
       >
         <div className="bg-white rounded-lg p-8 max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -177,15 +177,15 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
   return (
     <div
       id="feedback-survey-modal"
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-[9998] p-2 sm:p-4 overflow-y-auto"
     >
-      <div className="bg-white rounded-lg max-w-2xl w-full my-8 shadow-xl">
+      <div className="bg-white rounded-lg max-w-2xl w-full my-2 sm:my-8 shadow-xl max-h-[98vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-lg">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 sm:p-6 rounded-t-lg sticky top-0 z-10">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold mb-2">Help Us Improve</h2>
-              <p className="text-blue-100">We value your feedback on {currentPage}</p>
+              <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Help Us Improve</h2>
+              <p className="text-blue-100 text-sm sm:text-base">We value your feedback on {currentPage}</p>
             </div>
             <button
               onClick={onClose}
@@ -196,16 +196,16 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Rating Categories */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Rate Your Experience</h3>
+          <div className="space-y-3 sm:space-y-4">
+            <h3 className="font-semibold text-base sm:text-lg">Rate Your Experience</h3>
             {ratings.map((category) => (
-              <div key={category.id} className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+              <div key={category.id} className="space-y-1 sm:space-y-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700">
                   {category.label}
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-1 sm:gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
                       key={star}
@@ -214,8 +214,8 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
                       className="transition-transform hover:scale-110"
                     >
                       <Star
-                        size={32}
-                        className={`${
+                        size={24}
+                        className={`sm:w-8 sm:h-8 ${
                           star <= category.rating
                             ? 'fill-yellow-400 text-yellow-400'
                             : 'text-gray-300'
@@ -235,14 +235,14 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
 
           {/* Feedback Text */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
               Additional Feedback (Max {maxWords} words)
             </label>
             <textarea
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-              rows={4}
+              className="w-full border border-gray-300 rounded-lg p-2 sm:p-3 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+              rows={3}
               placeholder="Share your thoughts, suggestions, or report issues..."
             />
             <div className="flex justify-between mt-1 text-xs">
@@ -257,24 +257,24 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
 
           {/* Email (Optional) */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
               Email (Optional - for follow-up)
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-lg p-2 sm:p-3 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="your.email@example.com"
             />
           </div>
 
           {/* Screenshot Capture */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
               Screenshot (Optional)
             </label>
-            <div className="flex gap-3 items-start">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start">
               <button
                 type="button"
                 onClick={captureScreenshot}
@@ -314,27 +314,27 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
           )}
 
           {/* Submit Button */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+              className="flex-1 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || wordCount > maxWords}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+              className="flex-1 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
                   Submitting...
                 </>
               ) : (
                 <>
-                  <Send size={20} />
+                  <Send size={18} className="sm:w-5 sm:h-5" />
                   Submit Feedback
                 </>
               )}
