@@ -24,6 +24,17 @@ export const moduleTestCases = {
     expectedResult: true
   },
 
+  // 2b. Base64 Decoder
+  'base64-decoder': {
+    testData: {
+      encodedText: 'TGV2ZWwgVXA6IERlY29kZSB0aGUgc2lnbmFsLg==',
+      correctPlaintext: 'Level Up: Decode the signal.'
+    },
+    correctAnswer: 'Level Up: Decode the signal.',
+    description: 'Base64 decoder - reconstruct plaintext from encoded segments',
+    expectedResult: true
+  },
+
   // 3. Email Detective
   'email-detective': {
     testData: {
@@ -183,6 +194,17 @@ export const moduleTestCases = {
     },
     correctAnswer: 'file1:trojan,file2:ransomware,file3:spyware,file4:safe',
     description: 'Malware Education - classify malware types',
+    expectedResult: true
+  },
+
+  // 16b. XOR Cipher Lab
+  'xor-cipher': {
+    testData: {
+      ciphertext: '6160666a616005716d6c76',
+      correctKey: 37
+    },
+    correctAnswer: '37',
+    description: 'XOR cipher lab - discover XOR key that yields readable text',
     expectedResult: true
   },
 

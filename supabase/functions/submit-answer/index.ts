@@ -126,6 +126,12 @@ Deno.serve(async (req) => {
       case 'secret-message-detective':
         isCorrect = validateSecretMessageDetective(answer, stage.challenge_data)
         break
+      case 'base64-decoder':
+        isCorrect = validateBase64Decoder(answer, stage.challenge_data)
+        break
+      case 'xor-cipher':
+        isCorrect = validateXorCipher(answer, stage.challenge_data)
+        break
       case 'text':
       default:
         isCorrect = answer.trim().toLowerCase() === stage.challenge_data?.correctAnswer?.toLowerCase()
@@ -359,6 +365,16 @@ function validatePasswordBuilder(answer: string, data: any): boolean {
     return strength >= (data.minStrength || 70)
   }
   return false
+}
+
+function validateBase64Decoder(answer: string, data: any): boolean {
+  return answer.trim().toLowerCase() === (data.correctPlaintext || '').trim().toLowerCase()
+}
+
+function validateXorCipher(answer: string, data: any): boolean {
+  const numeric = parseInt(answer, 10)
+  if (Number.isNaN(numeric)) return false
+  return numeric === data.correctKey
 }
 
 function validateEmailDetective(answer: string, data: any): boolean {

@@ -33,6 +33,8 @@ import InfectionSigns from "@/components/challenges/InfectionSigns";
 import AntivirusDemo from "@/components/challenges/AntivirusDemo";
 import CipherTool from "@/components/CipherTool";
 import SecretMessageDetective from "@/components/challenges/SecretMessageDetective";
+import Base64Decoder from "@/components/challenges/Base64Decoder";
+import XorCipherLab from "@/components/challenges/XorCipherLab";
 
 interface Stage {
   id: number;
@@ -498,6 +500,26 @@ export default function ChallengePage() {
         return (
           <SecretMessageDetective
             messages={stage.challenge_data?.messages || []}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "base64-decoder":
+        return (
+          <Base64Decoder
+            encodedText={stage.challenge_data?.encodedText || ""}
+            correctPlaintext={stage.challenge_data?.correctPlaintext || ""}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "xor-cipher":
+        return (
+          <XorCipherLab
+            ciphertext={stage.challenge_data?.ciphertext || ""}
+            correctKey={stage.challenge_data?.correctKey || 0}
             onSubmit={handleInteractiveSubmit}
             disabled={submitting}
           />
