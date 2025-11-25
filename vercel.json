@@ -5,8 +5,13 @@
       "destination": "/index.html"
     }
   ],
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm install && pnpm run build",
   "outputDirectory": "dist",
-  "installCommand": "pnpm install",
-  "framework": null
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "framework": null,
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 10
+    }
+  }
 }
