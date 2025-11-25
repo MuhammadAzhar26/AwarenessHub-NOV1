@@ -1,9 +1,8 @@
 {
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "./dist",
+  "buildCommand": "cd $VERCEL_PROJECT_ROOT && pnpm run build",
+  "outputDirectory": "dist",
   "installCommand": "pnpm install --shamefully-hoist",
   "devCommand": "pnpm run dev",
-  "framework": null,
   "rewrites": [
     {
       "source": "/(.*)",
