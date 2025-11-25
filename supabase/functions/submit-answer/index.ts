@@ -186,6 +186,7 @@ Deno.serve(async (req) => {
     }
 
     // Update user total score and level if correct
+    let newBadges: any[] = []
     if (isCorrect && earnedPoints > 0) {
       // Recalculate total_points from all completed stages to ensure accuracy
       const { data: allProgress, error: progressFetchError } = await supabaseClient
@@ -230,6 +231,21 @@ Deno.serve(async (req) => {
         } else {
           console.log(`Updated user ${userId}: ${calculatedTotalPoints} points, level ${calculatedLevel}`)
         }
+
+        // Check and award badges
+        try {
+          const { data: badgesAwarded, error: badgeError } = await supabaseClient
+            .rpc('check_and_award_badges', { p_user_id: userId })
+
+          if (badgeError) {
+            console.error('Error checking badges:', badgeError)
+          } else if (badgesAwarded && badgesAwarded.length > 0) {
+            newBadges = badgesAwarded.filter((b: any) => b.newly_awarded)
+            console.log(`Awarded ${newBadges.length} new badges to user ${userId}`)
+          }
+        } catch (badgeCheckError) {
+          console.error('Badge check exception:', badgeCheckError)
+        }
       }
     }
 
@@ -238,7 +254,8 @@ Deno.serve(async (req) => {
         correct: isCorrect,
         points: earnedPoints,
         points_earned: earnedPoints,
-        message: isCorrect ? 'Correct! Well done!' : 'Incorrect. Try again!'
+        message: isCorrect ? 'Correct! Well done!' : 'Incorrect. Try again!',
+        badges: newBadges.length > 0 ? newBadges : undefined
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
@@ -253,9 +270,22 @@ Deno.serve(async (req) => {
 
 // Validation functions
 function validateMatching(answer: string, data: any): boolean {
-  const pairs = answer.split(',').map(p => p.trim())
-  const correct = data.correctPairs || []
-  return pairs.length === correct.length && pairs.every((p: string) => correct.includes(p))
+  // Answer format: "id1:rightId1,id2:rightId2"
+  // Parse the pairs from the answer
+  const userPairs = answer.split(',').map(p => p.trim())
+  const correctPairs = data.pairs || [] // Array of {id, left, right}
+  
+  // Check if all pairs match correctly
+  let correctCount = 0
+  for (const userPair of userPairs) {
+    const [leftId, rightId] = userPair.split(':')
+    const correctPair = correctPairs.find((p: any) => p.id === leftId)
+    if (correctPair && correctPair.id === rightId) {
+      correctCount++
+    }
+  }
+  
+  return correctCount === correctPairs.length
 }
 
 function validateScenario(answer: string, data: any): boolean {
@@ -273,9 +303,39 @@ function validateScenario(answer: string, data: any): boolean {
 }
 
 function validateDragDrop(answer: string, data: any): boolean {
-  const order = answer.split(',')
-  const correct = data.correctOrder || []
-  return order.length === correct.length && order.every((item: string, idx: number) => item === correct[idx])
+  // Answer format: "zone1:item1,item2;zone2:item3,item4"
+  // Parse the zones and their items
+  const userZones = answer.split(';').map(z => z.trim())
+  const zones = data.zones || [] // Array of {id, label, correctItems: string[]}
+  
+  // Check if all zones have correct items
+  let allCorrect = true
+  for (const userZone of userZones) {
+    const [zoneId, itemsStr] = userZone.split(':')
+    const items = itemsStr && itemsStr !== 'empty' ? itemsStr.split(',') : []
+    const correctZone = zones.find((z: any) => z.id === zoneId)
+    
+    if (!correctZone) {
+      allCorrect = false
+      break
+    }
+    
+    // Check if items match (order doesn't matter)
+    const correctItems = correctZone.correctItems || []
+    if (items.length !== correctItems.length) {
+      allCorrect = false
+      break
+    }
+    
+    const sortedUser = items.sort()
+    const sortedCorrect = correctItems.sort()
+    if (!sortedUser.every((item: string, idx: number) => item === sortedCorrect[idx])) {
+      allCorrect = false
+      break
+    }
+  }
+  
+  return allCorrect
 }
 
 function validateCodeAnalysis(answer: string, data: any): boolean {

@@ -30,6 +30,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [modules, setModules] = useState<Module[]>([])
   const [progress, setProgress] = useState<UserProgress[]>([])
+  const [badgeCount, setBadgeCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -81,6 +82,16 @@ export default function DashboardPage() {
           }))
 
           setProgress(progressArray)
+        }
+
+        // Load badge count
+        const { data: badgesData, error: badgesError } = await supabase
+          .from('user_badges')
+          .select('id', { count: 'exact' })
+          .eq('user_id', user.id)
+
+        if (!badgesError && badgesData) {
+          setBadgeCount(badgesData.length)
         }
       } catch (error) {
         console.error('Error loading dashboard data:', error)
@@ -154,7 +165,7 @@ export default function DashboardPage() {
               <Award className="w-6 h-6 text-primary-500" />
               <span className="text-small font-medium text-neutral-400">Badges Earned</span>
             </div>
-            <p className="text-h2 font-bold text-neutral-100">0</p>
+            <p className="text-h2 font-bold text-neutral-100">{badgeCount}</p>
           </div>
         </div>
 

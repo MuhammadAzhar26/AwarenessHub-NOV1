@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import Navigation from '@/components/Navigation'
 import { supabase } from '@/lib/supabase'
-import { ArrowLeft, CheckCircle, Circle } from 'lucide-react'
+import { ArrowLeft, CheckCircle, Circle, Play, Wrench } from 'lucide-react'
 import QuestionsSection from '@/components/quiz/QuestionsSection'
 import WalkthroughSection from '@/components/quiz/WalkthroughSection'
 
@@ -148,7 +148,7 @@ export default function ToolDetailPage() {
     <div className="min-h-screen bg-neutral-950">
       <Navigation />
       
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8">
         <Link
           to="/tools"
           className="inline-flex items-center gap-2 text-body text-primary-400 hover:text-primary-300 mb-6"
@@ -158,19 +158,36 @@ export default function ToolDetailPage() {
         </Link>
 
         {/* Tool Header */}
-        <div className="mb-8">
-          <h1 className="text-h1 text-white font-bold mb-4">{tool.title}</h1>
-          <p className="text-body text-neutral-300 mb-6">{tool.description}</p>
-          
+        <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 mb-8">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <Wrench className="w-8 h-8 text-primary-500" />
+                <h1 className="text-h1 font-bold text-neutral-100">{tool.title}</h1>
+              </div>
+              <p className="text-body text-neutral-400 mb-4">{tool.description}</p>
+              <div className="flex items-center gap-4">
+                <span className={`inline-block px-3 py-1 rounded-full text-caption font-medium ${
+                  tool.difficulty === 'Beginner' ? 'bg-success-50 text-success-600' :
+                  tool.difficulty === 'Intermediate' ? 'bg-warning-50 text-warning-700' :
+                  'bg-error-50 text-error-600'
+                }`}>
+                  {tool.difficulty}
+                </span>
+                <span className="text-small text-neutral-400">{tool.category}</span>
+              </div>
+            </div>
+          </div>
+
           {/* Progress Bar */}
           <div className="space-y-2">
-            <div className="flex justify-between text-caption text-neutral-400">
-              <span>Your Progress</span>
-              <span>{completedStages}/{stages.length} Stages Complete</span>
+            <div className="flex justify-between text-small text-neutral-400">
+              <span>Progress: {completedStages}/{stages.length} stages</span>
+              <span>{Math.round(progressPercent)}%</span>
             </div>
-            <div className="w-full bg-neutral-900 rounded-full h-2 overflow-hidden">
-              <div
-                className="bg-primary-500 h-2 transition-all duration-300"
+            <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary-500 transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -179,75 +196,53 @@ export default function ToolDetailPage() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Stages List */}
-          <div className="lg:col-span-1 space-y-3">
-            <h2 className="text-h3 text-white font-semibold mb-4">Training Stages</h2>
-            {stages.map((stage) => {
-              const stageProgress = progress.find(p => p.tool_stage_id === stage.id)
-              const isCompleted = stageProgress?.status === 'completed'
-              const isActive = selectedStage?.id === stage.id
+          <div className="lg:col-span-1 bg-neutral-900 p-6 rounded-lg border border-neutral-800 h-fit">
+            <h2 className="text-h3 font-bold text-neutral-100 mb-4">Training Stages</h2>
+            <div className="space-y-2">
+              {stages.map((stage) => {
+                const stageProgress = progress.find(p => p.tool_stage_id === stage.id)
+                const isCompleted = stageProgress?.status === 'completed'
+                const isSelected = selectedStage?.id === stage.id
 
-              return (
-                <button
-                  key={stage.id}
-                  onClick={() => setSelectedStage(stage)}
-                  className={`w-full text-left p-4 rounded-lg border transition-all ${
-                    isActive
-                      ? 'bg-primary-500/10 border-primary-500/50'
-                      : 'bg-neutral-900 border-neutral-800 hover:border-neutral-700'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mt-1">
+                return (
+                  <button
+                    key={stage.id}
+                    onClick={() => setSelectedStage(stage)}
+                    className={`w-full text-left p-4 rounded-lg transition-all border ${
+                      isSelected
+                        ? 'bg-primary-900/30 border-primary-500'
+                        : 'bg-neutral-800 border-neutral-700 hover:border-primary-400'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
                       {isCompleted ? (
-                        <CheckCircle className="w-5 h-5 text-green-400" />
+                        <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0" />
                       ) : (
-                        <Circle className="w-5 h-5 text-neutral-600" />
+                        <Circle className="w-5 h-5 text-neutral-500 flex-shrink-0" />
                       )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-caption text-primary-400 font-medium mb-1">
-                        Stage {stage.stage_number}
-                      </div>
-                      <div className="text-body text-white font-medium mb-1">
-                        {stage.title}
-                      </div>
-                      <div className="text-caption text-neutral-400">
-                        {stage.points} points
+                      <div className="flex-1 min-w-0">
+                        <div className="text-small font-medium text-neutral-100">
+                          Stage {stage.stage_number}
+                        </div>
+                        <div className="text-caption text-neutral-400 truncate">
+                          {stage.title}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </button>
-              )
-            })}
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
           {/* Stage Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {selectedStage && (
+          <div className="lg:col-span-2 space-y-6">
+            {selectedStage ? (
               <>
-                {/* Stage Header */}
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-caption text-primary-400 font-medium">
-                      Stage {selectedStage.stage_number}
-                    </span>
-                    <span className="text-caption text-neutral-500">•</span>
-                    <span className="text-caption text-neutral-400">
-                      {selectedStage.points} points
-                    </span>
-                  </div>
-                  <h2 className="text-h2 text-white font-bold mb-4">
-                    {selectedStage.title}
-                  </h2>
-                  <p className="text-body text-neutral-300 mb-6">
-                    {selectedStage.description}
-                  </p>
-                </div>
-
                 {/* Video Player */}
                 {selectedStage.video_url && (
                   <div className="bg-neutral-900 rounded-lg border border-neutral-800 overflow-hidden">
-                    <div className="aspect-video">
+                    <div className="aspect-video bg-neutral-900 relative">
                       <iframe
                         src={selectedStage.video_url}
                         title={selectedStage.title}
@@ -259,29 +254,43 @@ export default function ToolDetailPage() {
                   </div>
                 )}
 
-                {/* Tutorial Content */}
-                {selectedStage.tutorial_content && (
-                  <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-6">
-                    <h3 className="text-h3 text-white font-semibold mb-4">Tutorial</h3>
-                    <div className="prose prose-invert max-w-none">
-                      <p className="text-body text-neutral-300 whitespace-pre-wrap">
-                        {selectedStage.tutorial_content}
-                      </p>
+                {/* Stage Details */}
+                <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h2 className="text-h2 font-bold text-neutral-100 mb-2">
+                        Stage {selectedStage.stage_number}: {selectedStage.title}
+                      </h2>
+                      <p className="text-body text-neutral-400 mb-4">{selectedStage.description}</p>
                     </div>
                   </div>
-                )}
 
-                {/* Mark Complete Button */}
-                <div className="flex justify-center">
-                  <button
-                    onClick={() => markStageComplete(selectedStage.id)}
-                    disabled={progress.find(p => p.tool_stage_id === selectedStage.id)?.status === 'completed'}
-                    className="px-8 py-3 bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
-                  >
-                    {progress.find(p => p.tool_stage_id === selectedStage.id)?.status === 'completed'
-                      ? 'Stage Completed'
-                      : 'Mark Stage Complete'}
-                  </button>
+                  {/* Tutorial Content */}
+                  {selectedStage.tutorial_content && (
+                    <div className="prose prose-neutral max-w-none mb-6">
+                      <div className="text-body text-neutral-300 whitespace-pre-wrap">
+                        {selectedStage.tutorial_content}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Mark Complete Button */}
+                  {!progress.find(p => p.tool_stage_id === selectedStage.id && p.status === 'completed') && (
+                    <button
+                      onClick={() => markStageComplete(selectedStage.id)}
+                      className="w-full px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <CheckCircle className="w-5 h-5" />
+                      Mark Stage as Complete
+                    </button>
+                  )}
+
+                  {progress.find(p => p.tool_stage_id === selectedStage.id && p.status === 'completed') && (
+                    <div className="w-full px-6 py-3 bg-success-50 text-success-600 rounded-lg flex items-center justify-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      Stage Completed
+                    </div>
+                  )}
                 </div>
 
                 {/* Walkthrough Section */}
@@ -292,6 +301,11 @@ export default function ToolDetailPage() {
                   <QuestionsSection stageId={selectedStage.id} userId={user.id} />
                 )}
               </>
+            ) : (
+              <div className="bg-neutral-900 p-12 rounded-lg border border-neutral-800 text-center">
+                <Play className="w-16 h-16 text-neutral-400 mx-auto mb-4" />
+                <p className="text-body text-neutral-400">Select a stage to begin training</p>
+              </div>
             )}
           </div>
         </div>

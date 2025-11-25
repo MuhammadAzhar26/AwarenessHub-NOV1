@@ -248,6 +248,12 @@ export default function ChallengePage() {
           } used)`;
         }
 
+        // Add badge notifications if any were earned
+        if (result.badges && result.badges.length > 0) {
+          const badgeNames = result.badges.map((b: any) => b.badge_title).join(', ');
+          feedbackMessage += `\n\n🏆 New Badge${result.badges.length > 1 ? 's' : ''} Earned: ${badgeNames}!`;
+        }
+
         setFeedback({
           type: "success",
           message: feedbackMessage,

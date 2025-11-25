@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Lightbulb, CheckCircle } from 'lucide-react'
 
 interface CaesarCipherProps {
-  plaintext: string
+  plaintext: string // This is actually the encrypted ciphertext to decrypt
   correctShift: number
   onSubmit: (answer: string) => void
   disabled?: boolean
@@ -28,7 +28,10 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       .join('')
   }
 
-  const ciphertext = shiftText(plaintext, shift)
+  // The encrypted message that needs to be decrypted
+  const encryptedText = plaintext
+  // Apply the shift to try to decrypt it
+  const decryptedText = shiftText(encryptedText, shift)
 
   const handleSubmit = () => {
     onSubmit(shift.toString())
@@ -48,19 +51,19 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       <div className="space-y-4">
         <div>
           <label className="block text-body font-semibold text-neutral-100 mb-2">
-            Original Message (Encrypted):
+            Encrypted Message:
           </label>
           <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-            <p className="font-mono text-body text-warning-400 break-all">{plaintext}</p>
+            <p className="font-mono text-body text-warning-400 break-all">{encryptedText}</p>
           </div>
         </div>
 
         <div>
           <label className="block text-body font-semibold text-neutral-100 mb-2">
-            Shifted Message (Current Shift: {shift}):
+            Decrypted Message (Shift: {shift}):
           </label>
           <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-            <p className="font-mono text-body text-success-400 break-all">{ciphertext}</p>
+            <p className="font-mono text-body text-success-400 break-all">{decryptedText}</p>
           </div>
         </div>
       </div>

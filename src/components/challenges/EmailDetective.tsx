@@ -62,15 +62,8 @@ export default function EmailDetective({
   }
 
   const handleSubmit = () => {
-    // Check if user found the correct clues
-    const correctFound = foundClues.filter(id => correctClueIds.includes(id)).length
-    const incorrectFound = foundClues.filter(id => !correctClueIds.includes(id)).length
-
-    // Score based on correct clues found and avoid incorrect ones
-    const score = correctFound * 20 - incorrectFound * 10
-    const success = correctFound >= requiredClues && incorrectFound === 0
-
-    onSubmit(success ? 'correct' : 'incorrect')
+    // Submit the found clues as comma-separated IDs for backend validation
+    onSubmit(foundClues.join(','))
   }
 
   const correctFound = foundClues.filter(id => correctClueIds.includes(id)).length
