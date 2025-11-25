@@ -12,7 +12,10 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
   const [shift, setShift] = useState(0)
   const [showHint, setShowHint] = useState(false)
 
-  const shiftText = (text: string, shiftAmount: number): string => {
+  const shiftText = (text: string, shiftAmount: number, decrypt: boolean = false): string => {
+    // When decrypting, we shift backward (negative direction)
+    const actualShift = decrypt ? -shiftAmount : shiftAmount
+    
     return text
       .split('')
       .map(char => {
@@ -20,7 +23,7 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
           const code = char.charCodeAt(0)
           const isUpperCase = code >= 65 && code <= 90
           const base = isUpperCase ? 65 : 97
-          const shifted = ((code - base + shiftAmount + 26) % 26) + base
+          const shifted = ((code - base + actualShift + 26) % 26) + base
           return String.fromCharCode(shifted)
         }
         return char
@@ -30,8 +33,8 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
 
   // The encrypted message that needs to be decrypted
   const encryptedText = plaintext
-  // Apply the shift to try to decrypt it
-  const decryptedText = shiftText(encryptedText, shift)
+  // Apply the REVERSE shift to decrypt it (shift backward)
+  const decryptedText = shiftText(encryptedText, shift, true)
 
   // Check if the current shift produces readable text (correct decryption)
   const isCorrect = shift === correctShift
@@ -100,14 +103,16 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
 
       {/* Alphabet Reference */}
       <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-        <h3 className="text-small font-semibold text-neutral-100 mb-2">Alphabet Reference:</h3>
+        <h3 className="text-small font-semibold text-neutral-100 mb-2">Decryption Key (Encrypted → Decrypted):</h3>
         <div className="flex flex-wrap gap-1">
           {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter, index) => {
-            const shiftedLetter = shiftText(letter, shift)
+            // Show how encrypted letters map to decrypted letters
+            const decryptedLetter = shiftText(letter, shift, true)
             return (
               <div key={index} className="flex flex-col items-center">
-                <span className="text-small text-neutral-400">{letter}</span>
-                <span className="text-small text-primary-400 font-bold">{shiftedLetter}</span>
+                <span className="text-small text-warning-400">{letter}</span>
+                <span className="text-small">↓</span>
+                <span className="text-small text-success-400 font-bold">{decryptedLetter}</span>
               </div>
             )
           })}
