@@ -35,6 +35,8 @@ import CipherTool from "@/components/CipherTool";
 import SecretMessageDetective from "@/components/challenges/SecretMessageDetective";
 import Base64Decoder from "@/components/challenges/Base64Decoder";
 import XorCipherLab from "@/components/challenges/XorCipherLab";
+import BruteForceEstimator from "@/components/challenges/BruteForceEstimator";
+import HashIdentifier from "@/components/challenges/HashIdentifier";
 
 interface Stage {
   id: number;
@@ -520,6 +522,25 @@ export default function ChallengePage() {
           <XorCipherLab
             ciphertext={stage.challenge_data?.ciphertext || ""}
             correctKey={stage.challenge_data?.correctKey || 0}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "brute-force-estimator":
+        return (
+          <BruteForceEstimator
+            minimumLength={stage.challenge_data?.minimumLength || 8}
+            requiredComplexity={stage.challenge_data?.requiredComplexity || 50}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "hash-identifier":
+        return (
+          <HashIdentifier
+            hashes={stage.challenge_data?.hashes || []}
             onSubmit={handleInteractiveSubmit}
             disabled={submitting}
           />

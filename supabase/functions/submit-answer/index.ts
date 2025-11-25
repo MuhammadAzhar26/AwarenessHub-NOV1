@@ -132,6 +132,12 @@ Deno.serve(async (req) => {
       case 'xor-cipher':
         isCorrect = validateXorCipher(answer, stage.challenge_data)
         break
+      case 'brute-force-estimator':
+        isCorrect = validateBruteForceEstimator(answer, stage.challenge_data)
+        break
+      case 'hash-identifier':
+        isCorrect = validateHashIdentifier(answer, stage.challenge_data)
+        break
       case 'text':
       default:
         isCorrect = answer.trim().toLowerCase() === stage.challenge_data?.correctAnswer?.toLowerCase()
@@ -375,6 +381,23 @@ function validateXorCipher(answer: string, data: any): boolean {
   const numeric = parseInt(answer, 10)
   if (Number.isNaN(numeric)) return false
   return numeric === data.correctKey
+}
+
+function validateBruteForceEstimator(answer: string, data: any): boolean {
+  const entropy = parseInt(answer, 10)
+  if (Number.isNaN(entropy)) return false
+  return entropy >= (data.requiredComplexity || 50)
+}
+
+function validateHashIdentifier(answer: string, data: any): boolean {
+  // Answer format: hash1:MD5,hash2:SHA-256
+  const userMappings = answer.split(',').reduce((acc: Record<string, string>, pair) => {
+    const [id, algo] = pair.split(':')
+    return { ...acc, [id]: algo }
+  }, {})
+  
+  const hashes = data.hashes || []
+  return hashes.every((h: any) => userMappings[h.id] === h.algorithm)
 }
 
 function validateEmailDetective(answer: string, data: any): boolean {
