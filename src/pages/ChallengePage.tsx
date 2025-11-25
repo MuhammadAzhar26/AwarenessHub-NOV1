@@ -31,6 +31,7 @@ import DigitalFootprintCleanup from "@/components/challenges/DigitalFootprintCle
 import MalwareEducation from "@/components/challenges/MalwareEducation";
 import InfectionSigns from "@/components/challenges/InfectionSigns";
 import AntivirusDemo from "@/components/challenges/AntivirusDemo";
+import CipherTool from "@/components/CipherTool";
 
 interface Stage {
   id: number;
@@ -597,6 +598,13 @@ export default function ChallengePage() {
           <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card mb-6">
             {renderChallengeInterface()}
           </div>
+
+          {/* Cipher Tool Helper - Shows for text-based challenges */}
+          {stage.challenge_type === "text" && stage.stage_number === 2 && (
+            <div className="mb-6">
+              <CipherTool defaultShift={13} title="🔐 Cipher Helper Tool (ROT13/Caesar)" />
+            </div>
+          )}
 
           {/* Feedback */}
           {feedback && (
