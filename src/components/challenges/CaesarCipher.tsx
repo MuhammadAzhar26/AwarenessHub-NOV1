@@ -33,14 +33,12 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
   // Apply the shift to try to decrypt it
   const decryptedText = shiftText(encryptedText, shift)
 
+  // Check if the current shift produces readable text (correct decryption)
   const isCorrect = shift === correctShift
   
   const handleSubmit = () => {
-    if (isCorrect) {
-      onSubmit(decryptedText)
-    } else {
-      onSubmit(shift.toString())
-    }
+    // Always submit the shift number - backend will validate
+    onSubmit(shift.toString())
   }
 
   return (
@@ -146,13 +144,13 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        disabled={disabled || !isCorrect}
+        disabled={disabled}
         className={`w-full px-6 py-4 text-white font-semibold rounded-lg transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
           isCorrect ? 'bg-success-500 hover:bg-success-600' : 'bg-primary-500 hover:bg-primary-600'
         }`}
       >
         <CheckCircle className="w-5 h-5" />
-        {disabled ? 'Submitting...' : isCorrect ? 'Submit Correct Answer' : `Find the correct shift first`}
+        {disabled ? 'Submitting...' : `Submit Answer (Shift: ${shift})`}
       </button>
     </div>
   )
