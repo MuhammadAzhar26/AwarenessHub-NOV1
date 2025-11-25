@@ -138,6 +138,12 @@ Deno.serve(async (req) => {
       case 'hash-identifier':
         isCorrect = validateHashIdentifier(answer, stage.challenge_data)
         break
+      case 'attachment-risk':
+        isCorrect = validateAttachmentRisk(answer, stage.challenge_data)
+        break
+      case 'email-header-analysis':
+        isCorrect = validateEmailHeaderAnalysis(answer, stage.challenge_data)
+        break
       case 'text':
       default:
         isCorrect = answer.trim().toLowerCase() === stage.challenge_data?.correctAnswer?.toLowerCase()
@@ -398,6 +404,33 @@ function validateHashIdentifier(answer: string, data: any): boolean {
   
   const hashes = data.hashes || []
   return hashes.every((h: any) => userMappings[h.id] === h.algorithm)
+}
+
+function validateAttachmentRisk(answer: string, data: any): boolean {
+  // Answer format: att1:safe,att2:dangerous
+  const userClassifications = answer.split(',').reduce((acc: Record<string, string>, pair) => {
+    const [id, risk] = pair.split(':')
+    return { ...acc, [id]: risk }
+  }, {})
+  
+  const attachments = data.attachments || []
+  return attachments.every((a: any) => userClassifications[a.id] === a.riskLevel)
+}
+
+function validateEmailHeaderAnalysis(answer: string, data: any): boolean {
+  // Answer format: header1,header3,header5 (comma-separated IDs of flagged headers)
+  const flagged = answer.split(',').sort()
+  const suspicious = (data.headers || [])
+    .filter((h: any) => h.suspicious)
+    .map((h: any) => h.id)
+    .sort()
+  
+  const minCorrect = data.minCorrect || 3
+  const correctlyFlagged = flagged.filter(id => suspicious.includes(id))
+  const incorrectlyFlagged = flagged.filter(id => !suspicious.includes(id))
+  
+  // Must identify at least minCorrect suspicious headers with no more than 1 false positive
+  return correctlyFlagged.length >= minCorrect && incorrectlyFlagged.length <= 1
 }
 
 function validateEmailDetective(answer: string, data: any): boolean {

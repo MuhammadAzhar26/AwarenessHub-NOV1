@@ -37,6 +37,8 @@ import Base64Decoder from "@/components/challenges/Base64Decoder";
 import XorCipherLab from "@/components/challenges/XorCipherLab";
 import BruteForceEstimator from "@/components/challenges/BruteForceEstimator";
 import HashIdentifier from "@/components/challenges/HashIdentifier";
+import AttachmentRisk from "@/components/challenges/AttachmentRisk";
+import EmailHeaderAnalysis from "@/components/challenges/EmailHeaderAnalysis";
 
 interface Stage {
   id: number;
@@ -541,6 +543,25 @@ export default function ChallengePage() {
         return (
           <HashIdentifier
             hashes={stage.challenge_data?.hashes || []}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "attachment-risk":
+        return (
+          <AttachmentRisk
+            attachments={stage.challenge_data?.attachments || []}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "email-header-analysis":
+        return (
+          <EmailHeaderAnalysis
+            headers={stage.challenge_data?.headers || []}
+            minCorrect={stage.challenge_data?.minCorrect || 3}
             onSubmit={handleInteractiveSubmit}
             disabled={submitting}
           />
