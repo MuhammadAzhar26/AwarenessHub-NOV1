@@ -123,6 +123,9 @@ Deno.serve(async (req) => {
       case 'antivirus-demo':
         isCorrect = validateAntivirusDemo(answer, stage.challenge_data)
         break
+      case 'secret-message-detective':
+        isCorrect = validateSecretMessageDetective(answer, stage.challenge_data)
+        break
       case 'text':
       default:
         isCorrect = answer.trim().toLowerCase() === stage.challenge_data?.correctAnswer?.toLowerCase()
@@ -460,4 +463,20 @@ function validateAntivirusDemo(answer: string, data: any): boolean {
   
   const correctlySelected = selected.filter((id: string) => correct.includes(id))
   return correctlySelected.length >= required
+}
+
+function validateSecretMessageDetective(answer: string, data: any): boolean {
+  // Answer format: "msg1:3,msg2:7,msg3:13" (messageId:shift pairs)
+  const answers = answer.split(',').map(pair => {
+    const [id, shift] = pair.split(':')
+    return { id, shift: parseInt(shift) }
+  })
+  
+  const messages = data.messages || []
+  
+  // Check if all messages have correct shifts
+  return messages.every((msg: any) => {
+    const userAnswer = answers.find(a => a.id === msg.id)
+    return userAnswer && userAnswer.shift === msg.correctShift
+  })
 }

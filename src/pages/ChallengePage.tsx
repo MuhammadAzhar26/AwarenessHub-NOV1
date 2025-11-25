@@ -32,6 +32,7 @@ import MalwareEducation from "@/components/challenges/MalwareEducation";
 import InfectionSigns from "@/components/challenges/InfectionSigns";
 import AntivirusDemo from "@/components/challenges/AntivirusDemo";
 import CipherTool from "@/components/CipherTool";
+import SecretMessageDetective from "@/components/challenges/SecretMessageDetective";
 
 interface Stage {
   id: number;
@@ -488,6 +489,15 @@ export default function ChallengePage() {
             features={stage.challenge_data?.features || []}
             correctFeatures={stage.challenge_data?.correctFeatures || []}
             minRequired={stage.challenge_data?.minRequired || 3}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "secret-message-detective":
+        return (
+          <SecretMessageDetective
+            messages={stage.challenge_data?.messages || []}
             onSubmit={handleInteractiveSubmit}
             disabled={submitting}
           />
