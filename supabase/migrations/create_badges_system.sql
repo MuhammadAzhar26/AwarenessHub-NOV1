@@ -1,5 +1,9 @@
--- Create badges table
-CREATE TABLE IF NOT EXISTS badges (
+-- Drop existing tables if they exist (to recreate with correct schema)
+DROP TABLE IF EXISTS user_badges CASCADE;
+DROP TABLE IF EXISTS badges CASCADE;
+
+-- Create badges table with complete schema
+CREATE TABLE badges (
   id SERIAL PRIMARY KEY,
   code VARCHAR(100) UNIQUE NOT NULL,
   title VARCHAR(255) NOT NULL,
@@ -13,7 +17,7 @@ CREATE TABLE IF NOT EXISTS badges (
 );
 
 -- Create user_badges table
-CREATE TABLE IF NOT EXISTS user_badges (
+CREATE TABLE user_badges (
   id SERIAL PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   badge_id INT NOT NULL REFERENCES badges(id) ON DELETE CASCADE,
@@ -22,9 +26,9 @@ CREATE TABLE IF NOT EXISTS user_badges (
 );
 
 -- Create indexes for performance
-CREATE INDEX IF NOT EXISTS idx_user_badges_user_id ON user_badges(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_badges_earned_at ON user_badges(earned_at DESC);
-CREATE INDEX IF NOT EXISTS idx_badges_category ON badges(category);
+CREATE INDEX idx_user_badges_user_id ON user_badges(user_id);
+CREATE INDEX idx_user_badges_earned_at ON user_badges(earned_at DESC);
+CREATE INDEX idx_badges_category ON badges(category);
 
 -- Insert comprehensive badge data
 INSERT INTO badges (code, title, description, category, icon_name, points_threshold, stages_required, module_id) VALUES
