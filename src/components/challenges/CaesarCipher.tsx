@@ -33,8 +33,14 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
   // Apply the shift to try to decrypt it
   const decryptedText = shiftText(encryptedText, shift)
 
+  const isCorrect = shift === correctShift
+  
   const handleSubmit = () => {
-    onSubmit(shift.toString())
+    if (isCorrect) {
+      onSubmit(decryptedText)
+    } else {
+      onSubmit(shift.toString())
+    }
   }
 
   return (
@@ -71,7 +77,8 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       {/* Shift Slider */}
       <div className="space-y-3">
         <label htmlFor="shift-slider" className="block text-body font-semibold text-neutral-100">
-          Shift Amount: <span className="text-primary-400">{shift}</span>
+          Shift Amount: <span className={isCorrect ? "text-success-400" : "text-primary-400"}>{shift}</span>
+          {isCorrect && <span className="ml-2 text-success-400">✓ Correct!</span>}
         </label>
         <div className="flex items-center gap-4">
           <span className="text-small text-neutral-400">0</span>
@@ -82,7 +89,11 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
             max="25"
             value={shift}
             onChange={(e) => setShift(parseInt(e.target.value))}
-            className="flex-1 h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+            className={`flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer ${
+              isCorrect 
+                ? 'bg-success-700 [&::-webkit-slider-thumb]:bg-success-500 [&::-moz-range-thumb]:bg-success-500' 
+                : 'bg-neutral-700 [&::-webkit-slider-thumb]:bg-primary-500 [&::-moz-range-thumb]:bg-primary-500'
+            }`}
             disabled={disabled}
           />
           <span className="text-small text-neutral-400">25</span>
@@ -123,14 +134,25 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
         </div>
       )}
 
+      {/* Feedback Message */}
+      {isCorrect && (
+        <div className="bg-success-900/20 border border-success-700 p-4 rounded-lg animate-in fade-in duration-300">
+          <p className="text-body text-success-400 font-semibold">
+            🎉 Perfect! You've successfully decrypted the message with shift {shift}!
+          </p>
+        </div>
+      )}
+
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        disabled={disabled}
-        className="w-full px-6 py-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        disabled={disabled || !isCorrect}
+        className={`w-full px-6 py-4 text-white font-semibold rounded-lg transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+          isCorrect ? 'bg-success-500 hover:bg-success-600' : 'bg-primary-500 hover:bg-primary-600'
+        }`}
       >
         <CheckCircle className="w-5 h-5" />
-        {disabled ? 'Submitting...' : `Submit Answer (Shift: ${shift})`}
+        {disabled ? 'Submitting...' : isCorrect ? 'Submit Correct Answer' : `Find the correct shift first`}
       </button>
     </div>
   )
