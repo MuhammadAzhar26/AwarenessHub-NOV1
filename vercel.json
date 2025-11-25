@@ -1,4 +1,9 @@
 {
+  "framework": "vite",
+  "buildCommand": "npm run vercel-build",
+  "devCommand": "npm run dev",
+  "installCommand": "pnpm install",
+  "outputDirectory": "dist",
   "routes": [
     {
       "handle": "filesystem"
