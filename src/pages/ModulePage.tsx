@@ -24,6 +24,9 @@ interface Progress {
   stage_id: number
   status: string
   points_earned: number
+  time_spent?: number
+  started_at?: string
+  completed_at?: string
 }
 
 export default function ModulePage() {
@@ -66,7 +69,7 @@ export default function ModulePage() {
           const stageIds = stagesData.map(s => s.id)
           const { data: progressData } = await supabase
             .from('user_progress')
-            .select('stage_id, status, points_earned')
+            .select('stage_id, status, points_earned, time_spent, started_at, completed_at')
             .eq('user_id', user.id)
             .in('stage_id', stageIds)
 
@@ -106,7 +109,18 @@ export default function ModulePage() {
 
   const completedStages = progress.filter(p => p.status === 'completed').length
   const totalPoints = progress.reduce((sum, p) => sum + (p.points_earned || 0), 0)
+  const totalTimeSpent = progress.reduce((sum, p) => sum + (p.time_spent || 0), 0)
   const progressPercent = (completedStages / module.total_stages) * 100
+
+  // Format time spent (seconds to minutes/hours)
+  const formatTime = (seconds: number) => {
+    if (seconds < 60) return `${seconds}s`
+    const minutes = Math.floor(seconds / 60)
+    if (minutes < 60) return `${minutes}m`
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+    return `${hours}h ${remainingMinutes}m`
+  }
 
   return (
     <div className="min-h-screen bg-neutral-950">
@@ -137,6 +151,9 @@ export default function ModulePage() {
                   {module.difficulty}
                 </span>
                 <span className="text-small text-neutral-400">Points Earned: {totalPoints} pts</span>
+                {totalTimeSpent > 0 && (
+                  <span className="text-small text-neutral-400">Time Spent: {formatTime(totalTimeSpent)}</span>
+                )}
               </div>
             </div>
           </div>

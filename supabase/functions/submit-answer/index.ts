@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { stageId, userId, answer, timeSpent, hintsUsed } = await req.json()
+    const { stageId, userId, answer, timeSpent, hintsUsed, hintUsageTimes } = await req.json()
 
     if (!userId) {
       // Get user ID from auth header if not provided
@@ -60,6 +60,13 @@ Deno.serve(async (req) => {
         { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
+
+    // Get hints for this stage to calculate penalties
+    const { data: hintsData } = await supabaseClient
+      .from('hints')
+      .select('hint_number, penalty_points')
+      .eq('stage_id', stageId)
+      .order('hint_number')
 
     // Validate answer based on challenge type
     let isCorrect = false
@@ -150,16 +157,60 @@ Deno.serve(async (req) => {
     }
 
     if (isCorrect) {
-      // Calculate hint penalty: 5 points per hint (progressive: hint 1=5, hint 2=10, hint 3=15)
-      const hintPenalty = (hintsUsed || []).reduce((sum: number, h: number) => sum + (h * 5), 0)
       const basePoints = stage.points
-      earnedPoints = Math.max(basePoints - hintPenalty, Math.floor(basePoints * 0.3)) // Minimum 30% of points
+      const minPoints = Math.floor(basePoints * 0.3) // Minimum 30% of points
       
-      // Enhanced feedback message with hint breakdown
-      if (hintPenalty > 0) {
-        const hintCount = hintsUsed?.length || 0
-        console.log(`Hint penalty applied: ${hintCount} hints used, ${hintPenalty} points deducted, ${earnedPoints} points earned`)
+      // Adaptive Hint Scoring Algorithm
+      // S(u,c) = max(S_min, B_c - Σ(H_i * α * e^(-λ * t_i)))
+      // Where:
+      // - S_min = minimum points (30% of base)
+      // - B_c = base points for challenge
+      // - H_i = base cost of i-th hint
+      // - α = difficulty multiplier (1.0 for standard challenges)
+      // - λ = decay factor (0.001)
+      // - t_i = time elapsed when hint i was used (in seconds)
+      
+      const alpha = 1.0  // Difficulty multiplier
+      const lambda = 0.001  // Decay factor
+      
+      let totalPenalty = 0
+      const penaltyBreakdown: any[] = []
+      
+      if (hintsUsed && hintsUsed.length > 0 && hintsData) {
+        for (const hintNumber of hintsUsed) {
+          const hintInfo = hintsData.find(h => h.hint_number === hintNumber)
+          if (!hintInfo) continue
+          
+          const baseCost = hintInfo.penalty_points
+          const timeElapsed = hintUsageTimes?.[hintNumber] || 0
+          
+          // Calculate penalty with exponential decay
+          const decayFactor = Math.exp(-lambda * timeElapsed)
+          const penalty = baseCost * alpha * decayFactor
+          
+          totalPenalty += penalty
+          penaltyBreakdown.push({
+            hintNumber,
+            baseCost,
+            timeElapsed,
+            decayFactor: decayFactor.toFixed(4),
+            penalty: penalty.toFixed(2)
+          })
+        }
       }
+      
+      // Calculate final earned points
+      earnedPoints = Math.max(minPoints, Math.round(basePoints - totalPenalty))
+      
+      // Log scoring details for debugging
+      console.log('Adaptive Hint Scoring:', {
+        basePoints,
+        minPoints,
+        totalPenalty: totalPenalty.toFixed(2),
+        earnedPoints,
+        hintsUsed: hintsUsed?.length || 0,
+        penaltyBreakdown
+      })
     }
 
     // Check if progress record exists

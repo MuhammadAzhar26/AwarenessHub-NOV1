@@ -67,6 +67,7 @@ export default function ChallengePage() {
   const [hints, setHints] = useState<Hint[]>([]);
   const [answer, setAnswer] = useState("");
   const [usedHints, setUsedHints] = useState<number[]>([]);
+  const [hintUsageTimes, setHintUsageTimes] = useState<Record<number, number>>({});
   const [expandedHints, setExpandedHints] = useState<number[]>([]);
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";
@@ -75,6 +76,7 @@ export default function ChallengePage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [startTime] = useState(Date.now());
+  const [challengeStartedAt, setChallengeStartedAt] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadChallenge() {
@@ -102,13 +104,42 @@ export default function ChallengePage() {
         // Load user progress
         const { data: progressData } = await supabase
           .from("user_progress")
-          .select("hints_used, status")
+          .select("hints_used, hint_usage_times, status, started_at")
           .eq("user_id", user.id)
           .eq("stage_id", stageId)
           .maybeSingle();
 
         if (progressData?.hints_used) {
           setUsedHints(progressData.hints_used);
+        }
+
+        if (progressData?.hint_usage_times) {
+          setHintUsageTimes(progressData.hint_usage_times);
+        }
+
+        if (progressData?.started_at) {
+          setChallengeStartedAt(progressData.started_at);
+        } else if (!progressData?.status || progressData.status !== "completed") {
+          // Record challenge start time if not already started
+          const now = new Date().toISOString();
+          setChallengeStartedAt(now);
+          
+          if (progressData) {
+            // Update existing progress with start time
+            await supabase
+              .from("user_progress")
+              .update({ started_at: now })
+              .eq("user_id", user.id)
+              .eq("stage_id", stageId);
+          } else {
+            // Create new progress record with start time
+            await supabase.from("user_progress").insert({
+              user_id: user.id,
+              stage_id: stageId,
+              started_at: now,
+              status: "in_progress",
+            });
+          }
         }
 
         if (progressData?.status === "completed") {
@@ -145,9 +176,16 @@ export default function ChallengePage() {
     if (!hint) return;
 
     try {
+      // Calculate time elapsed in seconds since challenge started
+      const timeElapsed = challengeStartedAt 
+        ? Math.floor((Date.now() - new Date(challengeStartedAt).getTime()) / 1000)
+        : Math.floor((Date.now() - startTime) / 1000);
+      
       // Update used hints immediately in state
       const newUsedHints = [...usedHints, hintNumber];
+      const newHintUsageTimes = { ...hintUsageTimes, [hintNumber]: timeElapsed };
       setUsedHints(newUsedHints);
+      setHintUsageTimes(newHintUsageTimes);
       setExpandedHints([...expandedHints, hintNumber]);
 
       // Save hint usage to database
@@ -164,6 +202,7 @@ export default function ChallengePage() {
           .from("user_progress")
           .update({
             hints_used: newUsedHints,
+            hint_usage_times: newHintUsageTimes,
           })
           .eq("user_id", user.id)
           .eq("stage_id", stageId);
@@ -173,6 +212,7 @@ export default function ChallengePage() {
           user_id: user.id,
           stage_id: stageId,
           hints_used: newUsedHints,
+          hint_usage_times: newHintUsageTimes,
           status: "in_progress",
         });
       }
@@ -229,14 +269,17 @@ export default function ChallengePage() {
     setFeedback(null);
 
     try {
-      const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      const timeSpent = challengeStartedAt
+        ? Math.floor((Date.now() - new Date(challengeStartedAt).getTime()) / 1000)
+        : Math.floor((Date.now() - startTime) / 1000);
 
       const { data, error } = await supabase.functions.invoke("submit-answer", {
         body: {
           stageId: stage.id,
-          userId: user.id, // Add missing userId
+          userId: user.id,
           answer: submitAnswer.trim(),
           hintsUsed: usedHints,
+          hintUsageTimes: hintUsageTimes,
           timeSpent,
         },
       });
