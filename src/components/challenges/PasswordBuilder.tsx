@@ -105,7 +105,7 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
 
   const handleSubmit = () => {
     if (strength >= minStrength) {
-      onSubmit(strength.toString())
+      onSubmit(`${password}:${strength}`)
     }
   }
 

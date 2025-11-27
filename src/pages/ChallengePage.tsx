@@ -712,15 +712,7 @@ export default function ChallengePage() {
             )}
           </div>
 
-          {/* Scenario */}
-          <div className="bg-neutral-800 p-8 rounded-lg mb-6 border border-neutral-700">
-            <h2 className="text-body font-semibold text-neutral-100 mb-3">
-              Challenge Scenario
-            </h2>
-            <p className="text-body text-neutral-100 leading-relaxed whitespace-pre-wrap">
-              {stage.scenario}
-            </p>
-          </div>
+          {/* Scenario - Removed as per user request */}
 
           {/* Challenge Interface */}
           <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card mb-6">
