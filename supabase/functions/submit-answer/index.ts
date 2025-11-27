@@ -182,7 +182,8 @@ Deno.serve(async (req) => {
           if (!hintInfo) continue
           
           const baseCost = hintInfo.penalty_points
-          const timeElapsed = hintUsageTimes?.[hintNumber] || 0
+          // Use hintUsageTimes if available, otherwise default to 0 (full penalty)
+          const timeElapsed = hintUsageTimes?.[hintNumber] ?? 0
           
           // Calculate penalty with exponential decay
           const decayFactor = Math.exp(-lambda * timeElapsed)
@@ -209,6 +210,7 @@ Deno.serve(async (req) => {
         totalPenalty: totalPenalty.toFixed(2),
         earnedPoints,
         hintsUsed: hintsUsed?.length || 0,
+        hintUsageTimesProvided: !!hintUsageTimes,
         penaltyBreakdown
       })
     }
