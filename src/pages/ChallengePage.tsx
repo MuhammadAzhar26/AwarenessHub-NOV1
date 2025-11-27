@@ -18,6 +18,7 @@ import DragDropChallenge from "@/components/challenges/DragDropChallenge";
 import CodeAnalysisChallenge from "@/components/challenges/CodeAnalysisChallenge";
 import CaesarCipher from "@/components/challenges/CaesarCipher";
 import PasswordBuilder from "@/components/challenges/PasswordBuilder";
+import PasswordSelectionQuiz from "@/components/challenges/PasswordSelectionQuiz";
 import EmailDetective from "@/components/challenges/EmailDetective";
 import WebsiteComparison from "@/components/challenges/WebsiteComparison";
 import HTTPSDemo from "@/components/challenges/HTTPSDemo";
@@ -401,6 +402,16 @@ export default function ChallengePage() {
           <PasswordBuilder
             minStrength={stage.challenge_data?.minStrength || 70}
             requiresLength={stage.challenge_data?.requiresLength || 12}
+            onSubmit={handleInteractiveSubmit}
+            disabled={submitting}
+          />
+        );
+
+      case "password-selection":
+        return (
+          <PasswordSelectionQuiz
+            passwords={stage.challenge_data?.passwords || []}
+            correctAnswer={stage.challenge_data?.correctAnswer || ""}
             onSubmit={handleInteractiveSubmit}
             disabled={submitting}
           />

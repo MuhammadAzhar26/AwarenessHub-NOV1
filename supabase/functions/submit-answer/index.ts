@@ -91,6 +91,9 @@ Deno.serve(async (req) => {
       case 'password-builder':
         isCorrect = validatePasswordBuilder(answer, stage.challenge_data)
         break
+      case 'password-selection':
+        isCorrect = validatePasswordSelection(answer, stage.challenge_data)
+        break
       case 'email-detective':
         isCorrect = validateEmailDetective(answer, stage.challenge_data)
         break
@@ -425,11 +428,18 @@ function validateCaesarCipher(answer: string, data: any): boolean {
 function validatePasswordBuilder(answer: string, data: any): boolean {
   // Answer format: "password:strength" or just validates that a strong enough password was created
   const parts = answer.split(':')
-  if (parts.length === 2) {
+  if (parts.length >= 2) {
     const strength = parseInt(parts[1])
-    return strength >= (data.minStrength || 70)
+    const minStrength = data.minStrength || 70
+    // Check if strength meets minimum requirement
+    return strength >= minStrength
   }
   return false
+}
+
+function validatePasswordSelection(answer: string, data: any): boolean {
+  // Answer is the ID of the selected password
+  return answer === data.correctAnswer
 }
 
 function validateBase64Decoder(answer: string, data: any): boolean {
