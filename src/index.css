@@ -8,11 +8,48 @@
   body {
     @apply font-sans bg-white text-gray-900;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /* Mobile-friendly touch and zoom - ALLOW PINCH ZOOM */
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
+    width: 100vw;
+    overflow-x: hidden;
   }
 
   html {
     scroll-behavior: smooth;
     @apply bg-white;
+    /* Enable smooth pinch-to-zoom and pan */
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Improve mobile responsiveness */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  /* Better mobile viewport handling */
+  #root {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Mobile content sizing */
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px; /* Prevent iOS zoom on input focus */
+    }
+    
+    input, select, textarea {
+      font-size: 16px; /* Prevent auto-zoom on focus */
+    }
   }
 
   /* Light scrollbar */
