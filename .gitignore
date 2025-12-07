@@ -32,6 +32,9 @@ dist-ssr
 # PowerShell scripts
 *.ps1
 
+# Database migrations
+supabase/migrations/
+
 # Android sensitive files only
 android/keystore/
 android/.gradle
