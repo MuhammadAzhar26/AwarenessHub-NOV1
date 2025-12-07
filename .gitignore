@@ -24,5 +24,19 @@ dist-ssr
 *.sw?
 .vercel
 
-# Android - exclude entire folder
-android/
+# Documentation files
+*.md
+*_START_HERE.txt
+*SUMMARY*.txt
+
+# PowerShell scripts
+*.ps1
+
+# Android sensitive files only
+android/keystore/
+android/.gradle
+android/local.properties
+android/app/build
+android/build
+*.apk
+*.aab
