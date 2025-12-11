@@ -106,29 +106,29 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading profile...</div>
+          <div className="text-gray-600">Loading profile...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
       
       <div className="container mx-auto py-8">
         {/* Profile Header */}
-        <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-12 rounded-lg text-white mb-8">
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-12 rounded-xl text-white mb-8">
           <div className="flex items-center gap-6">
-            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center text-h1 font-bold">
+            <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center text-3xl font-bold">
               {profile?.username?.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-h1 font-bold mb-2">{profile?.username}</h1>
-              <div className="flex gap-6 text-body-lg">
+              <h1 className="text-3xl font-bold mb-2">{profile?.username}</h1>
+              <div className="flex gap-6 text-lg">
                 <div>
                   <span className="opacity-75">Level:</span> <strong>{profile?.level}</strong>
                 </div>
@@ -146,28 +146,28 @@ export default function ProfilePage() {
 
         {/* Stats Dashboard */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-3">
-              <Trophy className="w-8 h-8 text-primary-500" />
-              <h3 className="text-body font-semibold text-neutral-100">Stages Completed</h3>
+              <Trophy className="w-8 h-8 text-blue-600" />
+              <h3 className="text-lg font-semibold text-gray-900">Stages Completed</h3>
             </div>
-            <p className="text-h1 font-bold text-neutral-100">{stats.completedStages}</p>
+            <p className="text-3xl font-bold text-gray-900">{stats.completedStages}</p>
           </div>
 
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-3">
-              <Clock className="w-8 h-8 text-success-600" />
-              <h3 className="text-body font-semibold text-neutral-100">Hints Used</h3>
+              <Clock className="w-8 h-8 text-green-600" />
+              <h3 className="text-lg font-semibold text-gray-900">Hints Used</h3>
             </div>
-            <p className="text-h1 font-bold text-neutral-100">{stats.hintsUsed}</p>
+            <p className="text-3xl font-bold text-gray-900">{stats.hintsUsed}</p>
           </div>
         </div>
 
         {/* Badges Collection */}
-        <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card">
+        <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-h2 font-bold text-neutral-100 flex items-center gap-3">
-              <Award className="w-8 h-8 text-primary-500" />
+            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+              <Award className="w-8 h-8 text-blue-600" />
               Badge Collection ({badges.filter(b => selectedCategory === 'all' || b.category === selectedCategory).length})
             </h2>
             
@@ -175,7 +175,7 @@ export default function ProfilePage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="bg-neutral-800 text-neutral-100 border border-neutral-700 rounded-lg px-4 py-2 text-body focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="bg-gray-50 text-gray-900 border border-gray-200 rounded-lg px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Categories</option>
                 {Array.from(new Set(badges.map(b => b.category))).sort().map(category => (
@@ -189,8 +189,8 @@ export default function ProfilePage() {
 
           {badges.length === 0 ? (
             <div className="text-center py-12">
-              <Award className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
-              <p className="text-body text-neutral-400">No badges earned yet. Complete challenges to earn badges!</p>
+              <Award className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-lg text-gray-600">No badges earned yet. Complete challenges to earn badges!</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -198,34 +198,34 @@ export default function ProfilePage() {
                 .filter(badge => selectedCategory === 'all' || badge.category === selectedCategory)
                 .map((badge) => {
                 const categoryColors: Record<string, { border: string; bg: string; text: string }> = {
-                  milestone: { border: 'border-yellow-500', bg: 'from-yellow-900/30 to-neutral-900', text: 'text-yellow-400' },
-                  points: { border: 'border-primary-500', bg: 'from-primary-900/30 to-neutral-900', text: 'text-primary-400' },
-                  module: { border: 'border-success-500', bg: 'from-success-900/30 to-neutral-900', text: 'text-success-400' },
-                  special: { border: 'border-purple-500', bg: 'from-purple-900/30 to-neutral-900', text: 'text-purple-400' },
-                  training: { border: 'border-blue-500', bg: 'from-blue-900/30 to-neutral-900', text: 'text-blue-400' },
-                  simulation: { border: 'border-cyan-500', bg: 'from-cyan-900/30 to-neutral-900', text: 'text-cyan-400' },
-                  level: { border: 'border-orange-500', bg: 'from-orange-900/30 to-neutral-900', text: 'text-orange-400' },
-                  competitive: { border: 'border-red-500', bg: 'from-red-900/30 to-neutral-900', text: 'text-red-400' },
-                  consistency: { border: 'border-green-500', bg: 'from-green-900/30 to-neutral-900', text: 'text-green-400' },
-                  checklist: { border: 'border-indigo-500', bg: 'from-indigo-900/30 to-neutral-900', text: 'text-indigo-400' },
-                  domain: { border: 'border-pink-500', bg: 'from-pink-900/30 to-neutral-900', text: 'text-pink-400' },
+                  milestone: { border: 'border-yellow-500', bg: 'bg-yellow-50', text: 'text-yellow-600' },
+                  points: { border: 'border-blue-500', bg: 'bg-blue-50', text: 'text-blue-600' },
+                  module: { border: 'border-green-500', bg: 'bg-green-50', text: 'text-green-600' },
+                  special: { border: 'border-purple-500', bg: 'bg-purple-50', text: 'text-purple-600' },
+                  training: { border: 'border-blue-500', bg: 'bg-blue-50', text: 'text-blue-600' },
+                  simulation: { border: 'border-cyan-500', bg: 'bg-cyan-50', text: 'text-cyan-600' },
+                  level: { border: 'border-orange-500', bg: 'bg-orange-50', text: 'text-orange-600' },
+                  competitive: { border: 'border-red-500', bg: 'bg-red-50', text: 'text-red-600' },
+                  consistency: { border: 'border-green-500', bg: 'bg-green-50', text: 'text-green-600' },
+                  checklist: { border: 'border-indigo-500', bg: 'bg-indigo-50', text: 'text-indigo-600' },
+                  domain: { border: 'border-pink-500', bg: 'bg-pink-50', text: 'text-pink-600' },
                 }
                 const colors = categoryColors[badge.category] || categoryColors.milestone
 
                 return (
                   <div
                     key={badge.id}
-                    className={`bg-gradient-to-br ${colors.bg} p-6 rounded-lg border-2 ${colors.border} text-center transition-all hover:scale-105 hover:shadow-xl`}
+                    className={`${colors.bg} p-6 rounded-lg border-2 ${colors.border} text-center transition-all hover:scale-105 hover:shadow-lg`}
                   >
                     <Award className={`w-16 h-16 ${colors.text} mx-auto mb-4`} />
-                    <h3 className="text-body font-semibold text-neutral-100 mb-2">{badge.title}</h3>
-                    <p className="text-small text-neutral-400 mb-3">{badge.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{badge.title}</h3>
+                    <p className="text-sm text-gray-600 mb-3">{badge.description}</p>
                     <div className="flex items-center justify-center gap-2">
-                      <span className={`text-caption font-medium px-2 py-1 rounded ${colors.bg} ${colors.text} border ${colors.border}`}>
+                      <span className={`text-sm font-medium px-3 py-1 rounded-full ${colors.bg} ${colors.text} border ${colors.border}`}>
                         {badge.category}
                       </span>
                     </div>
-                    <p className="text-caption text-neutral-500 mt-2">
+                    <p className="text-sm text-gray-500 mt-2">
                       {new Date(badge.earned_at).toLocaleDateString()}
                     </p>
                   </div>
