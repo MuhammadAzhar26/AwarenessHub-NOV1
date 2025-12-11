@@ -627,7 +627,7 @@ export default function ChallengePage() {
           <form onSubmit={handleTextSubmit} className="space-y-3">
             <label
               htmlFor="answer"
-              className="block text-body font-semibold text-neutral-100 mb-3"
+              className="block text-base font-semibold text-gray-900 mb-3"
             >
               Your Answer
             </label>
@@ -638,13 +638,13 @@ export default function ChallengePage() {
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
                 placeholder="Enter your answer..."
-                className="flex-1 px-4 py-3 border-2 border-neutral-700 rounded-md focus:border-primary-500 focus:outline-none transition-colors font-mono bg-neutral-900 text-neutral-100"
+                className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:outline-none transition-colors font-mono bg-white text-gray-900"
                 disabled={submitting}
               />
               <button
                 type="submit"
                 disabled={submitting || !answer.trim()}
-                className="px-6 py-3 bg-primary-500 text-white font-semibold rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Send className="w-5 h-5" />
                 {submitting ? "Checking..." : "Submit"}
@@ -657,10 +657,10 @@ export default function ChallengePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading challenge...</div>
+          <div className="text-gray-600">Loading challenge...</div>
         </div>
       </div>
     );
@@ -668,23 +668,23 @@ export default function ChallengePage() {
 
   if (!stage) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Challenge not found</div>
+          <div className="text-gray-600">Challenge not found</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
 
       <div className="container mx-auto py-8">
         <Link
           to={`/module/${moduleId}`}
-          className="inline-flex items-center gap-2 text-body text-neutral-400 hover:text-primary-500 mb-6"
+          className="inline-flex items-center gap-2 text-base text-blue-600 hover:text-blue-700 mb-6"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Module
@@ -692,19 +692,19 @@ export default function ChallengePage() {
 
         <div className="max-w-4xl mx-auto">
           {/* Challenge Header */}
-          <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card mb-6">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-h2 font-bold text-neutral-100">
+              <h1 className="text-2xl font-bold text-gray-900">
                 Stage {stage.stage_number}: {stage.title}
               </h1>
-              <div className="bg-primary-100 text-primary-500 px-4 py-2 rounded-full text-body font-semibold">
+              <div className="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-base font-semibold">
                 {stage.points} pts
               </div>
             </div>
-            <p className="text-body text-neutral-400">{stage.description}</p>
+            <p className="text-lg text-gray-600">{stage.description}</p>
             {hints.length > 0 && (
-              <div className="mt-4 p-3 bg-warning-900/20 border border-warning-600 rounded-md">
-                <p className="text-small text-warning-300">
+              <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-md">
+                <p className="text-sm text-orange-700">
                   💡 Using hints will deduct points: Hint 1 (-5pts), Hint 2
                   (-10pts), Hint 3 (-15pts)
                 </p>
@@ -715,7 +715,7 @@ export default function ChallengePage() {
           {/* Scenario - Removed as per user request */}
 
           {/* Challenge Interface */}
-          <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card mb-6">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-6">
             {renderChallengeInterface()}
           </div>
 
@@ -731,20 +731,20 @@ export default function ChallengePage() {
             <div
               className={`p-6 rounded-lg mb-6 flex items-center gap-3 ${
                 feedback.type === "success"
-                  ? "bg-success-900/20 border border-success-600"
-                  : "bg-error-900/20 border border-error-600"
+                  ? "bg-green-50 border border-green-200"
+                  : "bg-red-50 border border-red-200"
               }`}
             >
               {feedback.type === "success" ? (
-                <CheckCircle className="w-6 h-6 text-success-600 flex-shrink-0" />
+                <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
               ) : (
-                <XCircle className="w-6 h-6 text-error-600 flex-shrink-0" />
+                <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
               )}
               <p
-                className={`text-body font-medium ${
+                className={`text-base font-medium ${
                   feedback.type === "success"
-                    ? "text-success-400"
-                    : "text-error-400"
+                    ? "text-green-700"
+                    : "text-red-700"
                 }`}
               >
                 {feedback.message}
@@ -753,15 +753,15 @@ export default function ChallengePage() {
           )}
 
           {/* Hints System */}
-          <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 shadow-dark-card">
-            <h2 className="text-body font-semibold text-neutral-100 mb-4 flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-primary-500" />
+          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-blue-600" />
               Hints ({usedHints.length}/3 used)
             </h2>
 
             {hints.length > 0 && (
               <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="text-small text-neutral-400">
+                <div className="text-sm text-gray-600">
                   Click below to reveal the next hint in order. Each hint still
                   deducts the displayed points.
                 </div>
@@ -776,11 +776,11 @@ export default function ChallengePage() {
                         useHint(nextAvailableHint.hint_number)
                       }
                       disabled={!nextAvailableHint}
-                      className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary-500 text-white font-semibold hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:-translate-y-0.5"
+                      className="self-start sm:self-auto inline-flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:-translate-y-0.5"
                     >
                       Reveal Next Hint
                       {nextAvailableHint && (
-                        <span className="inline-flex items-center gap-1 text-small font-medium bg-black/20 px-2 py-1 rounded">
+                        <span className="inline-flex items-center gap-1 text-sm font-medium bg-blue-800 px-2 py-1 rounded">
                           -{nextAvailableHint.penalty_points} pts
                         </span>
                       )}
@@ -792,8 +792,8 @@ export default function ChallengePage() {
 
             {hints.length === 0 ? (
               <div className="text-center py-8">
-                <HelpCircle className="w-12 h-12 text-neutral-600 mx-auto mb-3" />
-                <p className="text-body text-neutral-400">
+                <HelpCircle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-base text-gray-600">
                   No hints available for this challenge.
                 </p>
               </div>
@@ -806,11 +806,11 @@ export default function ChallengePage() {
                   return (
                     <div
                       key={hint.id}
-                      className="border border-neutral-700 rounded-md overflow-hidden"
+                      className="border border-gray-200 rounded-md overflow-hidden"
                     >
                       <button
                         onClick={() => useHint(hint.hint_number)}
-                        className="hint-button w-full px-4 py-3 flex items-center justify-between bg-neutral-800 hover:bg-neutral-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="hint-button w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
                         style={{
                           display: "flex",
                           visibility: "visible",
@@ -821,31 +821,31 @@ export default function ChallengePage() {
                           <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                               isUsed
-                                ? "bg-warning-900 text-warning-300"
-                                : "bg-primary-900 text-primary-300"
+                                ? "bg-orange-100 text-orange-600"
+                                : "bg-blue-100 text-blue-600"
                             }`}
                           >
                             {hint.hint_number}
                           </div>
-                          <span className="text-body font-medium text-neutral-100">
+                          <span className="text-base font-medium text-gray-900">
                             {isUsed
                               ? "Revealed Hint"
                               : `Hint ${hint.hint_number}`}
                           </span>
-                          <span className="text-small text-warning-400 font-medium bg-warning-900/20 px-2 py-1 rounded">
+                          <span className="text-sm text-orange-600 font-medium bg-orange-100 px-2 py-1 rounded">
                             -{hint.penalty_points} pts
                           </span>
                         </div>
                         {isExpanded ? (
-                          <ChevronUp className="w-5 h-5 text-neutral-300" />
+                          <ChevronUp className="w-5 h-5 text-gray-500" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-neutral-300" />
+                          <ChevronDown className="w-5 h-5 text-gray-500" />
                         )}
                       </button>
 
                       {isExpanded && (
-                        <div className="px-4 py-3 bg-neutral-900 border-t border-neutral-700">
-                          <p className="text-body text-neutral-100 leading-relaxed">
+                        <div className="px-4 py-3 bg-white border-t border-gray-200">
+                          <p className="text-base text-gray-900 leading-relaxed">
                             {hint.hint_text}
                           </p>
                         </div>

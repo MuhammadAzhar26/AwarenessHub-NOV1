@@ -28,53 +28,53 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
       <div className="container mx-auto py-16">
-        <div className="max-w-md mx-auto bg-neutral-900 p-8 rounded-lg shadow-dark-card border border-neutral-800">
-          <h1 className="text-h2 font-bold text-neutral-100 mb-2 text-center">Welcome Back</h1>
-          <p className="text-body text-neutral-400 mb-8 text-center">
+        <div className="max-w-md mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-sm">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Welcome Back</h1>
+          <p className="text-lg text-gray-600 mb-8 text-center">
             Sign in to continue your learning journey
           </p>
 
           {error && (
-            <div className="mb-6 p-4 bg-error-50 border border-error-600 rounded-md">
-              <p className="text-small text-error-600">{error}</p>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-body font-medium text-neutral-100 mb-2">
+              <label htmlFor="email" className="block text-base font-medium text-gray-900 mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-12 pr-4 py-3 bg-neutral-800 border-2 border-neutral-700 rounded-md focus:border-primary-500 focus:outline-none transition-colors text-neutral-100 placeholder:text-neutral-500"
+                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:outline-none transition-colors text-gray-900 placeholder:text-gray-500"
                   placeholder="your@email.com"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-body font-medium text-neutral-100 mb-2">
+              <label htmlFor="password" className="block text-base font-medium text-gray-900 mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="password"
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-12 pr-4 py-3 bg-neutral-800 border-2 border-neutral-700 rounded-md focus:border-primary-500 focus:outline-none transition-colors text-neutral-100 placeholder:text-neutral-500"
+                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-md focus:border-blue-500 focus:outline-none transition-colors text-gray-900 placeholder:text-gray-500"
                   placeholder="••••••••"
                 />
               </div>
@@ -83,15 +83,15 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-primary-500 text-white font-semibold rounded-md hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-body text-neutral-400">
+          <p className="mt-6 text-center text-base text-gray-600">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-primary-500 hover:text-primary-600 font-semibold">
+            <Link to="/signup" className="text-blue-600 hover:text-blue-700 font-semibold">
               Sign Up
             </Link>
           </p>

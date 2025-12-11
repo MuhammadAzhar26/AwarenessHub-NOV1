@@ -80,10 +80,10 @@ export default function ToolsTrainingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading tools...</div>
+          <div className="text-gray-600">Loading tools...</div>
         </div>
       </div>
     )
@@ -93,19 +93,19 @@ export default function ToolsTrainingPage() {
   const categories = Array.from(new Set(tools.map(t => t.category)))
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-gray-50">
       <Navigation />
       
       <div className="container mx-auto py-8">
         {/* Page Header */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <Wrench className="w-12 h-12 text-primary-500" />
-            <h1 className="text-h1 font-bold text-neutral-100">
+            <Wrench className="w-12 h-12 text-blue-600" />
+            <h1 className="text-3xl font-bold text-gray-900">
               Cybersecurity Tools Training
             </h1>
           </div>
-          <p className="text-body-lg text-neutral-400 max-w-3xl">
+          <p className="text-lg text-gray-600 max-w-3xl">
             Master essential cybersecurity tools through hands-on video tutorials, 
             interactive labs, and practical challenges. From network analysis to penetration testing.
           </p>
@@ -117,7 +117,7 @@ export default function ToolsTrainingPage() {
           
           return (
             <div key={category} className="mb-12">
-              <h2 className="text-h2 font-bold text-neutral-100 mb-6">{category}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">{category}</h2>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categoryTools.map((tool) => {
@@ -130,41 +130,41 @@ export default function ToolsTrainingPage() {
                     <Link
                       key={tool.id}
                       to={`/tools-training/${tool.id}`}
-                      className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-primary-500 hover:shadow-dark-card-hover transition-all duration-250 hover:-translate-y-1 group"
+                      className="bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-250 hover:-translate-y-1 group"
                     >
                       <div className="flex items-start justify-between mb-4">
-                        <div className="w-12 h-12 bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-colors">
-                          <Wrench className="w-6 h-6 text-primary-500 group-hover:text-white" />
+                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                          <Wrench className="w-6 h-6 text-blue-600 group-hover:text-white" />
                         </div>
-                        {isCompleted && <CheckCircle className="w-6 h-6 text-success-600" />}
+                        {isCompleted && <CheckCircle className="w-6 h-6 text-green-600" />}
                       </div>
                       
-                      <h3 className="text-body font-semibold text-neutral-100 mb-2">{tool.title}</h3>
-                      <p className="text-small text-neutral-400 mb-4 line-clamp-2">{tool.description}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{tool.title}</h3>
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">{tool.description}</p>
                       
                       <div className="flex items-center gap-2 mb-3">
-                        <Play className="w-4 h-4 text-primary-500" />
-                        <span className="text-small text-neutral-400">Video Tutorial Included</span>
+                        <Play className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm text-gray-600">Video Tutorial Included</span>
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex justify-between text-small text-neutral-400">
+                        <div className="flex justify-between text-sm text-gray-600">
                           <span>{completedStages}/{tool.total_stages} stages</span>
                           <span>{Math.round(progressPercent)}%</span>
                         </div>
-                        <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-primary-500 transition-all duration-300"
+                            className="h-full bg-blue-600 transition-all duration-300"
                             style={{ width: `${progressPercent}%` }}
                           />
                         </div>
                       </div>
 
                       <div className="mt-4">
-                        <span className={`inline-block px-3 py-1 rounded-full text-caption font-medium ${
-                          tool.difficulty === 'Beginner' ? 'bg-success-50 text-success-600' :
-                          tool.difficulty === 'Intermediate' ? 'bg-warning-50 text-warning-700' :
-                          'bg-error-50 text-error-600'
+                        <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                          tool.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
+                          tool.difficulty === 'Intermediate' ? 'bg-orange-100 text-orange-700' :
+                          'bg-red-100 text-red-700'
                         }`}>
                           {tool.difficulty}
                         </span>
