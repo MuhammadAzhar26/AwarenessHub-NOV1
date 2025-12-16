@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import Navigation from '@/components/Navigation'
-import { Shield, Award, Target, Lock, Mail, Bug, CheckSquare, ArrowRight } from 'lucide-react'
+import { Shield, Award, Target, CheckSquare, ArrowRight } from 'lucide-react'
 
 export default function LandingPage() {
   return (
@@ -46,64 +46,48 @@ export default function LandingPage() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
-                <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Award className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Comprehensive Training</h3>
-                <p className="text-gray-600">
-                  12+ modules covering essential cybersecurity topics from fundamentals to advanced techniques
-                </p>
-              </div>
-              <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
-                <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Hands-On Practice</h3>
-                <p className="text-gray-600">
-                  Real-world simulations and interactive challenges to build practical security skills
-                </p>
-              </div>
-              <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
-                <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Track Progress</h3>
-                <p className="text-gray-600">
-                  Monitor your learning journey with detailed analytics, badges, and achievement tracking
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Training Areas */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
-              Key Training Areas
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-3">
+              Complete Cybersecurity Platform
             </h2>
             <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Develop expertise across critical cybersecurity domains
+              Everything you need to master cybersecurity in one place
             </p>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all">
-                <Lock className="w-10 h-10 text-blue-600 mb-3" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Cryptography & Authentication</h3>
-                <p className="text-sm text-gray-600">Master encryption, password security, and identity management</p>
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="text-center p-6 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Award className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">12+ Modules</h3>
+                <p className="text-sm text-gray-600">
+                  Comprehensive training from basics to advanced
+                </p>
               </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all">
-                <Mail className="w-10 h-10 text-blue-600 mb-3" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Threat Detection</h3>
-                <p className="text-sm text-gray-600">Learn to identify phishing, social engineering, and cyber attacks</p>
+              <div className="text-center p-6 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Target className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Interactive Challenges</h3>
+                <p className="text-sm text-gray-600">
+                  Real-world scenarios and hands-on practice
+                </p>
               </div>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-all">
-                <Bug className="w-10 h-10 text-blue-600 mb-3" />
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Security Operations</h3>
-                <p className="text-sm text-gray-600">Practice incident response, forensics, and security monitoring</p>
+              <div className="text-center p-6 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Shield className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Live Simulations</h3>
+                <p className="text-sm text-gray-600">
+                  Phishing, SMS, and email threat simulations
+                </p>
+              </div>
+              <div className="text-center p-6 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <CheckSquare className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Progress Tracking</h3>
+                <p className="text-sm text-gray-600">
+                  Badges, leaderboards, and achievement system
+                </p>
               </div>
             </div>
           </div>
@@ -132,7 +116,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-8 bg-gray-900 text-gray-400 text-center">
         <div className="container mx-auto px-4">
-          <p className="text-sm">© 2025 AwarenessHub. Professional Cybersecurity Training Platform.</p>
+          <p className="text-sm">� 2025 AwarenessHub. Professional Cybersecurity Training Platform.</p>
         </div>
       </footer>
     </div>
