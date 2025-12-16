@@ -15,6 +15,7 @@ export default function Navigation() {
         { name: 'DFIR', path: '/dfir' },
         { name: 'Simulation', path: '/simulation' },
         { name: 'Security Checklist', path: '/security-checklist' },
+        { name: 'Badges', path: '/badges' },
         { name: 'Leaderboard', path: '/leaderboard' },
         { name: 'Profile', path: '/profile' },
       ]

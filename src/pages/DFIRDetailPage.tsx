@@ -116,10 +116,10 @@ export default function DFIRDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading DFIR module...</div>
+          <div className="text-gray-600">Loading DFIR module...</div>
         </div>
       </div>
     )
@@ -127,10 +127,10 @@ export default function DFIRDetailPage() {
 
   if (!module) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Module not found</div>
+          <div className="text-gray-600">Module not found</div>
         </div>
       </div>
     )
@@ -140,28 +140,28 @@ export default function DFIRDetailPage() {
   const progressPercent = (completedStages / stages.length) * 100
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       <div className="container mx-auto py-8">
         {/* Back Button */}
         <Link
           to="/dfir"
-          className="inline-flex items-center gap-2 text-body text-primary-400 hover:text-primary-300 mb-6"
+          className="inline-flex items-center gap-2 text-body text-blue-600 hover:text-blue-700 mb-6"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to DFIR Training
         </Link>
 
         {/* Module Header */}
-        <div className="bg-neutral-900 p-8 rounded-lg border border-neutral-800 mb-8">
+        <div className="bg-white p-8 rounded-lg border border-gray-200 mb-8">
           <div className="flex items-start justify-between mb-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <Search className="w-8 h-8 text-primary-500" />
-                <h1 className="text-h1 font-bold text-neutral-100">{module.title}</h1>
+                <Search className="w-8 h-8 text-blue-600" />
+                <h1 className="text-h1 font-bold text-gray-900">{module.title}</h1>
               </div>
-              <p className="text-body text-neutral-400 mb-4">{module.description}</p>
+              <p className="text-body text-gray-600 mb-4">{module.description}</p>
               <div className="flex items-center gap-4">
                 <span className={`inline-block px-3 py-1 rounded-full text-caption font-medium ${
                   module.difficulty === 'Beginner' ? 'bg-success-50 text-success-600' :
@@ -170,20 +170,20 @@ export default function DFIRDetailPage() {
                 }`}>
                   {module.difficulty}
                 </span>
-                <span className="text-small text-neutral-400">{module.category}</span>
+                <span className="text-small text-gray-600">{module.category}</span>
               </div>
             </div>
           </div>
 
           {/* Progress Bar */}
           <div className="space-y-2">
-            <div className="flex justify-between text-small text-neutral-400">
+            <div className="flex justify-between text-small text-gray-600">
               <span>Progress: {completedStages}/{stages.length} stages</span>
               <span>{Math.round(progressPercent)}%</span>
             </div>
-            <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-primary-500 transition-all duration-300"
+                className="h-full bg-blue-600 transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -192,8 +192,8 @@ export default function DFIRDetailPage() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Stages List */}
-          <div className="lg:col-span-1 bg-neutral-900 p-6 rounded-lg border border-neutral-800 h-fit">
-            <h2 className="text-h3 font-bold text-neutral-100 mb-4">Training Stages</h2>
+          <div className="lg:col-span-1 bg-white p-6 rounded-lg border border-gray-200 h-fit">
+            <h2 className="text-h3 font-bold text-gray-900 mb-4">Training Stages</h2>
             <div className="space-y-2">
               {stages.map((stage) => {
                 const stageProgress = progress.find(p => p.dfir_stage_id === stage.id)
@@ -206,8 +206,8 @@ export default function DFIRDetailPage() {
                     onClick={() => setSelectedStage(stage)}
                     className={`w-full text-left p-4 rounded-lg transition-all border ${
                       isSelected
-                        ? 'bg-primary-900/30 border-primary-500'
-                        : 'bg-neutral-800 border-neutral-700 hover:border-primary-400'
+                        ? 'bg-blue-50 border-blue-600'
+                        : 'bg-gray-50 border-gray-200 hover:border-blue-400'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -217,10 +217,10 @@ export default function DFIRDetailPage() {
                         <Circle className="w-5 h-5 text-neutral-500 flex-shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="text-small font-medium text-neutral-100">
+                        <div className="text-small font-medium text-gray-900">
                           Stage {stage.stage_number}
                         </div>
-                        <div className="text-caption text-neutral-400 truncate">
+                        <div className="text-caption text-gray-600 truncate">
                           {stage.title}
                         </div>
                       </div>
@@ -237,8 +237,8 @@ export default function DFIRDetailPage() {
               <>
                 {/* Video Player */}
                 {selectedStage.video_url && (
-                  <div className="bg-neutral-900 rounded-lg border border-neutral-800 overflow-hidden">
-                    <div className="aspect-video bg-neutral-900 relative">
+                  <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div className="aspect-video bg-gray-900 relative">
                       <iframe
                         src={selectedStage.video_url}
                         className="w-full h-full"
@@ -250,13 +250,13 @@ export default function DFIRDetailPage() {
                 )}
 
                 {/* Stage Details */}
-                <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h2 className="text-h2 font-bold text-neutral-100 mb-2">
+                      <h2 className="text-h2 font-bold text-gray-900 mb-2">
                         Stage {selectedStage.stage_number}: {selectedStage.title}
                       </h2>
-                      <p className="text-body text-neutral-400 mb-4">{selectedStage.description}</p>
+                      <p className="text-body text-gray-600 mb-4">{selectedStage.description}</p>
                     </div>
                   </div>
 
@@ -264,8 +264,8 @@ export default function DFIRDetailPage() {
                   {selectedStage.audio_url && (
                     <div className="mb-6 p-4 bg-primary-50 rounded-lg border border-primary-200">
                       <div className="flex items-center gap-2 mb-2">
-                        <Volume2 className="w-5 h-5 text-primary-500" />
-                        <span className="text-small font-medium text-neutral-100">Audio Narration</span>
+                        <Volume2 className="w-5 h-5 text-blue-600" />
+                        <span className="text-small font-medium text-gray-900">Audio Narration</span>
                       </div>
                       <audio controls className="w-full">
                         <source src={selectedStage.audio_url} type="audio/mpeg" />
@@ -283,7 +283,7 @@ export default function DFIRDetailPage() {
                   {!progress.find(p => p.dfir_stage_id === selectedStage.id && p.status === 'completed') && (
                     <button
                       onClick={() => markStageComplete(selectedStage.id)}
-                      className="w-full px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
+                      className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                     >
                       <CheckCircle className="w-5 h-5" />
                       Mark Stage as Complete
@@ -299,9 +299,9 @@ export default function DFIRDetailPage() {
                 </div>
               </>
             ) : (
-              <div className="bg-neutral-900 p-12 rounded-lg border border-neutral-800 text-center">
-                <Play className="w-16 h-16 text-neutral-400 mx-auto mb-4" />
-                <p className="text-body text-neutral-400">Select a stage to begin training</p>
+              <div className="bg-white p-12 rounded-lg border border-gray-200 text-center">
+                <Play className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <p className="text-body text-gray-600">Select a stage to begin training</p>
               </div>
             )}
           </div>

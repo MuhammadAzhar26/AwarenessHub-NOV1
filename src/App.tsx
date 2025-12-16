@@ -15,6 +15,7 @@ import ToolDetailPage from '@/pages/ToolDetailPage'
 import DFIRDetailPage from '@/pages/DFIRDetailPage'
 import SimulationPage from '@/pages/SimulationPage'
 import SecurityChecklistPage from '@/pages/SecurityChecklistPage'
+import BadgesPage from '@/pages/BadgesPage'
 import FeedbackButton from '@/components/FeedbackButton'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -119,6 +120,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <SimulationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/badges"
+        element={
+          <ProtectedRoute>
+            <BadgesPage />
           </ProtectedRoute>
         }
       />

@@ -105,10 +105,10 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading...</div>
+          <div className="text-gray-600">Loading...</div>
         </div>
       </div>
     )
@@ -120,58 +120,58 @@ export default function DashboardPage() {
   }).length
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       <div className="container mx-auto py-8">
         {/* Welcome Header */}
         <div className="mb-8">
-          <h1 className="text-h1 font-bold text-neutral-100 mb-2">
+          <h1 className="text-h1 font-bold text-gray-900 mb-2">
             Welcome back, {profile?.username}!
           </h1>
-          <p className="text-body-lg text-neutral-400">
+          <p className="text-body-lg text-gray-600">
             Continue your cybersecurity learning journey
           </p>
         </div>
 
         {/* Quick Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <div className="flex items-center gap-3 mb-2">
-              <Trophy className="w-6 h-6 text-primary-500" />
-              <span className="text-small font-medium text-neutral-400">Total Points</span>
+              <Trophy className="w-6 h-6 text-blue-600" />
+              <span className="text-small font-medium text-gray-600">Total Points</span>
             </div>
-            <p className="text-h2 font-bold text-neutral-100">{profile?.total_points || 0}</p>
+            <p className="text-h2 font-bold text-gray-900">{profile?.total_points || 0}</p>
           </div>
 
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <div className="flex items-center gap-3 mb-2">
-              <CheckCircle className="w-6 h-6 text-success-600" />
-              <span className="text-small font-medium text-neutral-400">Completed Modules</span>
+              <CheckCircle className="w-6 h-6 text-green-600" />
+              <span className="text-small font-medium text-gray-600">Completed Modules</span>
             </div>
-            <p className="text-h2 font-bold text-neutral-100">{completedModules}/12</p>
+            <p className="text-h2 font-bold text-gray-900">{completedModules}/12</p>
           </div>
 
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <div className="flex items-center gap-3 mb-2">
-              <Target className="w-6 h-6 text-warning-700" />
-              <span className="text-small font-medium text-neutral-400">Current Level</span>
+              <Target className="w-6 h-6 text-blue-600" />
+              <span className="text-small font-medium text-gray-600">Current Level</span>
             </div>
-            <p className="text-h2 font-bold text-neutral-100">{profile?.level || 1}</p>
+            <p className="text-h2 font-bold text-gray-900">{profile?.level || 1}</p>
           </div>
 
-          <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 shadow-dark-card">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <div className="flex items-center gap-3 mb-2">
-              <Award className="w-6 h-6 text-primary-500" />
-              <span className="text-small font-medium text-neutral-400">Badges Earned</span>
+              <Award className="w-6 h-6 text-blue-600" />
+              <span className="text-small font-medium text-gray-600">Badges Earned</span>
             </div>
-            <p className="text-h2 font-bold text-neutral-100">{badgeCount}</p>
+            <p className="text-h2 font-bold text-gray-900">{badgeCount}</p>
           </div>
         </div>
 
         {/* Modules Grid */}
         <div className="mb-8">
-          <h2 className="text-h2 font-bold text-neutral-100 mb-6">Learning Modules</h2>
+          <h2 className="text-h2 font-bold text-gray-900 mb-6">Learning Modules</h2>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
             {modules.map((module) => {
               const moduleProgress = progress.find(p => p.module_id === module.id)
@@ -183,26 +183,26 @@ export default function DashboardPage() {
                 <Link
                   key={module.id}
                   to={`/module/${module.id}`}
-                  className="bg-neutral-900 p-6 rounded-lg border border-neutral-800 hover:border-primary-500 hover:shadow-dark-card-hover transition-all duration-250 hover:-translate-y-1 group"
+                  className="bg-white p-6 rounded-lg border border-gray-200 hover:border-blue-600 hover:shadow-lg transition-all duration-250 hover:-translate-y-1 group"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-primary-900/30 rounded-lg flex items-center justify-center group-hover:bg-primary-500 transition-colors">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors">
                       <span className="text-2xl">{module.icon === 'lock' ? '🔐' : '🛡️'}</span>
                     </div>
-                    {isCompleted && <CheckCircle className="w-6 h-6 text-success-600" />}
+                    {isCompleted && <CheckCircle className="w-6 h-6 text-green-600" />}
                   </div>
                   
-                  <h3 className="text-body font-semibold text-neutral-100 mb-2">{module.title}</h3>
-                  <p className="text-small text-neutral-400 mb-4 line-clamp-2">{module.description}</p>
+                  <h3 className="text-body font-semibold text-gray-900 mb-2">{module.title}</h3>
+                  <p className="text-small text-gray-600 mb-4 line-clamp-2">{module.description}</p>
                   
                   <div className="space-y-2">
-                    <div className="flex justify-between text-small text-neutral-400">
+                    <div className="flex justify-between text-small text-gray-600">
                       <span>{completedStages}/{module.total_stages} stages</span>
                       <span>{Math.round(progressPercent)}%</span>
                     </div>
-                    <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-primary-500 transition-all duration-300"
+                        className="h-full bg-blue-600 transition-all duration-300"
                         style={{ width: `${progressPercent}%` }}
                       />
                     </div>
@@ -210,9 +210,9 @@ export default function DashboardPage() {
 
                   <div className="mt-4">
                     <span className={`inline-block px-3 py-1 rounded-full text-caption font-medium ${
-                      module.difficulty === 'Beginner' ? 'bg-success-900/30 text-success-500' :
-                      module.difficulty === 'Intermediate' ? 'bg-warning-900/30 text-warning-500' :
-                      'bg-error-900/30 text-error-500'
+                      module.difficulty === 'Beginner' ? 'bg-green-100 text-green-700' :
+                      module.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
                     }`}>
                       {module.difficulty}
                     </span>
@@ -224,10 +224,19 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
+          <Link
+            to="/badges"
+            className="bg-gradient-to-br from-purple-500 to-purple-600 p-8 rounded-lg text-white hover:shadow-lg transition-all duration-250 hover:-translate-y-1"
+          >
+            <Award className="w-12 h-12 mb-4" />
+            <h3 className="text-h3 font-semibold mb-2">View Badges</h3>
+            <p className="text-body opacity-90">Explore all achievements and unlock criteria</p>
+          </Link>
+
           <Link
             to="/leaderboard"
-            className="bg-gradient-to-br from-primary-500 to-primary-600 p-8 rounded-lg text-white hover:shadow-dark-card-hover transition-all duration-250 hover:-translate-y-1"
+            className="bg-gradient-to-br from-blue-500 to-blue-600 p-8 rounded-lg text-white hover:shadow-lg transition-all duration-250 hover:-translate-y-1"
           >
             <TrendingUp className="w-12 h-12 mb-4" />
             <h3 className="text-h3 font-semibold mb-2">View Leaderboard</h3>
@@ -236,7 +245,7 @@ export default function DashboardPage() {
 
           <Link
             to="/profile"
-            className="bg-gradient-to-br from-neutral-800 to-neutral-900 p-8 rounded-lg text-white hover:shadow-dark-card-hover transition-all duration-250 hover:-translate-y-1"
+            className="bg-gradient-to-br from-blue-600 to-indigo-600 p-8 rounded-lg text-white hover:shadow-lg transition-all duration-250 hover:-translate-y-1"
           >
             <Award className="w-12 h-12 mb-4" />
             <h3 className="text-h3 font-semibold mb-2">Your Profile</h3>

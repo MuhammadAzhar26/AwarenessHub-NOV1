@@ -71,10 +71,10 @@ export default function LeaderboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="container mx-auto py-16 text-center">
-          <div className="text-neutral-400">Loading leaderboard...</div>
+          <div className="text-gray-600">Loading leaderboard...</div>
         </div>
       </div>
     )
@@ -84,29 +84,29 @@ export default function LeaderboardPage() {
   const rest = leaderboard.slice(3)
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       <div className="container mx-auto py-8">
         <div className="text-center mb-12">
-          <h1 className="text-h1 font-bold text-neutral-100 mb-4">Leaderboard</h1>
-          <p className="text-body-lg text-neutral-400">
+          <h1 className="text-h1 font-bold text-gray-900 mb-4">Leaderboard</h1>
+          <p className="text-body-lg text-gray-600">
             Compete with other learners and climb to the top!
           </p>
         </div>
 
         {/* Current User Rank */}
         {currentUserRank && (
-          <div className="max-w-3xl mx-auto mb-8 bg-primary-900/20 p-6 rounded-lg border-2 border-primary-600">
+          <div className="max-w-3xl mx-auto mb-8 bg-blue-50 p-6 rounded-lg border-2 border-blue-600">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Trophy className="w-8 h-8 text-primary-500" />
+                <Trophy className="w-8 h-8 text-blue-600" />
                 <div>
-                  <p className="text-body font-semibold text-neutral-100">Your Rank</p>
-                  <p className="text-small text-neutral-400">Keep learning to improve your position!</p>
+                  <p className="text-body font-semibold text-gray-900">Your Rank</p>
+                  <p className="text-small text-gray-600">Keep learning to improve your position!</p>
                 </div>
               </div>
-              <div className="text-h2 font-bold text-primary-500">#{currentUserRank}</div>
+              <div className="text-h2 font-bold text-blue-600">#{currentUserRank}</div>
             </div>
           </div>
         )}
@@ -141,18 +141,18 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Rest of Leaderboard */}
-        <div className="max-w-4xl mx-auto bg-neutral-900 rounded-lg border border-neutral-800 shadow-dark-card overflow-hidden">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-neutral-800 border-b border-neutral-700">
+              <thead className="bg-gray-100 border-b border-gray-300">
                 <tr>
-                  <th className="px-6 py-4 text-left text-small font-semibold text-neutral-100">Rank</th>
-                  <th className="px-6 py-4 text-left text-small font-semibold text-neutral-100">Username</th>
-                  <th className="px-6 py-4 text-right text-small font-semibold text-neutral-100">Level</th>
-                  <th className="px-6 py-4 text-right text-small font-semibold text-neutral-100">Points</th>
+                  <th className="px-6 py-4 text-left text-small font-semibold text-gray-900">Rank</th>
+                  <th className="px-6 py-4 text-left text-small font-semibold text-gray-900">Username</th>
+                  <th className="px-6 py-4 text-right text-small font-semibold text-gray-900">Level</th>
+                  <th className="px-6 py-4 text-right text-small font-semibold text-gray-900">Points</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-800">
+              <tbody className="divide-y divide-gray-200">
                 {rest.map((entry) => {
                   const isCurrentUser = entry.user_id === user?.id
 
@@ -161,30 +161,30 @@ export default function LeaderboardPage() {
                       key={entry.user_id}
                       className={`transition-colors ${
                         isCurrentUser 
-                          ? 'bg-primary-900/20 border-l-4 border-l-primary-500' 
-                          : 'hover:bg-neutral-800/50'
+                          ? 'bg-blue-50 border-l-4 border-l-blue-600' 
+                          : 'hover:bg-gray-50'
                       }`}
                     >
                       <td className="px-6 py-4">
-                        <span className="text-body font-semibold text-neutral-100">
+                        <span className="text-body font-semibold text-gray-900">
                           #{entry.rank}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-primary-900/30 rounded-full flex items-center justify-center text-body font-semibold text-primary-400">
+                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-body font-semibold text-blue-700">
                             {entry.username.charAt(0).toUpperCase()}
                           </div>
-                          <span className={`text-body ${isCurrentUser ? 'font-semibold' : ''} text-neutral-100`}>
+                          <span className={`text-body ${isCurrentUser ? 'font-semibold' : ''} text-gray-900`}>
                             {entry.username}
-                            {isCurrentUser && <span className="ml-2 text-primary-500">(You)</span>}
+                            {isCurrentUser && <span className="ml-2 text-blue-600">(You)</span>}
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-right text-body text-neutral-100">
+                      <td className="px-6 py-4 text-right text-body text-gray-900">
                         {entry.level}
                       </td>
-                      <td className="px-6 py-4 text-right text-body font-semibold text-neutral-100">
+                      <td className="px-6 py-4 text-right text-body font-semibold text-gray-900">
                         {entry.total_points}
                       </td>
                     </tr>
@@ -196,8 +196,8 @@ export default function LeaderboardPage() {
 
           {leaderboard.length === 0 && (
             <div className="text-center py-12">
-              <Trophy className="w-16 h-16 text-neutral-300 mx-auto mb-4" />
-              <p className="text-body text-neutral-400">No users on leaderboard yet. Be the first!</p>
+              <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <p className="text-body text-gray-600">No users on leaderboard yet. Be the first!</p>
             </div>
           )}
         </div>

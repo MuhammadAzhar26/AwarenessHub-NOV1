@@ -2095,19 +2095,19 @@ export default function SecurityChecklistPage() {
   })).filter(category => category.items.length > 0)
 
   return (
-    <div className="min-h-screen bg-[#0a0b0f]">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-block p-4 bg-primary-500/10 rounded-full mb-4">
-            <Shield className="w-12 h-12 text-primary-500" />
+          <div className="inline-block p-4 bg-blue-50 rounded-full mb-4">
+            <Shield className="w-12 h-12 text-blue-600" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-3">
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">
             Personal Security Checklist
           </h1>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             A comprehensive guide to securing your digital life. Track your progress and 
             improve your security posture step by step.
           </p>
@@ -2116,12 +2116,12 @@ export default function SecurityChecklistPage() {
         {/* Progress Overview */}
         {!selectedCategory && (
           <div className="mb-8">
-            <div className="bg-[#13141a] rounded-xl p-6 border border-neutral-800">
+            <div className="bg-white rounded-xl p-6 border border-gray-200">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-white">Your Progress</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Your Progress</h2>
                 <button
                   onClick={() => setShowStats(!showStats)}
-                  className="text-primary-500 hover:text-primary-400 text-sm font-medium"
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                 >
                   {showStats ? 'Hide' : 'Show'} Details
                 </button>
@@ -2129,13 +2129,13 @@ export default function SecurityChecklistPage() {
               
               {/* Main Progress Bar */}
               <div className="mb-4">
-                <div className="flex justify-between text-sm text-neutral-400 mb-2">
+                <div className="flex justify-between text-sm text-gray-600 mb-2">
                   <span>Overall Completion</span>
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-gray-900">
                     {currentStats.completed} / {currentStats.total} ({currentStats.percentage}%)
                   </span>
                 </div>
-                <div className="h-3 bg-neutral-800 rounded-full overflow-hidden">
+                <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-gradient-to-r from-primary-500 to-emerald-500 transition-all duration-500"
                     style={{ width: `${currentStats.percentage}%` }}
@@ -2145,15 +2145,15 @@ export default function SecurityChecklistPage() {
 
               {/* Detailed Stats */}
               {showStats && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-neutral-800">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
                   {(['Essential', 'Basic', 'Optional', 'Advanced'] as Priority[]).map(priority => {
                     const stat = currentStats.priorityStats[priority]
                     const pct = stat.total > 0 ? Math.round((stat.completed / stat.total) * 100) : 0
                     return (
                       <div key={priority} className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">{pct}%</div>
-                        <div className="text-xs text-neutral-400 mb-2">{priority}</div>
-                        <div className="text-xs text-neutral-500">
+                        <div className="text-2xl font-bold text-gray-900 mb-1">{pct}%</div>
+                        <div className="text-xs text-gray-600 mb-2">{priority}</div>
+                        <div className="text-xs text-gray-500">
                           {stat.completed} / {stat.total}
                         </div>
                       </div>
@@ -2168,7 +2168,7 @@ export default function SecurityChecklistPage() {
         {/* Progress Visualization */}
         {!selectedCategory && (
           <div className="mb-8">
-            <div className="bg-[#13141a] rounded-xl p-6 border border-neutral-800 flex items-center justify-center">
+            <div className="bg-white rounded-xl p-6 border border-gray-200 flex items-center justify-center">
               <div className="relative" style={{ width: '200px', height: '200px' }}>
                 <svg viewBox="0 0 100 100" className="transform -rotate-90">
                   {/* Background circles */}
@@ -2202,8 +2202,8 @@ export default function SecurityChecklistPage() {
                   </defs>
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="text-4xl font-bold text-white">{currentStats.percentage}%</div>
-                  <div className="text-sm text-neutral-400">Complete</div>
+                  <div className="text-4xl font-bold text-gray-900">{currentStats.percentage}%</div>
+                  <div className="text-sm text-gray-600">Complete</div>
                 </div>
               </div>
             </div>
@@ -2211,11 +2211,11 @@ export default function SecurityChecklistPage() {
         )}
 
         {/* Controls */}
-        <div className="bg-[#13141a] rounded-lg border border-neutral-800 p-4 mb-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
           <div className="flex flex-wrap items-center gap-4">
             {/* Priority Filters */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-neutral-400 mr-2">Show:</span>
+              <span className="text-sm text-gray-600 mr-2">Show:</span>
               {(['Essential', 'Basic', 'Optional', 'Advanced'] as Priority[]).map(priority => (
                 <button
                   key={priority}
@@ -2227,9 +2227,9 @@ export default function SecurityChecklistPage() {
                         : priority === 'Basic'
                         ? 'bg-orange-500 text-white'
                         : priority === 'Optional'
-                        ? 'bg-yellow-500 text-neutral-900'
+                        ? 'bg-yellow-500 text-gray-900'
                         : 'bg-blue-500 text-white'
-                      : 'bg-neutral-800 text-neutral-500 hover:bg-neutral-700'
+                      : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                   }`}
                 >
                   {priority}
@@ -2241,13 +2241,13 @@ export default function SecurityChecklistPage() {
             <div className="ml-auto flex items-center gap-2">
               <button
                 onClick={exportProgress}
-                className="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-sm transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg text-sm transition-colors"
                 title="Export progress"
               >
                 <Download className="w-4 h-4" />
                 Export
               </button>
-              <label className="flex items-center gap-2 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-sm transition-colors cursor-pointer">
+              <label className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg text-sm transition-colors cursor-pointer">
                 <Upload className="w-4 h-4" />
                 Import
                 <input
@@ -2282,30 +2282,30 @@ export default function SecurityChecklistPage() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`bg-[#13141a] border rounded-xl p-6 text-left hover:border-primary-500 transition-all ${
-                    categoryPercentage === 100 ? 'border-green-500/50' : 'border-neutral-800'
+                  className={`bg-white border rounded-xl p-6 text-left hover:border-blue-600 transition-all ${
+                    categoryPercentage === 100 ? 'border-green-500/50' : 'border-gray-200'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 bg-primary-500/10 rounded-lg">
-                      <CategoryIcon className="w-6 h-6 text-primary-500" />
+                    <div className="p-3 bg-blue-50 rounded-lg">
+                      <CategoryIcon className="w-6 h-6 text-blue-600" />
                     </div>
                     {categoryPercentage === 100 && (
                       <CheckCircle2 className="w-6 h-6 text-green-500" />
                     )}
                   </div>
                   
-                  <h3 className="text-lg font-semibold text-white mb-2">{category.title}</h3>
-                  <p className="text-sm text-neutral-400 mb-4 line-clamp-2">{category.description}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{category.title}</h3>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{category.description}</p>
                   
                   <div className="space-y-2">
-                    <div className="flex justify-between text-xs text-neutral-500">
+                    <div className="flex justify-between text-xs text-gray-600">
                       <span>{categoryCompleted} / {categoryTotal} completed</span>
                       <span>{categoryPercentage}%</span>
                     </div>
-                    <div className="h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-primary-500 transition-all duration-300"
+                        className="h-full bg-blue-600 transition-all duration-300"
                         style={{ width: `${categoryPercentage}%` }}
                       />
                     </div>
@@ -2320,7 +2320,7 @@ export default function SecurityChecklistPage() {
             {/* Back Button */}
             <button
               onClick={() => setSelectedCategory(null)}
-              className="flex items-center gap-2 text-primary-500 hover:text-primary-400 transition-colors"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
             >
               <ChevronDown className="w-5 h-5 rotate-90" />
               <span>Back to all categories</span>
@@ -2332,22 +2332,22 @@ export default function SecurityChecklistPage() {
               .map(category => {
                 const CategoryIcon = category.icon
                 return (
-                  <div key={category.id} className="bg-[#13141a] rounded-xl border border-neutral-800 overflow-hidden">
+                  <div key={category.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                     {/* Category Header */}
-                    <div className="p-6 border-b border-neutral-800">
+                    <div className="p-6 border-b border-gray-200">
                       <div className="flex items-center gap-4 mb-3">
-                        <div className="p-3 bg-primary-500/10 rounded-lg">
-                          <CategoryIcon className="w-8 h-8 text-primary-500" />
+                        <div className="p-3 bg-blue-50 rounded-lg">
+                          <CategoryIcon className="w-8 h-8 text-blue-600" />
                         </div>
                         <div>
-                          <h2 className="text-2xl font-bold text-white">{category.title}</h2>
-                          <p className="text-neutral-400">{category.description}</p>
+                          <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
+                          <p className="text-gray-600">{category.description}</p>
                         </div>
                       </div>
                     </div>
 
                     {/* Checklist Items */}
-                    <div className="divide-y divide-neutral-800">
+                    <div className="divide-y divide-gray-200">
                       <div className="p-6">
                         {category.items.map(item => {
                           const isCompleted = completedItems.has(item.id)
@@ -2356,17 +2356,17 @@ export default function SecurityChecklistPage() {
                           return (
                             <div key={item.id} className="mb-4 last:mb-0">
                               <div className={`flex items-start gap-4 p-4 rounded-lg transition-colors ${
-                                isCompleted ? 'bg-green-500/5' : 'hover:bg-neutral-800/50'
+                                isCompleted ? 'bg-green-500/5' : 'hover:bg-gray-50'
                               }`}>
                                 {/* Checkbox */}
                                 <button
                                   onClick={() => toggleItem(item.id)}
-                                  className="flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
+                                  className="flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-blue-600 rounded"
                                 >
                                   <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                                     isCompleted
                                       ? 'bg-green-600 border-green-600'
-                                      : 'border-neutral-600 hover:border-primary-500'
+                                      : 'border-gray-400 hover:border-blue-600'
                                   }`}>
                                     {isCompleted && (
                                       <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2377,19 +2377,19 @@ export default function SecurityChecklistPage() {
                                 </button>
 
                                 {/* Icon placeholder */}
-                                <div className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                                  <Lock className="w-5 h-5 text-neutral-500" />
+                                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                  <Lock className="w-5 h-5 text-gray-500" />
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
                                   <h4 className={`font-semibold text-base mb-1 ${
-                                    isCompleted ? 'text-neutral-500 line-through' : 'text-white'
+                                    isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'
                                   }`}>
                                     {item.title}
                                   </h4>
                                   <p className={`text-sm ${
-                                    isCompleted ? 'text-neutral-600' : 'text-neutral-400'
+                                    isCompleted ? 'text-gray-400' : 'text-gray-600'
                                   }`}>
                                     {item.description}
                                   </p>
@@ -2403,7 +2403,7 @@ export default function SecurityChecklistPage() {
                                       : item.priority === 'Basic'
                                       ? 'bg-orange-500 text-white'
                                       : item.priority === 'Optional'
-                                      ? 'bg-yellow-500 text-neutral-900'
+                                      ? 'bg-yellow-500 text-gray-900'
                                       : 'bg-blue-500 text-white'
                                   }`}>
                                     {item.priority}
@@ -2413,11 +2413,11 @@ export default function SecurityChecklistPage() {
                                   {item.details && (
                                     <button
                                       onClick={() => toggleItemExpand(item.id)}
-                                      className="p-2 hover:bg-neutral-800 rounded-lg transition-colors"
+                                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                                       title="Show details"
                                     >
                                       <Info className={`w-5 h-5 transition-transform ${
-                                        isExpanded ? 'text-primary-500' : 'text-neutral-500'
+                                        isExpanded ? 'text-blue-600' : 'text-gray-500'
                                       }`} />
                                     </button>
                                   )}
@@ -2427,8 +2427,8 @@ export default function SecurityChecklistPage() {
                               {/* Expanded Details */}
                               {isExpanded && item.details && (
                                 <div className="px-3 pb-4 pl-16">
-                                  <div className="bg-neutral-900/50 rounded-lg p-4 border border-neutral-800">
-                                    <p className="text-sm text-neutral-300 leading-relaxed">
+                                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                    <p className="text-sm text-gray-700 leading-relaxed">
                                       {item.details}
                                     </p>
                                   </div>
@@ -2447,26 +2447,26 @@ export default function SecurityChecklistPage() {
 
         {/* Footer */}
         <div className="mt-12 p-6 bg-white rounded-lg shadow-sm text-center">
-          <p className="text-neutral-600 mb-4">
+          <p className="text-gray-600 mb-4">
             Want to learn more about cybersecurity? Check out our interactive training modules!
           </p>
           <Link
             to="/signup"
-            className="inline-block px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
+            className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
           >
             Start Free Training
           </Link>
         </div>
 
         {/* Attribution */}
-        <div className="mt-6 text-center text-sm text-neutral-500">
+        <div className="mt-6 text-center text-sm text-gray-500">
           <p>
             Inspired by{' '}
             <a
               href="https://digital-defense.io/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-500 hover:text-primary-600"
+              className="text-blue-600 hover:text-blue-700"
             >
               digital-defense.io
             </a>
@@ -2475,7 +2475,7 @@ export default function SecurityChecklistPage() {
               href="https://github.com/Lissy93/personal-security-checklist"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-500 hover:text-primary-600"
+              className="text-blue-600 hover:text-blue-700"
             >
               Personal Security Checklist
             </a>
