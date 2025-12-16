@@ -49,8 +49,8 @@ export default function EmailHeaderAnalysis({
 
   return (
     <div className="space-y-6">
-      <div className="bg-primary-900/20 border border-primary-700 rounded-lg p-4">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Review email headers and flag at least {minCorrect} suspicious
           entries that indicate phishing or spoofing attempts.
         </p>

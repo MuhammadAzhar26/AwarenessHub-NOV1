@@ -68,8 +68,8 @@ export default function BruteForceEstimator({
 
   return (
     <div className="space-y-6">
-      <div className="bg-primary-900/20 border border-primary-700 rounded-lg p-4">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Configure a password profile that achieves at least{' '}
           <span className="text-primary-300 font-mono">{requiredComplexity} bits</span> of entropy
           to resist brute force attacks.

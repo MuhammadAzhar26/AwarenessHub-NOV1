@@ -77,7 +77,7 @@ export default function WalkthroughSection({ toolName }: WalkthroughSectionProps
   }
 
   if (loading) {
-    return <div className="text-neutral-400">Loading walkthrough...</div>
+    return <div className="text-gray-600">Loading walkthrough...</div>
   }
 
   if (walkthroughs.length === 0) {
@@ -85,9 +85,9 @@ export default function WalkthroughSection({ toolName }: WalkthroughSectionProps
   }
 
   return (
-    <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-8">
+    <div className="bg-white rounded-lg border border-gray-200 p-8">
       <div className="flex items-center gap-3 mb-6">
-        <Book className="w-6 h-6 text-primary-400" />
+        <Book className="w-6 h-6 text-blue-600" />
         <h2 className="text-h3 text-white font-semibold">Comprehensive Walkthrough</h2>
       </div>
 
@@ -95,37 +95,37 @@ export default function WalkthroughSection({ toolName }: WalkthroughSectionProps
         {walkthroughs.map((walkthrough) => {
           const isExpanded = expandedSections.has(walkthrough.id)
           const Icon = categoryIcons[walkthrough.category as keyof typeof categoryIcons] || Book
-          const iconColor = categoryColors[walkthrough.category as keyof typeof categoryColors] || 'text-primary-400'
+          const iconColor = categoryColors[walkthrough.category as keyof typeof categoryColors] || 'text-blue-600'
 
           return (
             <div
               key={walkthrough.id}
-              className="bg-neutral-950 rounded-lg border border-neutral-800 overflow-hidden"
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden"
             >
               {/* Header */}
               <button
                 onClick={() => toggleSection(walkthrough.id)}
-                className="w-full flex items-center justify-between p-5 hover:bg-neutral-900 transition-colors"
+                className="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <Icon className={`w-5 h-5 ${iconColor}`} />
                   <div className="text-left">
-                    <h3 className="text-body text-white font-medium">{walkthrough.title}</h3>
-                    <p className="text-caption text-neutral-400 capitalize">{walkthrough.category}</p>
+                    <h3 className="text-body text-gray-900 font-medium">{walkthrough.title}</h3>
+                    <p className="text-caption text-gray-600 capitalize">{walkthrough.category}</p>
                   </div>
                 </div>
                 {isExpanded ? (
-                  <ChevronUp className="w-5 h-5 text-neutral-400" />
+                  <ChevronUp className="w-5 h-5 text-gray-600" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-neutral-400" />
+                  <ChevronDown className="w-5 h-5 text-gray-600" />
                 )}
               </button>
 
               {/* Content */}
               {isExpanded && (
-                <div className="p-5 pt-0 border-t border-neutral-800">
+                <div className="p-5 pt-0 border-t border-gray-200">
                   <div className="prose prose-invert max-w-none">
-                    <div className="text-body text-neutral-300 whitespace-pre-wrap leading-relaxed">
+                    <div className="text-body text-gray-700 whitespace-pre-wrap leading-relaxed">
                       {walkthrough.content}
                     </div>
                   </div>
@@ -136,22 +136,22 @@ export default function WalkthroughSection({ toolName }: WalkthroughSectionProps
                       {walkthrough.code_examples.map((example, idx) => (
                         <div
                           key={idx}
-                          className="relative bg-neutral-900 rounded-lg border border-neutral-800 overflow-hidden"
+                          className="relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
                         >
-                          <div className="flex items-center justify-between px-4 py-2 bg-neutral-900 border-b border-neutral-800">
-                            <span className="text-caption text-neutral-400 uppercase font-mono">
+                          <div className="flex items-center justify-between px-4 py-2 bg-gray-100 border-b border-gray-200">
+                            <span className="text-caption text-gray-600 uppercase font-mono">
                               {example.language}
                             </span>
                             <button
                               onClick={() => copyCode(example.code, `${walkthrough.id}-${idx}`)}
-                              className="flex items-center gap-2 text-caption text-primary-400 hover:text-primary-300 transition-colors"
+                              className="flex items-center gap-2 text-caption text-blue-600 hover:text-blue-500 transition-colors"
                             >
                               <Copy className="w-4 h-4" />
                               {copiedCode === `${walkthrough.id}-${idx}` ? 'Copied!' : 'Copy'}
                             </button>
                           </div>
                           <div className="p-4">
-                            <pre className="text-caption text-neutral-200 font-mono overflow-x-auto">
+                            <pre className="text-caption text-gray-800 font-mono overflow-x-auto">
                               <code>{example.code}</code>
                             </pre>
                           </div>
@@ -166,9 +166,9 @@ export default function WalkthroughSection({ toolName }: WalkthroughSectionProps
         })}
       </div>
 
-      <div className="mt-6 p-4 bg-primary-500/10 border border-primary-500/30 rounded-lg">
-        <p className="text-caption text-neutral-300">
-          <span className="font-medium text-primary-400">Pro Tip:</span> Practice these commands in a safe lab environment before using in production.
+      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-caption text-gray-700">
+          <span className="font-medium text-blue-600">Pro Tip:</span> Practice these commands in a safe lab environment before using in production.
         </p>
       </div>
     </div>

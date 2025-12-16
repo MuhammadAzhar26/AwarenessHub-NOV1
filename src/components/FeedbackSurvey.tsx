@@ -167,7 +167,7 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
     return (
       <div
         id="feedback-survey-modal"
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9998] p-4"
+        className="fixed inset-0 bg-gray-900/50 flex items-center justify-center z-[9998] p-4"
       >
         <div className="bg-white rounded-lg p-8 max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -199,7 +199,7 @@ export default function FeedbackSurvey({ isOpen, onClose, currentPage }: Feedbac
   return (
     <div
       id="feedback-survey-modal"
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-[9998] p-2 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 bg-gray-900/50 flex items-start sm:items-center justify-center z-[9998] p-2 sm:p-4 overflow-y-auto"
     >
       <div className="bg-white rounded-lg max-w-2xl w-full my-2 sm:my-8 shadow-xl max-h-[98vh] overflow-y-auto">
         {/* Header */}

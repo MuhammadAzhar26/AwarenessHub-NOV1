@@ -52,26 +52,26 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
   }
 
   return (
-    <div className="bg-neutral-900 rounded-lg border border-neutral-800">
+    <div className="bg-white rounded-lg border border-gray-200">
       {/* Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-4 flex items-center justify-between hover:bg-neutral-800/50 transition-colors"
+        className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <FileText className="w-5 h-5 text-primary-400" />
-          <h3 className="text-h3 font-bold text-neutral-100">Guided Transcript & Commands</h3>
+          <FileText className="w-5 h-5 text-blue-600" />
+          <h3 className="text-h3 font-bold text-gray-900">Guided Transcript & Commands</h3>
         </div>
         {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-neutral-400" />
+          <ChevronUp className="w-5 h-5 text-gray-600" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-neutral-400" />
+          <ChevronDown className="w-5 h-5 text-gray-600" />
         )}
       </button>
 
       {/* Transcript Content */}
       {isOpen && (
-        <div className="border-t border-neutral-800">
+        <div className="border-t border-gray-200">
           <div className="p-4 space-y-3 max-h-[600px] overflow-y-auto">
             {transcripts
               .sort((a, b) => a.order_index - b.order_index)
@@ -81,12 +81,12 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
                 return (
                   <div
                     key={section.id}
-                    className="bg-neutral-800 rounded-lg border border-neutral-700 overflow-hidden"
+                    className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
                   >
                     {/* Section Header */}
                     <button
                       onClick={() => toggleSection(section.id)}
-                      className="w-full p-3 flex items-center justify-between hover:bg-neutral-700/50 transition-colors"
+                      className="w-full p-3 flex items-center justify-between hover:bg-gray-100 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         <button
@@ -94,28 +94,28 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
                             e.stopPropagation()
                             onTimestampClick(section.start_time)
                           }}
-                          className="px-2 py-1 bg-primary-500/20 text-primary-400 rounded text-small font-mono hover:bg-primary-500/30 transition-colors"
+                          className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-small font-mono hover:bg-blue-100 transition-colors"
                         >
                           {formatTime(section.start_time)}
                         </button>
-                        <span className="text-body font-semibold text-neutral-100">
+                        <span className="text-body font-semibold text-gray-900">
                           {section.section_title}
                         </span>
                       </div>
                       {isExpanded ? (
-                        <ChevronUp className="w-4 h-4 text-neutral-400" />
+                        <ChevronUp className="w-4 h-4 text-gray-600" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-neutral-400" />
+                        <ChevronDown className="w-4 h-4 text-gray-600" />
                       )}
                     </button>
 
                     {/* Section Content */}
                     {isExpanded && (
-                      <div className="p-4 border-t border-neutral-700 space-y-4">
+                      <div className="p-4 border-t border-gray-200 space-y-4">
                         {/* Text Content */}
                         <div className="prose prose-sm prose-invert max-w-none">
                           <div
-                            className="text-small text-neutral-300 whitespace-pre-wrap"
+                            className="text-small text-gray-700 whitespace-pre-wrap"
                             dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br/>') }}
                           />
                         </div>
@@ -128,14 +128,14 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
                               const isCopied = copiedCode === codeId
 
                               return (
-                                <div key={idx} className="bg-neutral-900 rounded-lg border border-neutral-700 overflow-hidden">
-                                  <div className="px-3 py-2 bg-neutral-800/50 border-b border-neutral-700 flex items-center justify-between">
-                                    <span className="text-caption text-neutral-400">
+                                <div key={idx} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                                  <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between">
+                                    <span className="text-caption text-gray-600">
                                       {example.description}
                                     </span>
                                     <button
                                       onClick={() => copyCode(example.code, codeId)}
-                                      className="flex items-center gap-1 text-caption text-neutral-400 hover:text-primary-400 transition-colors"
+                                      className="flex items-center gap-1 text-caption text-gray-600 hover:text-blue-600 transition-colors"
                                     >
                                       {isCopied ? (
                                         <>
@@ -151,7 +151,7 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
                                     </button>
                                   </div>
                                   <div className="p-3">
-                                    <pre className="text-small font-mono text-neutral-100 overflow-x-auto">
+                                    <pre className="text-small font-mono text-gray-900 overflow-x-auto">
                                       <code className={example.language === 'bash' ? 'language-bash' : ''}>
                                         {example.code}
                                       </code>
@@ -164,7 +164,7 @@ export default function TranscriptPanel({ transcripts, onTimestampClick }: Trans
                         )}
 
                         {/* Time Range */}
-                        <div className="text-caption text-neutral-500 pt-2 border-t border-neutral-700">
+                        <div className="text-caption text-gray-500 pt-2 border-t border-gray-200">
                           Duration: {formatTime(section.start_time)} - {formatTime(section.end_time)}
                         </div>
                       </div>

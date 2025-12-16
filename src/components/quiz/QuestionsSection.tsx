@@ -127,7 +127,7 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
   }
 
   if (loading) {
-    return <div className="text-neutral-400">Loading questions...</div>
+    return <div className="text-gray-600">Loading questions...</div>
   }
 
   if (questions.length === 0) {
@@ -137,11 +137,11 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
   const { correct, total } = calculateScore()
 
   return (
-    <div className="bg-neutral-900 rounded-lg border border-neutral-800 p-8">
+    <div className="bg-white rounded-lg border border-gray-200 p-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-h3 text-white font-semibold">Tool Usage Questions</h2>
+        <h2 className="text-h3 text-gray-900 font-semibold">Tool Usage Questions</h2>
         {showResults && total > 0 && (
-          <div className="text-primary-400 font-medium">
+          <div className="text-blue-600 font-medium">
             Score: {correct}/{total} ({Math.round((correct/total)*100)}%)
           </div>
         )}
@@ -156,12 +156,12 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
           return (
             <div
               key={question.id}
-              className="bg-neutral-950 rounded-lg border border-neutral-800 p-6"
+              className="bg-white rounded-lg border border-gray-200 p-6"
             >
               <div className="flex items-start gap-3 mb-4">
-                <span className="text-primary-400 font-medium">Q{index + 1}</span>
+                <span className="text-blue-600 font-medium">Q{index + 1}</span>
                 <div className="flex-1">
-                  <p className="text-body text-white mb-2">{question.question_text}</p>
+                  <p className="text-body text-gray-900 mb-2">{question.question_text}</p>
                   <span className={`text-caption px-2 py-1 rounded ${
                     question.difficulty === 'basic'
                       ? 'bg-green-500/10 text-green-400'
@@ -187,10 +187,10 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
                             ? 'bg-green-500/10 border-green-500/50'
                             : isSelected
                             ? 'bg-red-500/10 border-red-500/50'
-                            : 'bg-neutral-900 border-neutral-800'
+                            : 'bg-white border-gray-200'
                           : isSelected
-                          ? 'bg-primary-500/10 border-primary-500/50'
-                          : 'bg-neutral-900 border-neutral-800 hover:border-neutral-700'
+                          ? 'bg-blue-50 border-blue-500/50'
+                          : 'bg-white border-gray-200 hover:border-gray-300'
                       }`}
                     >
                       <input
@@ -200,9 +200,9 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
                         checked={isSelected}
                         onChange={() => handleAnswerSelect(question.id, option.id)}
                         disabled={isAnswered}
-                        className="w-4 h-4 text-primary-500 border-neutral-700 focus:ring-primary-500"
+                        className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                       />
-                      <span className="flex-1 text-body text-white">{option.text}</span>
+                      <span className="flex-1 text-body text-gray-900">{option.text}</span>
                       {showFeedback && isCorrect && (
                         <CheckCircle className="w-5 h-5 text-green-400" />
                       )}
@@ -212,9 +212,9 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
               </div>
 
               {(isAnswered || showResults) && (
-                <div className="mt-4 ml-10 p-4 bg-neutral-900 rounded-lg border border-neutral-800">
-                  <p className="text-caption text-neutral-300">
-                    <span className="font-medium text-white">Explanation:</span> {question.explanation}
+                <div className="mt-4 ml-10 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <p className="text-caption text-gray-700">
+                    <span className="font-medium text-gray-900">Explanation:</span> {question.explanation}
                   </p>
                 </div>
               )}
@@ -227,7 +227,7 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleSubmitAll}
-            className="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors"
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
           >
             Submit All Answers ({selectedAnswers.size}/{questions.length})
           </button>
@@ -235,11 +235,11 @@ export default function QuestionsSection({ stageId, userId }: QuestionsSectionPr
       )}
 
       {showResults && (
-        <div className="mt-8 p-6 bg-primary-500/10 border border-primary-500/50 rounded-lg text-center">
-          <p className="text-body text-white mb-2">
-            You scored <span className="font-bold text-primary-400">{correct} out of {total}</span> questions correctly!
+        <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg text-center">
+          <p className="text-body text-gray-900 mb-2">
+            You scored <span className="font-bold text-blue-600">{correct} out of {total}</span> questions correctly!
           </p>
-          <p className="text-caption text-neutral-300">
+          <p className="text-caption text-gray-700">
             Earned {correct * (questions[0]?.points || 10)} points
           </p>
         </div>

@@ -78,16 +78,16 @@ export default function FakeProfileAnalysis({
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Analyze this social media profile and identify red flags that suggest it might be fake or suspicious. 
           Select at least {minRequiredFlags} warning signs to complete the challenge.
         </p>
       </div>
 
       {/* Profile Display */}
-      <div className="bg-neutral-800 border border-neutral-700 rounded-lg overflow-hidden">
-        <div className="p-6 bg-neutral-900 border-b border-neutral-700">
+      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <div className="p-6 bg-gray-50 border-b border-gray-200">
           <div className="flex items-start gap-4">
             <div className="w-20 h-20 rounded-full bg-neutral-700 flex items-center justify-center">
               <User className="w-10 h-10 text-neutral-500" />

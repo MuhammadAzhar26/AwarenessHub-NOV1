@@ -28,8 +28,8 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Compare these two websites side-by-side and identify which one is legitimate. 
           Look carefully at the security indicators, URL structure, and design quality.
         </p>
@@ -43,33 +43,33 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
           disabled={disabled}
           className={`p-6 rounded-lg border-2 transition-all text-left ${
             selectedSite === 'left'
-              ? 'bg-primary-900/30 border-primary-500 shadow-dark-card-hover'
-              : 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+              ? 'bg-blue-50 border-blue-600 shadow-lg'
+              : 'bg-white border-gray-200 hover:border-gray-300'
           } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           <div className="flex items-center gap-3 mb-4">
             <div className={`p-2 rounded-lg ${
-              selectedSite === 'left' ? 'bg-primary-600' : 'bg-neutral-700'
+              selectedSite === 'left' ? 'bg-blue-600' : 'bg-gray-200'
             }`}>
-              <ShieldCheck className="w-6 h-6 text-neutral-100" />
+              <ShieldCheck className="w-6 h-6 text-gray-900" />
             </div>
             <div>
-              <div className="text-h4 text-neutral-100">Website A</div>
-              <div className="text-caption text-neutral-400">Click to select as legitimate</div>
+              <div className="text-h4 text-gray-900">Website A</div>
+              <div className="text-caption text-gray-600">Click to select as legitimate</div>
             </div>
           </div>
 
           <div className="space-y-3">
             {features.map((feature) => (
-              <div key={feature.id} className="bg-neutral-900 p-3 rounded border border-neutral-700">
-                <div className="text-small font-semibold text-neutral-300 mb-1">{feature.feature}</div>
-                <div className="text-body text-neutral-100">{feature.real}</div>
+              <div key={feature.id} className="bg-gray-50 p-3 rounded border border-gray-200">
+                <div className="text-small font-semibold text-gray-700 mb-1">{feature.feature}</div>
+                <div className="text-body text-gray-900">{feature.real}</div>
               </div>
             ))}
           </div>
 
           {selectedSite === 'left' && (
-            <div className="mt-4 flex items-center gap-2 text-primary-400">
+            <div className="mt-4 flex items-center gap-2 text-blue-600">
               <CheckCircle className="w-5 h-5" />
               <span className="text-small font-medium">Selected</span>
             </div>
@@ -82,33 +82,33 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
           disabled={disabled}
           className={`p-6 rounded-lg border-2 transition-all text-left ${
             selectedSite === 'right'
-              ? 'bg-primary-900/30 border-primary-500 shadow-dark-card-hover'
-              : 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+              ? 'bg-blue-50 border-blue-600 shadow-lg'
+              : 'bg-white border-gray-200 hover:border-gray-300'
           } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         >
           <div className="flex items-center gap-3 mb-4">
             <div className={`p-2 rounded-lg ${
-              selectedSite === 'right' ? 'bg-primary-600' : 'bg-neutral-700'
+              selectedSite === 'right' ? 'bg-blue-600' : 'bg-gray-200'
             }`}>
-              <ShieldAlert className="w-6 h-6 text-neutral-100" />
+              <ShieldAlert className="w-6 h-6 text-white" />
             </div>
             <div>
-              <div className="text-h4 text-neutral-100">Website B</div>
-              <div className="text-caption text-neutral-400">Click to select as legitimate</div>
+              <div className="text-h4 text-gray-900">Website B</div>
+              <div className="text-caption text-gray-600">Click to select as legitimate</div>
             </div>
           </div>
 
           <div className="space-y-3">
             {features.map((feature) => (
-              <div key={feature.id} className="bg-neutral-900 p-3 rounded border border-neutral-700">
-                <div className="text-small font-semibold text-neutral-300 mb-1">{feature.feature}</div>
-                <div className="text-body text-neutral-100">{feature.fake}</div>
+              <div key={feature.id} className="bg-gray-50 p-3 rounded border border-gray-200">
+                <div className="text-small font-semibold text-gray-700 mb-1">{feature.feature}</div>
+                <div className="text-body text-gray-900">{feature.fake}</div>
               </div>
             ))}
           </div>
 
           {selectedSite === 'right' && (
-            <div className="mt-4 flex items-center gap-2 text-primary-400">
+            <div className="mt-4 flex items-center gap-2 text-blue-600">
               <CheckCircle className="w-5 h-5" />
               <span className="text-small font-medium">Selected</span>
             </div>
@@ -117,10 +117,10 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
       </div>
 
       {/* Hint Section */}
-      <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
+      <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
         <button
           onClick={() => setShowHint(!showHint)}
-          className="flex items-center gap-2 text-warning-400 hover:text-warning-300 transition-colors"
+          className="flex items-center gap-2 text-orange-600 hover:text-orange-500 transition-colors"
         >
           <ShieldCheck className="w-5 h-5" />
           <span className="text-small font-medium">
@@ -129,7 +129,7 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
         </button>
         
         {showHint && (
-          <div className="mt-4 space-y-2 text-body text-neutral-300">
+          <div className="mt-4 space-y-2 text-body text-gray-700">
             <p>• Check for HTTPS in the URL and a valid padlock icon</p>
             <p>• Look for spelling errors or unusual characters in the domain name</p>
             <p>• Verify the certificate information and expiration date</p>
@@ -145,8 +145,8 @@ export default function WebsiteComparison({ features, correctAnswer, onSubmit, d
         disabled={!selectedSite || disabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
           !selectedSite || disabled
-            ? 'bg-neutral-700 text-neutral-500 cursor-not-allowed'
-            : 'bg-primary-600 text-white hover:bg-primary-700 shadow-dark-card hover:shadow-dark-card-hover'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg'
         }`}
       >
         {disabled ? 'Submitting...' : 'Submit Answer'}

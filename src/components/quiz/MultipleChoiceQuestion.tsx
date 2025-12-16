@@ -38,7 +38,7 @@ export default function MultipleChoiceQuestion({
 
   return (
     <div className="space-y-6">
-      <div className="text-h3 font-semibold text-neutral-100 mb-6">
+      <div className="text-h3 font-semibold text-gray-900 mb-6">
         {question}
       </div>
 
@@ -59,12 +59,12 @@ export default function MultipleChoiceQuestion({
                   : showIncorrect
                   ? 'border-red-500 bg-red-500/10'
                   : isSelected
-                  ? 'border-primary-500 bg-primary-500/10'
-                  : 'border-neutral-700 bg-neutral-800 hover:border-neutral-600'
+                  ? 'border-blue-600 bg-blue-50'
+                  : 'border-gray-200 bg-white hover:border-gray-300'
               } ${submitted || disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-body text-neutral-100">{option.text}</span>
+                <span className="text-body text-gray-900">{option.text}</span>
                 {showCorrect && <CheckCircle className="w-5 h-5 text-green-500" />}
                 {showIncorrect && <XCircle className="w-5 h-5 text-red-500" />}
               </div>
@@ -85,7 +85,7 @@ export default function MultipleChoiceQuestion({
               <div className={`font-semibold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </div>
-              <div className="text-small text-neutral-300">{explanation}</div>
+              <div className="text-small text-gray-700">{explanation}</div>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function MultipleChoiceQuestion({
         <button
           onClick={handleSubmit}
           disabled={!selectedOption || disabled}
-          className="w-full px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Submit Answer
         </button>

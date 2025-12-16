@@ -47,8 +47,8 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-300 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Find the correct shift value to decode the message. 
           Use the slider to shift the alphabet and reveal the plaintext.
         </p>
@@ -57,32 +57,32 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       {/* Cipher Display */}
       <div className="space-y-4">
         <div>
-          <label className="block text-body font-semibold text-neutral-100 mb-2">
+          <label className="block text-body font-semibold text-gray-900 mb-2">
             Encrypted Message:
           </label>
-          <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-            <p className="font-mono text-body text-warning-400 break-all">{encryptedText}</p>
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-300">
+            <p className="font-mono text-body text-orange-600 break-all">{encryptedText}</p>
           </div>
         </div>
 
         <div>
-          <label className="block text-body font-semibold text-neutral-100 mb-2">
+          <label className="block text-body font-semibold text-gray-900 mb-2">
             Decrypted Message (Shift: {shift}):
           </label>
-          <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-            <p className="font-mono text-body text-success-400 break-all">{decryptedText}</p>
+          <div className="bg-gray-50 p-4 rounded-lg border border-gray-300">
+            <p className="font-mono text-body text-green-600 break-all">{decryptedText}</p>
           </div>
         </div>
       </div>
 
       {/* Shift Slider */}
       <div className="space-y-3">
-        <label htmlFor="shift-slider" className="block text-body font-semibold text-neutral-100">
-          Shift Amount: <span className={isCorrect ? "text-success-400" : "text-primary-400"}>{shift}</span>
-          {isCorrect && <span className="ml-2 text-success-400">✓ Correct!</span>}
+        <label htmlFor="shift-slider" className="block text-body font-semibold text-gray-900">
+          Shift Amount: <span className={isCorrect ? "text-green-600" : "text-blue-600"}>{shift}</span>
+          {isCorrect && <span className="ml-2 text-green-600">✓ Correct!</span>}
         </label>
         <div className="flex items-center gap-4">
-          <span className="text-small text-neutral-400">0</span>
+          <span className="text-small text-gray-600">0</span>
           <input
             id="shift-slider"
             type="range"
@@ -92,27 +92,27 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
             onChange={(e) => setShift(parseInt(e.target.value))}
             className={`flex-1 h-2 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer ${
               isCorrect 
-                ? 'bg-success-700 [&::-webkit-slider-thumb]:bg-success-500 [&::-moz-range-thumb]:bg-success-500' 
-                : 'bg-neutral-700 [&::-webkit-slider-thumb]:bg-primary-500 [&::-moz-range-thumb]:bg-primary-500'
+                ? 'bg-green-300 [&::-webkit-slider-thumb]:bg-green-600 [&::-moz-range-thumb]:bg-green-600' 
+                : 'bg-gray-300 [&::-webkit-slider-thumb]:bg-blue-600 [&::-moz-range-thumb]:bg-blue-600'
             }`}
             disabled={disabled}
           />
-          <span className="text-small text-neutral-400">25</span>
+          <span className="text-small text-gray-600">25</span>
         </div>
       </div>
 
       {/* Alphabet Reference */}
-      <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700">
-        <h3 className="text-small font-semibold text-neutral-100 mb-2">Decryption Key (Encrypted → Decrypted):</h3>
+      <div className="bg-gray-50 p-4 rounded-lg border border-gray-300">
+        <h3 className="text-small font-semibold text-gray-900 mb-2">Decryption Key (Encrypted → Decrypted):</h3>
         <div className="flex flex-wrap gap-1">
           {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter, index) => {
             // Show how encrypted letters map to decrypted letters
             const decryptedLetter = shiftText(letter, shift, true)
             return (
               <div key={index} className="flex flex-col items-center">
-                <span className="text-small text-warning-400">{letter}</span>
-                <span className="text-small">↓</span>
-                <span className="text-small text-success-400 font-bold">{decryptedLetter}</span>
+                <span className="text-small text-orange-600">{letter}</span>
+                <span className="text-small text-gray-600">↓</span>
+                <span className="text-small text-green-600 font-bold">{decryptedLetter}</span>
               </div>
             )
           })}
@@ -122,15 +122,15 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
       {/* Hint Button */}
       <button
         onClick={() => setShowHint(!showHint)}
-        className="flex items-center gap-2 text-small text-primary-400 hover:text-primary-300 transition-colors"
+        className="flex items-center gap-2 text-small text-blue-600 hover:text-blue-700 transition-colors"
       >
         <Lightbulb className="w-4 h-4" />
         {showHint ? 'Hide Hint' : 'Show Hint'}
       </button>
 
       {showHint && (
-        <div className="bg-warning-900/20 border border-warning-700 p-4 rounded-lg">
-          <p className="text-small text-neutral-100">
+        <div className="bg-yellow-50 border border-yellow-300 p-4 rounded-lg">
+          <p className="text-small text-gray-900">
             <strong>Hint:</strong> Try different shift values until the message makes sense. 
             Look for common English words. The Caesar cipher shifts each letter by a fixed number of positions.
           </p>
@@ -139,8 +139,8 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
 
       {/* Feedback Message */}
       {isCorrect && (
-        <div className="bg-success-900/20 border border-success-700 p-4 rounded-lg animate-in fade-in duration-300">
-          <p className="text-body text-success-400 font-semibold">
+        <div className="bg-green-50 border border-green-300 p-4 rounded-lg animate-in fade-in duration-300">
+          <p className="text-body text-green-700 font-semibold">
             🎉 Perfect! You've successfully decrypted the message with shift {shift}!
           </p>
         </div>
@@ -151,7 +151,7 @@ export default function CaesarCipher({ plaintext, correctShift, onSubmit, disabl
         onClick={handleSubmit}
         disabled={disabled}
         className={`w-full px-6 py-4 text-white font-semibold rounded-lg transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
-          isCorrect ? 'bg-success-500 hover:bg-success-600' : 'bg-primary-500 hover:bg-primary-600'
+          isCorrect ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
         }`}
       >
         <CheckCircle className="w-5 h-5" />

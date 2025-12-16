@@ -22,16 +22,16 @@ export default function HTTPSDemo({ sensitiveData, correctAnswer, onSubmit, disa
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Learn the difference between HTTP and HTTPS by toggling between connection types. 
           Observe how your data is protected (or exposed) with each protocol.
         </p>
       </div>
 
       {/* Connection Type Toggle */}
-      <div className="bg-neutral-800 p-6 rounded-lg border border-neutral-700">
-        <div className="text-h4 text-neutral-100 mb-4">Select Connection Type</div>
+      <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <div className="text-h4 text-gray-900 mb-4">Select Connection Type</div>
         <div className="grid grid-cols-2 gap-4">
           <button
             onClick={() => setConnectionType('http')}

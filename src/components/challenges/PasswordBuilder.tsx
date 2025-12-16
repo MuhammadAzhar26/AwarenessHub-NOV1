@@ -97,10 +97,10 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
   }
 
   const getStrengthLabel = () => {
-    if (strength < 30) return { text: 'Weak', color: 'text-error-400' }
-    if (strength < 60) return { text: 'Fair', color: 'text-warning-400' }
-    if (strength < 80) return { text: 'Good', color: 'text-warning-300' }
-    return { text: 'Strong', color: 'text-success-400' }
+    if (strength < 30) return { text: 'Weak', color: 'text-red-600' }
+    if (strength < 60) return { text: 'Fair', color: 'text-orange-600' }
+    if (strength < 80) return { text: 'Good', color: 'text-orange-500' }
+    return { text: 'Strong', color: 'text-green-600' }
   }
 
   const handleSubmit = () => {
@@ -115,8 +115,8 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-300 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Build a strong password by clicking character type buttons below. 
           Achieve a strength score of at least <strong>{minStrength}</strong> to complete the challenge.
         </p>
@@ -124,12 +124,12 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
 
       {/* Password Display */}
       <div className="space-y-3">
-        <label className="block text-body font-semibold text-neutral-100">
+        <label className="block text-body font-semibold text-gray-900">
           Your Password:
         </label>
-        <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-700 min-h-[60px] flex items-center">
-          <p className="font-mono text-h3 text-neutral-100 break-all">
-            {password || <span className="text-neutral-500 italic">Click buttons below to build...</span>}
+        <div className="bg-gray-100 p-4 rounded-lg border border-gray-300 min-h-[60px] flex items-center">
+          <p className="font-mono text-h3 text-gray-900 break-all">
+            {password || <span className="text-gray-500 italic">Click buttons below to build...</span>}
           </p>
         </div>
         <div className="flex gap-2">
@@ -141,7 +141,7 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
           </button>
           <button
             onClick={() => setPassword(prev => prev.slice(0, -1))}
-            className="px-4 py-2 bg-neutral-700 text-neutral-100 rounded-md hover:bg-neutral-600 transition-colors text-small"
+            className="px-4 py-2 bg-gray-200 text-gray-900 rounded-md hover:bg-gray-300 transition-colors text-small"
             disabled={!password}
           >
             Delete Last
@@ -151,7 +151,7 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
 
       {/* Character Type Buttons */}
       <div className="space-y-3">
-        <label className="block text-body font-semibold text-neutral-100">
+        <label className="block text-body font-semibold text-gray-900">
           Add Characters:
         </label>
         <div className="grid grid-cols-2 gap-3">
@@ -171,14 +171,14 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
       {/* Strength Meter */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="block text-body font-semibold text-neutral-100">
+          <label className="block text-body font-semibold text-gray-900">
             Password Strength:
           </label>
           <span className={`text-body font-bold ${strengthLabel.color}`}>
             {strengthLabel.text} ({strength}%)
           </span>
         </div>
-        <div className="w-full h-4 bg-neutral-700 rounded-full overflow-hidden">
+        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
           <div
             className={`h-full ${getStrengthColor()} transition-all duration-300`}
             style={{ width: `${strength}%` }}
@@ -188,14 +188,14 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
 
       {/* Feedback */}
       {feedback.length > 0 && (
-        <div className="bg-neutral-800 border border-neutral-700 p-4 rounded-lg space-y-2">
-          <h3 className="text-small font-semibold text-neutral-100 flex items-center gap-2">
+        <div className="bg-gray-100 border border-gray-200 p-4 rounded-lg space-y-2">
+          <h3 className="text-small font-semibold text-gray-900 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-warning-500" />
             Suggestions:
           </h3>
           <ul className="list-disc list-inside space-y-1">
             {feedback.map((item, index) => (
-              <li key={index} className="text-small text-neutral-400">{item}</li>
+              <li key={index} className="text-small text-gray-600">{item}</li>
             ))}
           </ul>
         </div>
@@ -204,20 +204,20 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
       {/* Requirement Status */}
       <div className={`p-4 rounded-lg border ${
         meetsRequirement 
-          ? 'bg-success-900/20 border-success-700' 
-          : 'bg-neutral-800 border-neutral-700'
+          ? 'bg-green-50 border-green-300' 
+          : 'bg-gray-100 border-gray-200'
       }`}>
         <div className="flex items-center gap-3">
           {meetsRequirement ? (
             <CheckCircle className="w-6 h-6 text-success-500" />
           ) : (
-            <Shield className="w-6 h-6 text-neutral-500" />
+            <Shield className="w-6 h-6 text-gray-500" />
           )}
           <div>
-            <p className="text-body font-semibold text-neutral-100">
+            <p className="text-body font-semibold text-gray-900">
               {meetsRequirement ? 'Password Meets Requirements!' : 'Keep Building...'}
             </p>
-            <p className="text-small text-neutral-400">
+            <p className="text-small text-gray-600">
               {meetsRequirement 
                 ? `Your password is strong enough (${strength}% ≥ ${minStrength}%)`
                 : `Need ${minStrength - strength}% more strength`
@@ -231,7 +231,7 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
       <button
         onClick={handleSubmit}
         disabled={disabled || !meetsRequirement}
-        className="w-full px-6 py-4 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full px-6 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         <CheckCircle className="w-5 h-5" />
         {disabled ? 'Submitting...' : 'Submit Password'}

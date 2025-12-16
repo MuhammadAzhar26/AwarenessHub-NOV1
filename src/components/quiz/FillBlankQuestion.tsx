@@ -52,13 +52,13 @@ export default function FillBlankQuestion({
 
   return (
     <div className="space-y-6">
-      <div className="text-h3 font-semibold text-neutral-100 mb-6">
+      <div className="text-h3 font-semibold text-gray-900 mb-6">
         {question}
       </div>
 
-      <div className="bg-neutral-900 p-6 rounded-lg border border-neutral-800">
-        <div className="font-mono text-body text-neutral-100 flex items-center gap-2 flex-wrap">
-          {prefix && <span className="text-primary-400">{prefix}</span>}
+      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <div className="font-mono text-body text-gray-900 flex items-center gap-2 flex-wrap">
+          {prefix && <span className="text-blue-600">{prefix}</span>}
           <input
             type="text"
             value={answer}
@@ -66,15 +66,15 @@ export default function FillBlankQuestion({
             onKeyPress={handleKeyPress}
             placeholder={placeholder}
             disabled={submitted || disabled}
-            className={`px-3 py-2 bg-neutral-800 border-2 rounded ${
+            className={`px-3 py-2 bg-white border-2 rounded ${
               submitted
                 ? isCorrect
                   ? 'border-green-500 bg-green-500/10'
                   : 'border-red-500 bg-red-500/10'
-                : 'border-neutral-700 focus:border-primary-500'
-            } focus:outline-none transition-colors font-mono text-neutral-100 min-w-[200px]`}
+                : 'border-gray-200 focus:border-blue-600'
+            } focus:outline-none transition-colors font-mono text-gray-900 min-w-[200px]`}
           />
-          {suffix && <span className="text-primary-400">{suffix}</span>}
+          {suffix && <span className="text-blue-600">{suffix}</span>}
         </div>
       </div>
 
@@ -91,11 +91,11 @@ export default function FillBlankQuestion({
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </div>
               {!isCorrect && (
-                <div className="text-small text-neutral-300 mb-2">
+                <div className="text-small text-gray-700 mb-2">
                   <span className="font-semibold">Correct answer:</span> {correctAnswer}
                 </div>
               )}
-              <div className="text-small text-neutral-300">{explanation}</div>
+              <div className="text-small text-gray-700">{explanation}</div>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function FillBlankQuestion({
         <button
           onClick={handleSubmit}
           disabled={!answer.trim() || disabled}
-          className="w-full px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Submit Answer
         </button>

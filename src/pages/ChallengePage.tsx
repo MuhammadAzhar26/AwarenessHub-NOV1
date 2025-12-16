@@ -780,7 +780,7 @@ export default function ChallengePage() {
                     >
                       Reveal Next Hint
                       {nextAvailableHint && (
-                        <span className="inline-flex items-center gap-1 text-small font-medium bg-black/20 px-2 py-1 rounded">
+                        <span className="inline-flex items-center gap-1 text-small font-medium bg-white/20 px-2 py-1 rounded">
                           -{nextAvailableHint.penalty_points} pts
                         </span>
                       )}

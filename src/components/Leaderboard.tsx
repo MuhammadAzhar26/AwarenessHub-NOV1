@@ -201,8 +201,8 @@ export default function Leaderboard({
       <div className="space-y-3">
         {leaderboardData.length === 0 ? (
           <div className="text-center py-8">
-            <div className="text-neutral-400 mb-2">No users found</div>
-            <p className="text-small text-neutral-500">
+            <div className="text-gray-600 mb-2">No users found</div>
+            <p className="text-small text-gray-500">
               Be the first to complete challenges and appear on the leaderboard!
             </p>
           </div>
@@ -240,7 +240,7 @@ export default function Leaderboard({
                     <Award className="w-3 h-3" />
                     <span>{user.badges} points</span>
                   </span>
-                  <span className="text-neutral-400">
+                  <span className="text-gray-500">
                     {user.lastActive}
                   </span>
                 </div>
@@ -248,7 +248,7 @@ export default function Leaderboard({
 
               {/* Score */}
               <div className="text-right">
-                <div className="text-body font-bold text-primary-500">
+                <div className="text-body font-bold text-blue-600">
                   {user.score.toLocaleString()}
                 </div>
                 <div className="text-small text-neutral-500">
@@ -268,15 +268,15 @@ export default function Leaderboard({
           </p>
           <div className="flex justify-center space-x-4 text-small">
             <div className="flex items-center space-x-1 text-neutral-500">
-              <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
               <span>Live Scores</span>
             </div>
             <div className="flex items-center space-x-1 text-neutral-500">
-              <div className="w-2 h-2 bg-success-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-green-600 rounded-full"></div>
               <span>Progress Tracking</span>
             </div>
             <div className="flex items-center space-x-1 text-neutral-500">
-              <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
               <span>Real Users</span>
             </div>
           </div>

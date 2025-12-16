@@ -45,8 +45,8 @@ export default function HashIdentifier({ hashes, onSubmit, disabled }: HashIdent
 
   return (
     <div className="space-y-6">
-      <div className="bg-primary-900/20 border border-primary-700 rounded-lg p-4">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Match each hash string to its cryptographic algorithm by analyzing
           length and format patterns.
         </p>
@@ -63,18 +63,18 @@ export default function HashIdentifier({ hashes, onSubmit, disabled }: HashIdent
               className={`rounded-lg border p-4 transition-colors ${
                 selected
                   ? isCorrect
-                    ? 'border-success-600 bg-success-900/10'
-                    : 'border-warning-600 bg-warning-900/10'
-                  : 'border-neutral-700 bg-neutral-900'
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-yellow-500 bg-yellow-50'
+                  : 'border-gray-200 bg-white'
               }`}
             >
               <div className="flex items-start gap-3 mb-3">
-                <Hash className="w-5 h-5 text-primary-400 flex-shrink-0 mt-1" />
+                <Hash className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-small text-neutral-400 mb-1">Hash #{hash.id}</p>
-                  <p className="font-mono text-small text-neutral-100 break-all">{hash.value}</p>
-                  <p className="text-small text-neutral-400 mt-1">
-                    Length: <span className="text-primary-300">{hash.value.length}</span> characters
+                  <p className="text-small text-gray-600 mb-1">Hash #{hash.id}</p>
+                  <p className="font-mono text-small text-gray-900 break-all">{hash.value}</p>
+                  <p className="text-small text-gray-600 mt-1">
+                    Length: <span className="text-blue-600">{hash.value.length}</span> characters
                   </p>
                 </div>
               </div>
@@ -88,8 +88,8 @@ export default function HashIdentifier({ hashes, onSubmit, disabled }: HashIdent
                     disabled={disabled}
                     className={`px-4 py-2 rounded-md text-small font-medium transition-colors ${
                       selected === pattern.name
-                        ? 'bg-primary-500 text-white'
-                        : 'bg-neutral-800 text-neutral-200 hover:bg-neutral-700'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
                     {pattern.name}
@@ -104,20 +104,20 @@ export default function HashIdentifier({ hashes, onSubmit, disabled }: HashIdent
       <button
         type="button"
         onClick={() => setShowHint(!showHint)}
-        className="inline-flex items-center gap-2 text-small text-primary-400 hover:text-primary-300"
+        className="inline-flex items-center gap-2 text-small text-blue-600 hover:text-blue-500"
       >
         <Lightbulb className="w-4 h-4" />
         {showHint ? 'Hide patterns guide' : 'Show patterns guide'}
       </button>
 
       {showHint && (
-        <div className="rounded-lg border border-neutral-700 bg-neutral-900 p-4 space-y-2">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 space-y-2">
           {HASH_PATTERNS.map(pattern => (
             <div key={pattern.name} className="flex items-start gap-2">
-              <span className="font-mono text-small text-primary-300 font-semibold min-w-[80px]">
+              <span className="font-mono text-small text-blue-600 font-semibold min-w-[80px]">
                 {pattern.name}:
               </span>
-              <span className="text-small text-neutral-300">{pattern.description}</span>
+              <span className="text-small text-gray-700">{pattern.description}</span>
             </div>
           ))}
         </div>
@@ -128,7 +128,7 @@ export default function HashIdentifier({ hashes, onSubmit, disabled }: HashIdent
         onClick={handleSubmit}
         disabled={disabled || !allSelected}
         className={`w-full px-6 py-4 rounded-lg font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
-          allSelected ? 'bg-primary-500 hover:bg-primary-600' : 'bg-neutral-700'
+          allSelected ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300'
         }`}
       >
         <CheckCircle className="w-5 h-5" />

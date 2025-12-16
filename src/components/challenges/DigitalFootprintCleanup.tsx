@@ -64,13 +64,13 @@ export default function DigitalFootprintCleanup({
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case 'high':
-        return 'bg-error-900/30 text-error-400 border-error-700'
+        return 'bg-red-50 text-red-600 border-red-200'
       case 'medium':
-        return 'bg-warning-900/30 text-warning-400 border-warning-700'
+        return 'bg-yellow-50 text-yellow-600 border-yellow-200'
       case 'low':
-        return 'bg-success-900/30 text-success-400 border-success-700'
+        return 'bg-green-50 text-green-600 border-green-200'
       default:
-        return 'bg-neutral-700 text-neutral-300 border-neutral-600'
+        return 'bg-gray-100 text-gray-700 border-gray-200'
     }
   }
 
@@ -90,29 +90,29 @@ export default function DigitalFootprintCleanup({
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Review your digital footprint and decide which items should be removed to protect your privacy. 
           Click the trash icon to mark items for removal.
         </p>
       </div>
 
       {/* Cleanup Progress */}
-      <div className="bg-neutral-800 border border-neutral-700 p-6 rounded-lg">
+      <div className="bg-white border border-gray-200 p-6 rounded-lg">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <div className="text-h4 text-neutral-100">Cleanup Progress</div>
-            <div className="text-small text-neutral-400">
+            <div className="text-h4 text-gray-900">Cleanup Progress</div>
+            <div className="text-small text-gray-600">
               {removedItems.length} items marked for removal
             </div>
           </div>
-          <div className="text-h2 font-bold text-primary-400">
+          <div className="text-h2 font-bold text-blue-600">
             {cleanupScore}%
           </div>
         </div>
-        <div className="w-full bg-neutral-700 rounded-full h-3">
+        <div className="w-full bg-gray-200 rounded-full h-3">
           <div
-            className="h-3 bg-primary-500 rounded-full transition-all duration-300"
+            className="h-3 bg-blue-600 rounded-full transition-all duration-300"
             style={{ width: `${cleanupScore}%` }}
           />
         </div>
@@ -128,16 +128,16 @@ export default function DigitalFootprintCleanup({
               key={footprint.id}
               className={`p-4 rounded-lg border-2 transition-all ${
                 isRemoved
-                  ? 'bg-neutral-900 border-neutral-600 opacity-60'
-                  : 'bg-neutral-800 border-neutral-700'
+                  ? 'bg-gray-50 border-gray-300 opacity-60'
+                  : 'bg-white border-gray-200'
               }`}
             >
               <div className="flex items-start gap-4">
                 {/* Category Icon */}
                 <div className={`p-3 rounded-lg ${
-                  isRemoved ? 'bg-neutral-700' : 'bg-neutral-700'
+                  isRemoved ? 'bg-gray-100' : 'bg-gray-100'
                 }`}>
-                  <div className="text-neutral-400">
+                  <div className="text-gray-600">
                     {getCategoryIcon(footprint.category)}
                   </div>
                 </div>
@@ -146,15 +146,15 @@ export default function DigitalFootprintCleanup({
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <div className="text-caption text-neutral-500 mb-1">
+                      <div className="text-caption text-gray-500 mb-1">
                         {getCategoryLabel(footprint.category)}
                       </div>
                       <div className={`text-body font-semibold mb-1 ${
-                        isRemoved ? 'text-neutral-500 line-through' : 'text-neutral-100'
+                        isRemoved ? 'text-gray-500 line-through' : 'text-gray-900'
                       }`}>
                         {footprint.item}
                       </div>
-                      <div className="text-small text-neutral-400">
+                      <div className="text-small text-gray-600">
                         {footprint.description}
                       </div>
                     </div>
@@ -169,8 +169,8 @@ export default function DigitalFootprintCleanup({
                     disabled={disabled}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all mt-3 ${
                       isRemoved
-                        ? 'bg-success-900/30 border-2 border-success-500 text-success-400'
-                        : 'bg-error-900/30 border-2 border-error-700 text-error-400 hover:bg-error-900/50'
+                        ? 'bg-green-50 border-2 border-green-500 text-green-600'
+                        : 'bg-red-50 border-2 border-red-200 text-red-600 hover:bg-red-100'
                     } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     {isRemoved ? (
@@ -193,10 +193,10 @@ export default function DigitalFootprintCleanup({
       </div>
 
       {/* Hint Section */}
-      <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
+      <div className="bg-white border border-gray-200 p-4 rounded-lg">
         <button
           onClick={() => setShowHint(!showHint)}
-          className="flex items-center gap-2 text-warning-400 hover:text-warning-300 transition-colors"
+          className="flex items-center gap-2 text-orange-600 hover:text-orange-500 transition-colors"
         >
           <AlertCircle className="w-5 h-5" />
           <span className="text-small font-medium">
@@ -205,7 +205,7 @@ export default function DigitalFootprintCleanup({
         </button>
         
         {showHint && (
-          <div className="mt-4 space-y-2 text-body text-neutral-300">
+          <div className="mt-4 space-y-2 text-body text-gray-700">
             <p>• Remove old social media posts that contain sensitive information</p>
             <p>• Delete unused online accounts to minimize exposure</p>
             <p>• Clear location history from maps and social media apps</p>
@@ -222,8 +222,8 @@ export default function DigitalFootprintCleanup({
         disabled={removedItems.length === 0 || disabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
           removedItems.length === 0 || disabled
-            ? 'bg-neutral-700 text-neutral-500 cursor-not-allowed'
-            : 'bg-primary-600 text-white hover:bg-primary-700 shadow-dark-card hover:shadow-dark-card-hover'
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-card hover:shadow-card-hover'
         }`}
       >
         {disabled ? 'Submitting...' : 'Complete Cleanup'}

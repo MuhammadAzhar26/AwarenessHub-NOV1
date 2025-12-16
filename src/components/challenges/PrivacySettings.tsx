@@ -52,9 +52,9 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
 
   const privacyScore = calculatePrivacyScore()
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-success-400'
-    if (score >= 50) return 'text-warning-400'
-    return 'text-error-400'
+    if (score >= 80) return 'text-green-600'
+    if (score >= 50) return 'text-orange-600'
+    return 'text-red-600'
   }
 
   const getCategoryIcon = (category: string) => {
@@ -86,19 +86,19 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Configure privacy settings to protect your personal information. 
           Choose the most privacy-conscious option for each setting to maximize your privacy score.
         </p>
       </div>
 
       {/* Privacy Score Display */}
-      <div className="bg-neutral-800 border border-neutral-700 p-6 rounded-lg">
+      <div className="bg-white border border-gray-200 p-6 rounded-lg">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <div className="text-h4 text-neutral-100">Privacy Score</div>
-            <div className="text-small text-neutral-400">
+            <div className="text-h4 text-gray-900">Privacy Score</div>
+            <div className="text-small text-gray-600">
               {Object.keys(selectedOptions).length} of {privacyOptions.length} settings configured
             </div>
           </div>
@@ -106,10 +106,10 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
             {privacyScore}%
           </div>
         </div>
-        <div className="w-full bg-neutral-700 rounded-full h-3">
+        <div className="w-full bg-gray-200 rounded-full h-3">
           <div
             className={`h-3 rounded-full transition-all duration-300 ${
-              privacyScore >= 80 ? 'bg-success-500' :
+              privacyScore >= 80 ? 'bg-green-600' :
               privacyScore >= 50 ? 'bg-warning-500' :
               'bg-error-500'
             }`}
@@ -127,22 +127,22 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
           return (
             <div
               key={option.id}
-              className="bg-neutral-800 border border-neutral-700 p-5 rounded-lg"
+              className="bg-gray-100 border border-gray-200 p-5 rounded-lg"
             >
               <div className="flex items-start gap-3 mb-4">
-                <div className="p-2 bg-neutral-700 rounded-lg text-neutral-300">
+                <div className="p-2 bg-gray-200 rounded-lg text-gray-700">
                   {getCategoryIcon(option.category)}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-1">
-                    <div className="text-body font-semibold text-neutral-100">
+                    <div className="text-body font-semibold text-gray-900">
                       {option.setting}
                     </div>
                     <div className={`px-2 py-1 rounded text-caption border ${getImpactBadge(option.privacyImpact)}`}>
                       {option.privacyImpact} impact
                     </div>
                   </div>
-                  <div className="text-small text-neutral-400 mb-3">
+                  <div className="text-small text-gray-600 mb-3">
                     {option.description}
                   </div>
 
@@ -162,18 +162,18 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
                               ? isRecommendedOption
                                 ? 'bg-success-900/20 border-success-500'
                                 : 'bg-primary-900/30 border-primary-500'
-                              : 'bg-neutral-900 border-neutral-700 hover:border-neutral-600'
+                              : 'bg-white border-gray-200 hover:border-gray-400'
                           } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           <div className="flex items-center gap-3">
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                              isSelected ? 'bg-primary-500 border-primary-500' : 'border-neutral-600'
+                              isSelected ? 'bg-blue-600 border-blue-600' : 'border-gray-400'
                             }`}>
                               {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
                             </div>
-                            <span className="text-small text-neutral-100 flex-1">{optionValue}</span>
+                            <span className="text-small text-gray-900 flex-1">{optionValue}</span>
                             {isRecommendedOption && (
-                              <div className="flex items-center gap-1 text-success-400">
+                              <div className="flex items-center gap-1 text-green-600">
                                 <CheckCircle className="w-4 h-4" />
                                 <span className="text-caption">Recommended</span>
                               </div>
@@ -191,10 +191,10 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
       </div>
 
       {/* Hint Section */}
-      <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
+      <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
         <button
           onClick={() => setShowHint(!showHint)}
-          className="flex items-center gap-2 text-warning-400 hover:text-warning-300 transition-colors"
+          className="flex items-center gap-2 text-orange-600 hover:text-orange-500 transition-colors"
         >
           <Lock className="w-5 h-5" />
           <span className="text-small font-medium">
@@ -203,7 +203,7 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
         </button>
         
         {showHint && (
-          <div className="mt-4 space-y-2 text-body text-neutral-300">
+          <div className="mt-4 space-y-2 text-body text-gray-700">
             <p>• Limit who can see your profile and posts</p>
             <p>• Disable location tracking when not needed</p>
             <p>• Review app permissions regularly</p>
@@ -220,7 +220,7 @@ export default function PrivacySettings({ privacyOptions, onSubmit, disabled }: 
         disabled={Object.keys(selectedOptions).length !== privacyOptions.length || disabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
           Object.keys(selectedOptions).length !== privacyOptions.length || disabled
-            ? 'bg-neutral-700 text-neutral-500 cursor-not-allowed'
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
             : 'bg-primary-600 text-white hover:bg-primary-700 shadow-dark-card hover:shadow-dark-card-hover'
         }`}
       >

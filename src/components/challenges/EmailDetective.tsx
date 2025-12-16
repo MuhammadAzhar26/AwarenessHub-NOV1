@@ -72,8 +72,8 @@ export default function EmailDetective({
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Identify <strong>{requiredClues}</strong> suspicious elements in this email. 
           Click on the clue descriptions below to highlight them in the email. Select only the genuine phishing indicators.
         </p>

@@ -76,22 +76,22 @@ export default function DragDropQuestion({
 
   return (
     <div className="space-y-6">
-      <div className="text-h3 font-semibold text-neutral-100 mb-6">
+      <div className="text-h3 font-semibold text-gray-900 mb-6">
         {question}
       </div>
 
-      <div className="text-small text-neutral-400 mb-4">
+      <div className="text-small text-gray-600 mb-4">
         Drag items from the left to matching zones on the right
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Unplaced Items */}
         <div className="space-y-3">
-          <div className="text-body font-semibold text-neutral-200 mb-3">
+          <div className="text-body font-semibold text-gray-800 mb-3">
             Items to Match
           </div>
           {unplacedItems.length === 0 ? (
-            <div className="p-6 border-2 border-dashed border-neutral-700 rounded-lg text-center text-neutral-500">
+            <div className="p-6 border-2 border-dashed border-gray-300 rounded-lg text-center text-gray-500">
               All items placed
             </div>
           ) : (
@@ -101,12 +101,12 @@ export default function DragDropQuestion({
                   key={item}
                   draggable={!submitted && !disabled}
                   onDragStart={() => handleDragStart(item)}
-                  className={`p-3 bg-neutral-800 border-2 border-neutral-700 rounded-lg flex items-center gap-2 ${
-                    !submitted && !disabled ? 'cursor-move hover:border-primary-500' : 'cursor-not-allowed opacity-70'
+                  className={`p-3 bg-white border-2 border-gray-200 rounded-lg flex items-center gap-2 ${
+                    !submitted && !disabled ? 'cursor-move hover:border-blue-600' : 'cursor-not-allowed opacity-70'
                   }`}
                 >
-                  <GripVertical className="w-4 h-4 text-neutral-500" />
-                  <span className="text-body text-neutral-100 font-mono">{item}</span>
+                  <GripVertical className="w-4 h-4 text-gray-500" />
+                  <span className="text-body text-gray-900 font-mono">{item}</span>
                 </div>
               ))}
             </div>
@@ -115,7 +115,7 @@ export default function DragDropQuestion({
 
         {/* Drop Zones */}
         <div className="space-y-3">
-          <div className="text-body font-semibold text-neutral-200 mb-3">
+          <div className="text-body font-semibold text-gray-800 mb-3">
             Categories
           </div>
           {zones.map(zone => {
@@ -135,17 +135,17 @@ export default function DragDropQuestion({
                     : hasIncorrectItem
                     ? 'border-red-500 bg-red-500/10'
                     : draggedItem
-                    ? 'border-primary-500 bg-primary-500/10'
-                    : 'border-neutral-700'
+                    ? 'border-blue-600 bg-blue-50'
+                    : 'border-gray-300'
                 }`}
               >
-                <div className="text-small text-neutral-300 mb-2 font-semibold">{zone}</div>
+                <div className="text-small text-gray-700 mb-2 font-semibold">{zone}</div>
                 {itemsInZone.map(item => (
                   <div
                     key={item}
-                    className="p-2 bg-neutral-900 border border-neutral-700 rounded flex items-center justify-between"
+                    className="p-2 bg-white border border-gray-200 rounded flex items-center justify-between"
                   >
-                    <span className="text-body text-neutral-100 font-mono">{item}</span>
+                    <span className="text-body text-gray-900 font-mono">{item}</span>
                     {!submitted && (
                       <button
                         onClick={() => handleRemove(item)}
@@ -176,7 +176,7 @@ export default function DragDropQuestion({
               <div className={`font-semibold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
                 {isCorrect ? 'Correct!' : 'Incorrect'}
               </div>
-              <div className="text-small text-neutral-300">{explanation}</div>
+              <div className="text-small text-gray-700">{explanation}</div>
             </div>
           </div>
         </div>
@@ -186,7 +186,7 @@ export default function DragDropQuestion({
         <button
           onClick={handleSubmit}
           disabled={Object.keys(placements).length !== items.length || disabled}
-          className="w-full px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Submit Answer
         </button>

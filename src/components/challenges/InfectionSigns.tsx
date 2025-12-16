@@ -65,29 +65,29 @@ export default function InfectionSigns({
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Identify which symptoms indicate a malware infection on your computer. 
           Select at least {minCorrectIdentifications} genuine infection signs to complete the challenge.
         </p>
       </div>
 
       {/* Detection Progress */}
-      <div className="bg-neutral-800 border border-neutral-700 p-6 rounded-lg">
+      <div className="bg-white border border-gray-200 p-6 rounded-lg">
         <div className="flex items-center gap-4 mb-3">
           <div className="flex-1">
-            <div className="text-h4 text-neutral-100 mb-1">Detection Progress</div>
-            <div className="text-small text-neutral-400">
+            <div className="text-h4 text-gray-900 mb-1">Detection Progress</div>
+            <div className="text-small text-gray-600">
               {identifiedSigns.length} symptoms identified
             </div>
           </div>
-          <div className="p-4 bg-neutral-900 rounded-lg">
-            <Activity className="w-8 h-8 text-primary-400" />
+          <div className="p-4 bg-gray-50 rounded-lg">
+            <Activity className="w-8 h-8 text-blue-600" />
           </div>
         </div>
-        <div className="w-full bg-neutral-700 rounded-full h-3">
+        <div className="w-full bg-gray-200 rounded-full h-3">
           <div
-            className="h-3 bg-primary-500 rounded-full transition-all duration-300"
+            className="h-3 bg-blue-600 rounded-full transition-all duration-300"
             style={{ width: `${Math.min((identifiedSigns.length / minCorrectIdentifications) * 100, 100)}%` }}
           />
         </div>

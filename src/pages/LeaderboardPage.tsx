@@ -113,7 +113,7 @@ export default function LeaderboardPage() {
 
         {/* Top 3 Podium */}
         <div className="max-w-4xl mx-auto mb-12">
-          <h2 className="text-h2 font-bold text-neutral-100 text-center mb-8">Top Performers</h2>
+          <h2 className="text-h2 font-bold text-gray-900 text-center mb-8">Top Performers</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {top3.map((entry, index) => {
               const colors = [

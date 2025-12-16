@@ -37,34 +37,34 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
   const getSecurityIcon = (level: string) => {
     switch (level) {
       case 'encrypted':
-        return <Shield className="w-5 h-5 text-success-400" />
+        return <Shield className="w-5 h-5 text-green-600" />
       case 'password':
-        return <Shield className="w-5 h-5 text-warning-400" />
+        return <Shield className="w-5 h-5 text-yellow-600" />
       case 'open':
-        return <WifiOff className="w-5 h-5 text-error-400" />
+        return <WifiOff className="w-5 h-5 text-red-600" />
       default:
-        return <Wifi className="w-5 h-5 text-neutral-400" />
+        return <Wifi className="w-5 h-5 text-gray-600" />
     }
   }
 
   const getSecurityLabel = (level: string) => {
     switch (level) {
       case 'encrypted':
-        return { text: 'WPA2/WPA3 Encrypted', color: 'text-success-400' }
+        return { text: 'WPA2/WPA3 Encrypted', color: 'text-green-600' }
       case 'password':
-        return { text: 'Password Protected', color: 'text-warning-400' }
+        return { text: 'Password Protected', color: 'text-yellow-600' }
       case 'open':
-        return { text: 'Open Network', color: 'text-error-400' }
+        return { text: 'Open Network', color: 'text-red-600' }
       default:
-        return { text: 'Unknown', color: 'text-neutral-400' }
+        return { text: 'Unknown', color: 'text-gray-600' }
     }
   }
 
   return (
     <div className="space-y-6">
       {/* Instructions */}
-      <div className="bg-primary-900/20 border border-primary-700 p-4 rounded-lg">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Identify which public WiFi networks are safe to use. 
           Select all scenarios where it's safe to connect and perform sensitive activities.
         </p>
@@ -83,14 +83,14 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
               disabled={disabled}
               className={`w-full p-5 rounded-lg border-2 transition-all text-left ${
                 isSelected
-                  ? 'bg-primary-900/30 border-primary-500 shadow-dark-card-hover'
-                  : 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+                  ? 'bg-blue-50 border-blue-600 shadow-lg'
+                  : 'bg-white border-gray-200 hover:border-gray-300'
               } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex items-start gap-4">
                 {/* Selection Indicator */}
                 <div className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                  isSelected ? 'bg-primary-500 border-primary-500' : 'border-neutral-600'
+                  isSelected ? 'bg-blue-600 border-blue-600' : 'border-gray-300'
                 }`}>
                   {isSelected && <CheckCircle className="w-5 h-5 text-white" />}
                 </div>
@@ -99,10 +99,10 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
                   {/* Header */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="text-h4 text-neutral-100 mb-1">{scenario.location}</div>
+                      <div className="text-h4 text-gray-900 mb-1">{scenario.location}</div>
                       <div className="flex items-center gap-2">
-                        <Wifi className="w-4 h-4 text-neutral-400" />
-                        <span className="text-small text-neutral-300 font-medium">
+                        <Wifi className="w-4 h-4 text-gray-600" />
+                        <span className="text-small text-gray-700 font-medium">
                           {scenario.networkName}
                         </span>
                       </div>
@@ -110,7 +110,7 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
                   </div>
 
                   {/* Security Level */}
-                  <div className="flex items-center gap-2 bg-neutral-900 p-3 rounded border border-neutral-700">
+                  <div className="flex items-center gap-2 bg-gray-50 p-3 rounded border border-gray-200">
                     {getSecurityIcon(scenario.securityLevel)}
                     <span className={`text-small font-medium ${security.color}`}>
                       {security.text}
@@ -119,14 +119,14 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
 
                   {/* Risk Factors */}
                   {scenario.riskFactors.length > 0 && (
-                    <div className="bg-error-900/20 border border-error-700 p-3 rounded">
+                    <div className="bg-red-50 border border-red-200 p-3 rounded">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-error-400" />
-                        <span className="text-small font-semibold text-error-400">Risk Factors</span>
+                        <AlertTriangle className="w-4 h-4 text-red-600" />
+                        <span className="text-small font-semibold text-red-600">Risk Factors</span>
                       </div>
                       <ul className="space-y-1">
                         {scenario.riskFactors.map((risk, idx) => (
-                          <li key={idx} className="text-small text-neutral-300 ml-6">
+                          <li key={idx} className="text-small text-gray-700 ml-6">
                             • {risk}
                           </li>
                         ))}
@@ -136,14 +136,14 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
 
                   {/* Safety Tips */}
                   {scenario.safetyTips.length > 0 && (
-                    <div className="bg-success-900/20 border border-success-700 p-3 rounded">
+                    <div className="bg-green-50 border border-green-200 p-3 rounded">
                       <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle className="w-4 h-4 text-success-400" />
-                        <span className="text-small font-semibold text-success-400">Safety Measures</span>
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span className="text-small font-semibold text-green-600">Safety Measures</span>
                       </div>
                       <ul className="space-y-1">
                         {scenario.safetyTips.map((tip, idx) => (
-                          <li key={idx} className="text-small text-neutral-300 ml-6">
+                          <li key={idx} className="text-small text-gray-700 ml-6">
                             • {tip}
                           </li>
                         ))}
@@ -158,10 +158,10 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
       </div>
 
       {/* Hint Section */}
-      <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
+      <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
         <button
           onClick={() => setShowHint(!showHint)}
-          className="flex items-center gap-2 text-warning-400 hover:text-warning-300 transition-colors"
+          className="flex items-center gap-2 text-orange-600 hover:text-orange-500 transition-colors"
         >
           <Shield className="w-5 h-5" />
           <span className="text-small font-medium">
@@ -170,7 +170,7 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
         </button>
         
         {showHint && (
-          <div className="mt-4 space-y-2 text-body text-neutral-300">
+          <div className="mt-4 space-y-2 text-body text-gray-700">
             <p>• Avoid open/unsecured networks for sensitive activities</p>
             <p>• Use VPN when connecting to public WiFi</p>
             <p>• Verify network names with staff to avoid fake networks</p>
@@ -186,8 +186,8 @@ export default function WiFiSafety({ scenarios, correctAnswers, onSubmit, disabl
         disabled={selectedScenarios.length === 0 || disabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
           selectedScenarios.length === 0 || disabled
-            ? 'bg-neutral-700 text-neutral-500 cursor-not-allowed'
-            : 'bg-primary-600 text-white hover:bg-primary-700 shadow-dark-card hover:shadow-dark-card-hover'
+            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg'
         }`}
       >
         {disabled ? 'Submitting...' : `Submit Answer (${selectedScenarios.length} selected)`}

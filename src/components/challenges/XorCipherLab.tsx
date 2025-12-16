@@ -52,36 +52,36 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
 
   return (
     <div className="space-y-6">
-      <div className="bg-primary-900/20 border border-primary-700 rounded-lg p-4">
-        <p className="text-body text-neutral-100">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <p className="text-body text-gray-900">
           <strong>Goal:</strong> Slide through XOR keys until the decoded output reads as meaningful English. The correct key will produce a readable message.
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-4">
-          <h3 className="text-small font-semibold text-neutral-200 mb-2 flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-primary-400" />
+        <div className="rounded-lg border border-gray-200 bg-white p-4">
+          <h3 className="text-small font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-blue-600" />
             Ciphertext (Hex)
           </h3>
-          <p className="font-mono text-body text-warning-300 break-all">{ciphertext}</p>
+          <p className="font-mono text-body text-orange-600 break-all">{ciphertext}</p>
         </div>
-        <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-4">
-          <h3 className="text-small font-semibold text-neutral-200 mb-2 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-primary-400" />
+        <div className="rounded-lg border border-gray-200 bg-white p-4">
+          <h3 className="text-small font-semibold text-gray-700 mb-2 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-blue-600" />
             Decoded Preview (Key {key})
           </h3>
-          <p className={`font-mono text-body break-words ${isCorrect ? 'text-success-400' : 'text-neutral-100'}`}>{preview}</p>
-          <p className="text-small text-neutral-400 mt-2">Readability score: <span className={readabilityScore > 70 ? 'text-success-400' : 'text-primary-300'}>{readabilityScore}%</span></p>
+          <p className={`font-mono text-body break-words ${isCorrect ? 'text-green-600' : 'text-gray-900'}`}>{preview}</p>
+          <p className="text-small text-gray-600 mt-2">Readability score: <span className={readabilityScore > 70 ? 'text-green-600' : 'text-blue-600'}>{readabilityScore}%</span></p>
         </div>
       </div>
 
       <div className="space-y-3">
-        <label htmlFor="xor-slider" className="text-body font-semibold text-neutral-100 flex items-center gap-2">
-          <Key className="w-4 h-4 text-primary-400" />
+        <label htmlFor="xor-slider" className="text-body font-semibold text-gray-900 flex items-center gap-2">
+          <Key className="w-4 h-4 text-blue-600" />
           XOR Key
-          <span className={`ml-2 font-mono ${isCorrect ? 'text-success-400' : 'text-primary-300'}`}>{key}</span>
-          {isCorrect && <span className="text-success-400">✓ Looks readable!</span>}
+          <span className={`ml-2 font-mono ${isCorrect ? 'text-green-600' : 'text-blue-600'}`}>{key}</span>
+          {isCorrect && <span className="text-green-600">✓ Looks readable!</span>}
         </label>
         <input
           id="xor-slider"
@@ -90,7 +90,7 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
           max={255}
           value={key}
           onChange={event => setKey(parseInt(event.target.value, 10))}
-          className="w-full h-2 bg-neutral-800 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-500 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary-500"
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-blue-600"
           disabled={disabled}
         />
         <input
@@ -104,7 +104,7 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
               setKey(Math.max(0, Math.min(255, value)))
             }
           }}
-          className="w-full rounded-lg border border-neutral-700 bg-neutral-900 px-4 py-2 text-body text-neutral-100 font-mono focus:border-primary-500 focus:outline-none"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-body text-gray-900 font-mono focus:border-blue-500 focus:outline-none"
           disabled={disabled}
         />
       </div>
@@ -114,7 +114,7 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
           type="button"
           onClick={handleReset}
           disabled={disabled}
-          className="px-6 py-3 border-2 border-neutral-700 text-neutral-200 font-semibold rounded-md hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         >
           <RefreshCw className="w-5 h-5" />
           Reset
@@ -124,7 +124,7 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
           onClick={handleSubmit}
           disabled={disabled}
           className={`flex-1 px-6 py-3 rounded-md font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${
-            isCorrect ? 'bg-success-500 hover:bg-success-600' : 'bg-primary-500 hover:bg-primary-600'
+            isCorrect ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
           Lock Key & Submit
@@ -132,9 +132,9 @@ export default function XorCipherLab({ ciphertext, correctKey, onSubmit, disable
       </div>
 
       {lockedKey !== null && (
-        <div className="rounded-lg border border-neutral-800 bg-neutral-900 p-4">
-          <p className="text-small text-neutral-300">
-            Submitted key: <span className="font-mono text-primary-300">{lockedKey}</span>. Awaiting verification...
+        <div className="rounded-lg border border-gray-200 bg-white p-4">
+          <p className="text-small text-gray-700">
+            Submitted key: <span className="font-mono text-blue-600">{lockedKey}</span>. Awaiting verification...
           </p>
         </div>
       )}
