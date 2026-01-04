@@ -166,7 +166,7 @@ export default function EmailDetective({
                     {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
                       <span className={`text-caption font-semibold px-2 py-0.5 rounded ${
                         clue.type === 'sender' ? 'bg-red-100 text-red-700' :
                         clue.type === 'link' ? 'bg-orange-100 text-orange-700' :
@@ -178,7 +178,7 @@ export default function EmailDetective({
                         {clue.type}
                       </span>
                     </div>
-                    <p className="text-small text-gray-900 font-medium">{clue.description}</p>
+                    <p className="text-body text-gray-900 font-semibold leading-relaxed">{clue.description}</p>
                   </div>
                 </div>
               </button>
