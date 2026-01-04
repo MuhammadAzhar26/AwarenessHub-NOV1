@@ -35,6 +35,9 @@ dist-ssr
 # Database migrations
 supabase/migrations/
 
+# Thesis files
+THESIS/
+
 # Android sensitive files only
 android/keystore/
 android/.gradle
