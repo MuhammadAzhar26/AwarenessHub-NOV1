@@ -103,16 +103,16 @@ export default function InfectionSigns({
               key={sign.id}
               onClick={() => toggleSign(sign.id)}
               disabled={disabled}
-              className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+              className={`w-full p-4 rounded-lg border-2 transition-all text-left shadow-sm ${
                 isIdentified
-                  ? 'bg-warning-900/20 border-warning-500 shadow-dark-card-hover'
-                  : 'bg-neutral-800 border-neutral-700 hover:border-neutral-600'
+                  ? 'bg-orange-50 border-orange-500 shadow-md'
+                  : 'bg-white border-gray-300 hover:border-gray-400'
               } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <div className="flex items-start gap-4">
                 {/* Selection Indicator */}
                 <div className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center flex-shrink-0 ${
-                  isIdentified ? 'bg-warning-500 border-warning-500' : 'border-neutral-600'
+                  isIdentified ? 'bg-orange-500 border-orange-500' : 'border-gray-400 bg-white'
                 }`}>
                   {isIdentified && <CheckCircle className="w-5 h-5 text-white" />}
                 </div>
@@ -120,7 +120,7 @@ export default function InfectionSigns({
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
-                    <div className="text-body font-semibold text-neutral-100">
+                    <div className="text-body font-semibold text-gray-900">
                       {sign.symptom}
                     </div>
                     <div className={`flex items-center gap-1 px-2 py-1 rounded text-caption ${getSeverityColor(sign.severity)}`}>
@@ -129,23 +129,23 @@ export default function InfectionSigns({
                     </div>
                   </div>
                   
-                  <div className="text-small text-neutral-400 mb-2">
+                  <div className="text-small text-gray-700 mb-2">
                     {sign.description}
                   </div>
 
-                  <div className={`p-3 rounded-lg ${
+                  <div className={`p-3 rounded-lg border-2 ${
                     sign.isActualSign 
-                      ? 'bg-error-900/20 border border-error-700' 
-                      : 'bg-success-900/20 border border-success-700'
+                      ? 'bg-red-50 border-red-300' 
+                      : 'bg-green-50 border-green-300'
                   }`}>
                     <div className="flex items-start gap-2">
                       {sign.isActualSign ? (
-                        <AlertTriangle className="w-4 h-4 text-error-400 mt-0.5 flex-shrink-0" />
+                        <AlertTriangle className="w-4 h-4 text-red-700 mt-0.5 flex-shrink-0" />
                       ) : (
-                        <Shield className="w-4 h-4 text-success-400 mt-0.5 flex-shrink-0" />
+                        <Shield className="w-4 h-4 text-green-700 mt-0.5 flex-shrink-0" />
                       )}
-                      <div className="text-small text-neutral-300">
-                        <strong className={sign.isActualSign ? 'text-error-400' : 'text-success-400'}>
+                      <div className="text-small text-gray-800">
+                        <strong className={sign.isActualSign ? 'text-red-700' : 'text-green-700'}>
                           {sign.isActualSign ? 'Warning: ' : 'Normal: '}
                         </strong>
                         {sign.explanation}
@@ -154,7 +154,7 @@ export default function InfectionSigns({
                   </div>
 
                   {isIdentified && (
-                    <div className="mt-3 flex items-center gap-2 text-warning-400">
+                    <div className="mt-3 flex items-center gap-2 text-orange-700">
                       <CheckCircle className="w-4 h-4" />
                       <span className="text-small font-medium">Identified as Infection Sign</span>
                     </div>
@@ -167,10 +167,10 @@ export default function InfectionSigns({
       </div>
 
       {/* Hint Section */}
-      <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-lg">
+      <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded-lg">
         <button
           onClick={() => setShowHint(!showHint)}
-          className="flex items-center gap-2 text-warning-400 hover:text-warning-300 transition-colors"
+          className="flex items-center gap-2 text-amber-700 hover:text-amber-800 transition-colors font-semibold"
         >
           <AlertTriangle className="w-5 h-5" />
           <span className="text-small font-medium">
@@ -179,7 +179,7 @@ export default function InfectionSigns({
         </button>
         
         {showHint && (
-          <div className="mt-4 space-y-2 text-body text-neutral-300">
+          <div className="mt-4 space-y-2 text-body text-gray-800">
             <p>• Unexpected slowdowns or crashes may indicate malware</p>
             <p>• Pop-ups appearing when browser is closed are suspicious</p>
             <p>• Unexplained network activity could be data theft</p>
@@ -196,8 +196,8 @@ export default function InfectionSigns({
         disabled={identifiedSigns.length < minCorrectIdentifications || disabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all ${
           identifiedSigns.length < minCorrectIdentifications || disabled
-            ? 'bg-neutral-700 text-neutral-500 cursor-not-allowed'
-            : 'bg-primary-600 text-white hover:bg-primary-700 shadow-dark-card hover:shadow-dark-card-hover'
+            ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+            : 'bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-lg'
         }`}
       >
         {disabled 

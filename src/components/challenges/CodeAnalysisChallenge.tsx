@@ -50,12 +50,12 @@ export default function CodeAnalysisChallenge({
   return (
     <div className="space-y-6">
       {/* Code Display */}
-      <div className="bg-neutral-900 rounded-lg p-6 overflow-x-auto">
-        <div className="flex items-center gap-2 mb-4 text-neutral-400">
+      <div className="bg-gray-900 rounded-lg p-6 overflow-x-auto border-2 border-gray-700">
+        <div className="flex items-center gap-2 mb-4 text-gray-400">
           <Code className="w-4 h-4" />
           <span className="text-small font-mono">{language}</span>
         </div>
-        <pre className="text-small font-mono text-neutral-100 leading-relaxed">
+        <pre className="text-small font-mono text-gray-100 leading-relaxed">
           {codeLines.map((line, idx) => {
             const lineNumber = idx + 1
             const hasIssue = issues.some(issue => issue.line === lineNumber)
@@ -63,9 +63,9 @@ export default function CodeAnalysisChallenge({
             return (
               <div
                 key={idx}
-                className={`${hasIssue ? 'bg-error-900/30 border-l-4 border-error-500' : ''} px-2 -mx-2`}
+                className={`${hasIssue ? 'bg-red-900/40 border-l-4 border-red-500' : ''} px-2 -mx-2`}
               >
-                <span className="text-neutral-500 select-none mr-4 inline-block w-8 text-right">
+                <span className="text-gray-500 select-none mr-4 inline-block w-8 text-right">
                   {lineNumber}
                 </span>
                 <span>{line}</span>

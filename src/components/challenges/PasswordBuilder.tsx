@@ -97,10 +97,10 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
   }
 
   const getStrengthLabel = () => {
-    if (strength < 30) return { text: 'Weak', color: 'text-red-600' }
-    if (strength < 60) return { text: 'Fair', color: 'text-orange-600' }
-    if (strength < 80) return { text: 'Good', color: 'text-orange-500' }
-    return { text: 'Strong', color: 'text-green-600' }
+    if (strength < 30) return { text: 'Weak', color: 'text-red-700' }
+    if (strength < 60) return { text: 'Fair', color: 'text-orange-700' }
+    if (strength < 80) return { text: 'Good', color: 'text-orange-600' }
+    return { text: 'Strong', color: 'text-green-700' }
   }
 
   const handleSubmit = () => {
@@ -178,7 +178,7 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
             {strengthLabel.text} ({strength}%)
           </span>
         </div>
-        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+        <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden border border-gray-300">
           <div
             className={`h-full ${getStrengthColor()} transition-all duration-300`}
             style={{ width: `${strength}%` }}
@@ -188,36 +188,36 @@ export default function PasswordBuilder({ minStrength, requiresLength = 12, onSu
 
       {/* Feedback */}
       {feedback.length > 0 && (
-        <div className="bg-gray-100 border border-gray-200 p-4 rounded-lg space-y-2">
+        <div className="bg-amber-50 border-2 border-amber-300 p-4 rounded-lg space-y-2">
           <h3 className="text-small font-semibold text-gray-900 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-warning-500" />
+            <AlertCircle className="w-4 h-4 text-amber-600" />
             Suggestions:
           </h3>
           <ul className="list-disc list-inside space-y-1">
             {feedback.map((item, index) => (
-              <li key={index} className="text-small text-gray-600">{item}</li>
+              <li key={index} className="text-small text-gray-800">{item}</li>
             ))}
           </ul>
         </div>
       )}
 
       {/* Requirement Status */}
-      <div className={`p-4 rounded-lg border ${
+      <div className={`p-4 rounded-lg border-2 ${
         meetsRequirement 
-          ? 'bg-green-50 border-green-300' 
-          : 'bg-gray-100 border-gray-200'
+          ? 'bg-green-50 border-green-500' 
+          : 'bg-gray-50 border-gray-300'
       }`}>
         <div className="flex items-center gap-3">
           {meetsRequirement ? (
-            <CheckCircle className="w-6 h-6 text-success-500" />
+            <CheckCircle className="w-6 h-6 text-green-600" />
           ) : (
-            <Shield className="w-6 h-6 text-gray-500" />
+            <Shield className="w-6 h-6 text-gray-600" />
           )}
           <div>
             <p className="text-body font-semibold text-gray-900">
-              {meetsRequirement ? 'Password Meets Requirements!' : 'Keep Building...'}
+              {meetsRequirement ? '✅ Password Meets Requirements!' : 'Keep Building...'}
             </p>
-            <p className="text-small text-gray-600">
+            <p className="text-small text-gray-700">
               {meetsRequirement 
                 ? `Your password is strong enough (${strength}% ≥ ${minStrength}%)`
                 : `Need ${minStrength - strength}% more strength`

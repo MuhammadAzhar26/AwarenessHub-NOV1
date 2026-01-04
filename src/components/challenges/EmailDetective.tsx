@@ -82,10 +82,10 @@ export default function EmailDetective({
       {/* Progress */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-body font-semibold text-neutral-100">
+          <label className="text-body font-semibold text-gray-900">
             Clues Found: {correctFound}/{requiredClues}
           </label>
-          <span className="text-small text-neutral-400">
+          <span className="text-small text-gray-600">
             {foundClues.length} selected
           </span>
         </div>
@@ -98,34 +98,34 @@ export default function EmailDetective({
       </div>
 
       {/* Email Display */}
-      <div className="bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden shadow-dark-card">
+      <div className="bg-white border-2 border-gray-300 rounded-lg overflow-hidden shadow-lg">
         {/* Email Header */}
-        <div className="bg-neutral-800 px-6 py-4 border-b border-neutral-700">
+        <div className="bg-gray-50 px-6 py-4 border-b-2 border-gray-300">
           <div className="flex items-center gap-3 mb-3">
-            <Mail className="w-6 h-6 text-primary-500" />
-            <h3 className="text-body font-semibold text-neutral-100">Email Message</h3>
+            <Mail className="w-6 h-6 text-primary-600" />
+            <h3 className="text-body font-semibold text-gray-900">Email Message</h3>
           </div>
           <div className="space-y-2 text-small">
             <div>
-              <span className="text-neutral-400">From: </span>
-              <span className="text-neutral-100">{highlightText(emailContent.from)}</span>
+              <span className="text-gray-600">From: </span>
+              <span className="text-gray-900 font-medium">{highlightText(emailContent.from)}</span>
             </div>
             <div>
-              <span className="text-neutral-400">Subject: </span>
-              <span className="text-neutral-100 font-medium">{highlightText(emailContent.subject)}</span>
+              <span className="text-gray-600">Subject: </span>
+              <span className="text-gray-900 font-semibold">{highlightText(emailContent.subject)}</span>
             </div>
             {emailContent.hasAttachment && (
-              <div className="flex items-center gap-2 mt-2 p-2 bg-neutral-700 rounded">
-                <AlertTriangle className="w-4 h-4 text-warning-500" />
-                <span className="text-neutral-100">📎 {emailContent.attachmentName}</span>
+              <div className="flex items-center gap-2 mt-2 p-2 bg-orange-50 border border-orange-300 rounded">
+                <AlertTriangle className="w-4 h-4 text-orange-600" />
+                <span className="text-gray-900 font-medium">📎 {emailContent.attachmentName}</span>
               </div>
             )}
           </div>
         </div>
 
         {/* Email Body */}
-        <div className="px-6 py-6">
-          <div className="text-body text-neutral-100 leading-relaxed whitespace-pre-wrap">
+        <div className="px-6 py-6 bg-white">
+          <div className="text-body text-gray-900 leading-relaxed whitespace-pre-wrap">
             {highlightText(emailContent.body)}
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function EmailDetective({
 
       {/* Clue Selection */}
       <div className="space-y-3">
-        <label className="block text-body font-semibold text-neutral-100">
+        <label className="block text-body font-semibold text-gray-900">
           Click Suspicious Elements:
         </label>
         <div className="grid gap-3">
@@ -152,33 +152,33 @@ export default function EmailDetective({
                 onMouseLeave={() => setSelectedElement(null)}
                 className={`p-4 rounded-lg border-2 transition-all text-left ${
                   isSelected
-                    ? 'bg-warning-900/30 border-warning-600'
-                    : 'bg-neutral-800 border-neutral-700 hover:border-primary-500'
+                    ? 'bg-orange-50 border-orange-500 shadow-md'
+                    : 'bg-white border-gray-300 hover:border-primary-500 hover:shadow-md'
                 }`}
                 disabled={disabled}
               >
                 <div className="flex items-start gap-3">
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                     isSelected 
-                      ? 'bg-warning-600 border-warning-600' 
-                      : 'border-neutral-600'
+                      ? 'bg-orange-500 border-orange-500' 
+                      : 'border-gray-400 bg-white'
                   }`}>
                     {isSelected && <CheckCircle className="w-4 h-4 text-white" />}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`text-caption font-semibold px-2 py-0.5 rounded ${
-                        clue.type === 'sender' ? 'bg-error-900/50 text-error-400' :
-                        clue.type === 'link' ? 'bg-warning-900/50 text-warning-400' :
-                        clue.type === 'urgency' ? 'bg-orange-900/50 text-orange-400' :
-                        clue.type === 'grammar' ? 'bg-purple-900/50 text-purple-400' :
-                        clue.type === 'attachment' ? 'bg-red-900/50 text-red-400' :
-                        'bg-blue-900/50 text-blue-400'
+                        clue.type === 'sender' ? 'bg-red-100 text-red-700' :
+                        clue.type === 'link' ? 'bg-orange-100 text-orange-700' :
+                        clue.type === 'urgency' ? 'bg-amber-100 text-amber-700' :
+                        clue.type === 'grammar' ? 'bg-purple-100 text-purple-700' :
+                        clue.type === 'attachment' ? 'bg-pink-100 text-pink-700' :
+                        'bg-blue-100 text-blue-700'
                       }`}>
                         {clue.type}
                       </span>
                     </div>
-                    <p className="text-small text-neutral-100">{clue.description}</p>
+                    <p className="text-small text-gray-900 font-medium">{clue.description}</p>
                   </div>
                 </div>
               </button>
@@ -188,9 +188,9 @@ export default function EmailDetective({
       </div>
 
       {/* Hint */}
-      <div className="bg-neutral-800 border border-neutral-700 p-4 rounded-lg">
-        <p className="text-small text-neutral-400">
-          <strong className="text-neutral-100">Tip:</strong> Hover over each clue to highlight the suspicious element in the email. 
+      <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-lg">
+        <p className="text-small text-gray-700">
+          <strong className="text-gray-900">💡 Tip:</strong> Hover over each clue to highlight the suspicious element in the email. 
           Real phishing emails often have multiple red flags including suspicious sender addresses, 
           grammatical errors, urgent language, and suspicious links.
         </p>
